@@ -1,0 +1,402 @@
+version: "4.1"
+name: rm_main
+type: ARM
+deviceName: null
+packDir: null
+srcDirs: []
+virtualFolder:
+  name: <virtual_root>
+  files: []
+  folders:
+    - name: Application
+      files: []
+      folders:
+        - name: MDK-ARM
+          files:
+            - path: startup_stm32h723xx.s
+            - path: rm_main/rm_main.sct
+            - path: rm_main/rm_main.map
+          folders: []
+        - name: User
+          files: []
+          folders:
+            - name: Core
+              files:
+                - path: ../Core/Src/main.c
+                - path: ../Core/Src/gpio.c
+                - path: ../Core/Src/freertos.c
+                - path: ../Core/Src/dma.c
+                - path: ../Core/Src/fdcan.c
+                - path: ../Core/Src/iwdg.c
+                - path: ../Core/Src/rng.c
+                - path: ../Core/Src/rtc.c
+                - path: ../Core/Src/sdmmc.c
+                - path: ../Core/Src/spi.c
+                - path: ../Core/Src/tim.c
+                - path: ../Core/Src/usart.c
+                - path: ../Core/Src/stm32h7xx_it.c
+                - path: ../Core/Src/stm32h7xx_hal_msp.c
+                - path: ../Core/Src/stm32h7xx_hal_timebase_tim.c
+              folders: []
+            - name: USB_DEVICE
+              files: []
+              folders:
+                - name: App
+                  files:
+                    - path: ../USB_DEVICE/App/usb_device.c
+                    - path: ../USB_DEVICE/App/usbd_desc.c
+                    - path: ../USB_DEVICE/App/usbd_cdc_if.c
+                  folders: []
+                - name: Target
+                  files:
+                    - path: ../USB_DEVICE/Target/usbd_conf.c
+                  folders: []
+            - name: FATFS
+              files: []
+              folders:
+                - name: Target
+                  files:
+                    - path: ../FATFS/Target/bsp_driver_sd.c
+                    - path: ../FATFS/Target/sd_diskio.c
+                  folders: []
+                - name: App
+                  files:
+                    - path: ../FATFS/App/fatfs.c
+                  folders: []
+    - name: User
+      files: []
+      folders:
+        - name: Task
+          files:
+            - path: ../User/Task/board_comm_task.c
+            - path: ../User/Task/debug_task.c
+            - path: ../User/Task/comm_task.c
+            - path: ../User/Task/mode_switch_task.c
+            - path: ../User/Task/status_task.c
+            - path: ../User/Task/gimbal_task.c
+            - path: ../User/Task/chassis_task.c
+            - path: ../User/Task/shoot_task.c
+            - path: ../User/Task/ui_task.c
+            - path: ../User/Task/container_task.c
+            - path: ../User/Task/control_def.h
+          folders: []
+        - name: Comm
+          files:
+            - path: ../User/Communication/can_comm.c
+            - path: ../User/Communication/board_comm.c
+            - path: ../User/Communication/usart_comm.c
+            - path: ../User/Communication/container.c
+            - path: ../User/Communication/container_bus.c
+          folders: []
+        - name: Drivers
+          files:
+            - path: ../User/Drivers/drv_dji_motor.c
+            - path: ../User/Drivers/drv_dm_motor.c
+            - path: ../User/Drivers/drv_lk_motor.c
+            - path: ../User/Drivers/drv_ws2812b.c
+          folders: []
+        - name: Protocol
+          files:
+            - path: ../User/Support/data_list.h
+            - path: ../User/Protocol/prot_dr16.c
+            - path: ../User/Protocol/prot_imu.c
+            - path: ../User/Protocol/prot_hipnuc.c
+            - path: ../User/Protocol/prot_judge.c
+            - path: ../User/Protocol/prot_vision.c
+            - path: ../User/Protocol/prot_power.c
+            - path: ../User/Protocol/prot_tfmini.c
+            - path: ../User/Protocol/prot_ms53l0m.c
+          folders: []
+        - name: Math
+          files:
+            - path: ../User/Math/DSP/arm_cortexM7lfdp_math.lib
+            - path: ../User/Math/crc.c
+            - path: ../User/Math/filter.c
+            - path: ../User/Math/kalman_filter.c
+            - path: ../User/Math/math_lib.c
+            - path: ../User/Math/math_matrix.c
+            - path: ../User/Math/pid.c
+            - path: ../User/Math/KNN.c
+            - path: ../User/Math/SMC.c
+            - path: ../User/Math/dwt.c
+            - path: ../User/Math/velocity_control.c
+          folders: []
+        - name: UI
+          files:
+            - path: ../User/UI/ui_interface.c
+            - path: ../User/UI/ui_g.c
+          folders: []
+        - name: Model
+          files:
+            - path: ../User/Model/wlr.c
+            - path: ../User/Model/leg_vmc.c
+            - path: ../User/Model/wheel_leg_model.c
+          folders: []
+        - name: Support
+          files:
+            - path: ../User/Support/data_buffer.c
+            - path: ../User/Support/data_fifo.c
+            - path: ../User/Support/data_log.c
+            - path: ../User/Support/func_generator.c
+            - path: ../User/Support/us_time.c
+          folders: []
+        - name: Fsm
+          files:
+            - path: ../User/Fsm/fsm_core.c
+            - path: ../User/Fsm/robot_logic.c
+          folders: []
+        - name: Recorder
+          files:
+            - path: ../User/Recorder/calendar.c
+            - path: ../User/Recorder/log.c
+            - path: ../User/Recorder/lwrb.c
+            - path: ../User/Recorder/lwrb_ex.c
+            - path: ../User/Recorder/recorder.c
+            - path: ../User/Recorder/recorder_inter.h
+          folders: []
+    - name: Drivers
+      files: []
+      folders:
+        - name: CMSIS
+          files:
+            - path: ../Core/Src/system_stm32h7xx.c
+          folders: []
+        - name: STM32H7xx_HAL_Driver
+          files:
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_fdcan.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_iwdg.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rng.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rng_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rtc.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rtc_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_sdmmc.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_delayblock.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mmc.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mmc_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c
+            - path: ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c
+          folders: []
+    - name: Middlewares
+      files: []
+      folders:
+        - name: FreeRTOS
+          files:
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/timers.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c
+            - path: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/port.c
+          folders: []
+        - name: USB_Device_Library
+          files:
+            - path: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c
+            - path: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c
+            - path: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
+            - path: ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c
+          folders: []
+        - name: FatFs
+          files:
+            - path: ../Middlewares/Third_Party/FatFs/src/diskio.c
+            - path: ../Middlewares/Third_Party/FatFs/src/ff.c
+            - path: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.c
+            - path: ../Middlewares/Third_Party/FatFs/src/option/syscall.c
+            - path: ../Middlewares/Third_Party/FatFs/src/option/ccsbcs.c
+          folders: []
+    - name: ::CMSIS
+      files: []
+      folders: []
+dependenceList: []
+outDir: build
+miscInfo:
+  uid: 141b35d3285d27c496f57a3fc2a5b834
+targets:
+  rm_main:
+    cppPreprocessAttrs:
+      defineList:
+        - USE_HAL_DRIVER
+        - STM32H723xx
+        - ARM_MATH_CM7
+        - __TARGET_FPU_VFP
+      incList:
+        - ../Drivers/CMSIS/Include
+        - ../Core/Inc
+        - ../Drivers/STM32H7xx_HAL_Driver/Inc
+        - ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
+        - ../Drivers/CMSIS/Device/ST/STM32H7xx/Include
+        - ../Middlewares/Third_Party/FreeRTOS/Source/include
+        - ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F
+        - ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS
+        - ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc
+        - ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
+        - ../USB_DEVICE/App
+        - ../USB_DEVICE/Target
+        - ../User/Communication
+        - ../User/Drivers
+        - ../User/Protocol
+        - ../User/Math/DSP/Include
+        - ../User/Math
+        - ../User/Model
+        - ../User/Support
+        - ../User/Middle
+        - ../User/Task
+        - ../User/UI
+        - ../User/Fsm
+        - ../User/Recorder
+        - ../FATFS/Target
+        - ../FATFS/App
+        - ../Middlewares/Third_Party/FatFs/src
+        - .cmsis/include
+        - RTE/_rm_main
+      libList: []
+    excludeList: []
+    settings:
+      debugger: cortex-debug
+    toolchain: AC6
+    toolchainConfigMap:
+      AC6:
+        archExtensions: ""
+        cpuType: Cortex-M7
+        floatingPointHardware: double
+        options:
+          version: 3
+          afterBuildTasks: []
+          asm-compiler:
+            $use: asm-auto
+            defines: []
+            misc-controls: ""
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            language-c: gnu11
+            language-cpp: gnu++11
+            link-time-optimization: false
+            one-elf-section-per-function: true
+            optimization: level-0
+            short-enums#wchar: true
+            warnings: ac5-like-warnings
+          global:
+            output-debug-info: enable
+            use-microLIB: true
+          linker:
+            $outputTaskExcludes:
+              - .bin
+            misc-controls: --diag_suppress=L6329
+            output-format: elf
+            ro-base: ""
+            rw-base: ""
+            xo-base: ""
+        scatterFilePath: ""
+        storageLayout:
+          RAM:
+            - id: 1
+              isChecked: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              noInit: false
+              tag: RAM
+            - id: 2
+              isChecked: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              noInit: false
+              tag: RAM
+            - id: 3
+              isChecked: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              noInit: false
+              tag: RAM
+            - id: 1
+              isChecked: false
+              mem:
+                size: "0x20000"
+                startAddr: "0x20000000"
+              noInit: false
+              tag: IRAM
+            - id: 2
+              isChecked: true
+              mem:
+                size: "0x50000"
+                startAddr: "0x24000000"
+              noInit: false
+              tag: IRAM
+          ROM:
+            - id: 1
+              isChecked: false
+              isStartup: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              tag: ROM
+            - id: 2
+              isChecked: false
+              isStartup: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              tag: ROM
+            - id: 3
+              isChecked: false
+              isStartup: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              tag: ROM
+            - id: 1
+              isChecked: true
+              isStartup: true
+              mem:
+                size: "0x100000"
+                startAddr: "0x8000000"
+              tag: IROM
+            - id: 2
+              isChecked: false
+              isStartup: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              tag: IROM
+        useCustomScatterFile: false
+    uploadConfigMap:
+      JLink:
+        baseAddr: ""
+        bin: ""
+        cpuInfo:
+          cpuName: "null"
+          vendor: "null"
+        otherCmds: ""
+        proType: 1
+        speed: 8000
+    uploader: JLink

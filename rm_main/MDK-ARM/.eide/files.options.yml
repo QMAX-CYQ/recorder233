@@ -1,0 +1,88 @@
+##########################################################################################
+#                        Append Compiler Options For Source Files
+##########################################################################################
+
+# syntax:
+#   <your pattern>: <compiler options>
+# For get pattern syntax, please refer to: https://www.npmjs.com/package/micromatch
+#
+# examples:
+#   'main.cpp':           --cpp11 -Og ...
+#   'src/*.c':            -gnu -O2 ...
+#   'src/lib/**/*.cpp':   --cpp11 -Os ...
+#   '!Application/*.c':   -O0
+#   '**/*.c':             -O2 -gnu ...
+
+version: "2.1"
+options:
+    rm_main:
+        files: {}
+        virtualPathFiles:
+            <virtual_root>/Application/User/Core/iwdg.c: ""
+            <virtual_root>/Application/User/Core/rtc.c: ""
+            <virtual_root>/Application/User/Core/sdmmc.c: ""
+            <virtual_root>/Application/User/Core/spi.c: ""
+            <virtual_root>/Application/User/USB_DEVICE/App/usb_device.c: ""
+            <virtual_root>/Application/User/USB_DEVICE/App/usbd_desc.c: ""
+            <virtual_root>/Application/User/USB_DEVICE/App/usbd_cdc_if.c: ""
+            <virtual_root>/Application/User/USB_DEVICE/Target/usbd_conf.c: ""
+            <virtual_root>/Drivers/CMSIS/system_stm32h7xx.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_tim.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_tim_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_usb.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_flash.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_flash_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_mdma.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_i2c.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_i2c_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_exti.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_fdcan.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_iwdg.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rng.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rng_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rtc.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rtc_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_sdmmc.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_delayblock.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_sd.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_sd_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_mmc.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_mmc_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi_ex.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart.c: ""
+            <virtual_root>/Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart_ex.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/croutine.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/event_groups.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/list.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/queue.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/stream_buffer.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/tasks.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/timers.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/cmsis_os.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/heap_4.c: ""
+            <virtual_root>/Middlewares/FreeRTOS/port.c: ""
+            <virtual_root>/Middlewares/USB_Device_Library/usbd_core.c: ""
+            <virtual_root>/Middlewares/USB_Device_Library/usbd_ctlreq.c: ""
+            <virtual_root>/Middlewares/USB_Device_Library/usbd_ioreq.c: ""
+            <virtual_root>/Middlewares/USB_Device_Library/usbd_cdc.c: ""
+            <virtual_root>/Application/User/FATFS/Target/bsp_driver_sd.c: ""
+            <virtual_root>/Application/User/FATFS/Target/sd_diskio.c: ""
+            <virtual_root>/Application/User/FATFS/App/fatfs.c: ""
+            <virtual_root>/Middlewares/FatFs/diskio.c: ""
+            <virtual_root>/Middlewares/FatFs/ff.c: ""
+            <virtual_root>/Middlewares/FatFs/ff_gen_drv.c: ""
+            <virtual_root>/Middlewares/FatFs/syscall.c: ""
+            <virtual_root>/Middlewares/FatFs/ccsbcs.c: ""
