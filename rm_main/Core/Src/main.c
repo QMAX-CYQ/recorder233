@@ -23,7 +23,6 @@
 #include "dma.h"
 #include "fatfs.h"
 #include "fdcan.h"
-#include "iwdg.h"
 #include "rng.h"
 #include "sdmmc.h"
 #include "spi.h"
@@ -121,7 +120,6 @@ int main(void)
   MX_FDCAN2_Init();
   MX_TIM3_Init();
   MX_SPI1_Init();
-//  MX_IWDG1_Init();
   MX_USART3_UART_Init();
   MX_UART4_Init();
   MX_SDMMC1_SD_Init();
