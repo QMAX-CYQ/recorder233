@@ -1,5 +1,4 @@
 #include "calendar.h"
-#include "rtc.h"
 #include "stdio.h"
 #include "recorder_inter.h"
 #if USE_RTC

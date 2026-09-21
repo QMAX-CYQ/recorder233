@@ -22,7 +22,7 @@ void sys_printf(uint8_t level, const char *tag, const char *fmt, ...)
                    time.month, time.day, time.hour, time.min, time.second, log_tag);
     if (off < 0 || off >= (int)sizeof(buf))
         return;
-		#else
+	#else
 		off = snprintf(buf, sizeof(buf), "%s",log_tag);
     if (off < 0 || off >= (int)sizeof(buf))
         return;
@@ -32,7 +32,7 @@ void sys_printf(uint8_t level, const char *tag, const char *fmt, ...)
     va_start(args, fmt);
     vsnprintf(buf + off, sizeof(buf) - off, fmt, args);
     va_end(args);
-		len = strlen(buf);
+	len = strlen(buf);
     RecorderData(buf,len);
 }
 
