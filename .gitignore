@@ -1,0 +1,49 @@
+# =======================================================
+# 根目录 gitignore 配置
+# 路径从 wheel_leg_2026 下面开始写
+# =======================================================
+# ===== 编译产物 =====
+*.o
+*.d
+*.crf
+*.lst
+*.map
+*.dep
+*.axf
+*.elf
+*.hex
+*.bin
+*.iex
+
+# ===== MDK 临时文件 =====
+*.htm
+*.build_log.htm
+JLinkLog.txt
+JLinkSettings.ini
+
+# MDK 用户特定配置（保留共享工程文件 *.uvprojx, *.uvoptx）
+*.uvguix.*
+*.scvd
+*.uvguix.*
+
+# STM32CubeMX 不需要的备份
+*.bak
+*.orig
+*.ioc.bak
+
+# ===== IDE / 编辑器 =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.tmp
+
+# ===== 系统文件 =====
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# ===== 想保留但先注释的文件类型 =====
+# 如果需要保留 hex 发布版本，请取消下一行注释并删除上方 *.hex
+# !release/*.hex
