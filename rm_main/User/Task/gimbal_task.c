@@ -288,6 +288,8 @@ void gimbal_set_container(void)
 	container_set(TAG_GIMBAL_CTRL_DATA,&gimbal_set_gimbal_data_container,sizeof(gimbal_set_gimbal_data_container),CONTAINER_TYPE_STRUCT);	
 }
 
+uint8_t log_flag = 0;//置1时允许写入缓冲区，调试用
+
 void gimbal_task(void const *argu)
 {
     uint32_t thread_wake_time = osKernelSysTick();
@@ -306,9 +308,10 @@ void gimbal_task(void const *argu)
 		//help 拆头 + 了下面两个函数     不拆头就不加
 //		yaw_control();
 //		gimbal_data_output();
-				 for (int i = 0; i < 5; i++) {
+		if(log_flag)
+			for (int i = 0; i < 5; i++) {
 				DEBUG_INFO("ZGH IS THE MOST HANDSOME MAN IN THIS WORLD\r\n");
-		 }
+			}
 
         osDelayUntil(&thread_wake_time, 2);
     }

@@ -1317,6 +1317,9 @@ void chassis_set_container(void)
 // ==============================================================================
 // 最终任务主循环
 // ==============================================================================
+
+extern uint8_t log_flag;//置1时允许写入缓冲区，调试用
+
 void chassis_task(void const *argu)
 {
     uint32_t thread_wake_time = osKernelSysTick();
@@ -1346,9 +1349,10 @@ void chassis_task(void const *argu)
 		
 		//底盘待发送数据打包
 		chassis_set_container();
-		for (int i = 0; i < 5; i++) {
-			DEBUG_INFO("CYQ IS THE MOST HANDSOME MAN IN THIS WORLD\r\n");
-		}
+		if(log_flag)
+			for (int i = 0; i < 5; i++) {
+				DEBUG_INFO("CYQ IS THE MOST HANDSOME MAN IN THIS WORLD\r\n");
+			}
         status.task.chassis = 1;
         osDelayUntil(&thread_wake_time, 2);
     }

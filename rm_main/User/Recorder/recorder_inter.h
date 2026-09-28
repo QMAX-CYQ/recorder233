@@ -3,13 +3,13 @@
 
 #define USE_RECORDER 1  //总开关
 #define USE_RTC 0  //当设备支持RTC时
-#define TSKD_FRE 500 //单位毫秒
+#define TSKD_FRE 250 //单位毫秒
 
 #define KB 1024UL
 #define MB (1024UL * KB)
 
 #define PCFILE_BUFFER_SIZE (128UL * KB)
-#define PCFILE_WRITE_BUFFER_SIZE (4UL * KB)
+#define PCFILE_WRITE_BUFFER_SIZE (16UL * KB)
 #define PCFILE_SIZE (8UL * MB)
 #define FILE_MAX_NUM 3000
 #define FILE_NAME_MAX_LEN 32

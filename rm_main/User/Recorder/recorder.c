@@ -65,32 +65,45 @@ static uint8_t IsSdCardExist(void)
    return 0;
 }
 
-
+uint32_t start_time;
+uint32_t end_time;
+uint32_t cost_time;
+uint32_t max_time;
+uint32_t total_time;
+float total_Mb;
+float averange_time;
+float averange_speed;
+uint32_t averange_cnt;
+extern uint8_t log_flag;
 //同步缓存到文件
 static void SyncToFile(void)
 {
-   int write_count = WRITECOUNT_LIMIT;   //每次只写四次来均匀化写入
+	
+   int write_count = WRITECOUNT_LIMIT;
    UINT write_number = 0;
    FIL *temp = &pcfile_now;
    size_t used_size;
    uint8_t wrote = 0;
    FRESULT check_res = FR_DISK_ERR;
    FRESULT check_sync_res = FR_DISK_ERR;
-   
+   uint32_t current_write_size = 0;
+	
+   start_time = HAL_GetTick();
    while(write_count > 0)
    {
-		  used_size = lwrb_get_full(&pcfile_buffer_lwrb);
+	  used_size = lwrb_get_full(&pcfile_buffer_lwrb);
       if (used_size >= PCFILE_WRITE_BUFFER_SIZE)
       {
          lwrb_read(&pcfile_buffer_lwrb, pcfile_write_buffer, PCFILE_WRITE_BUFFER_SIZE);
 
          check_res = f_write(temp,pcfile_write_buffer,PCFILE_WRITE_BUFFER_SIZE,&write_number);
 		   if((check_res != FR_OK) || (write_number != PCFILE_WRITE_BUFFER_SIZE))
-       {
-          check_write_fail_count++;
-          break;
-       }
-       wrote = 1;
+		   {
+			  check_write_fail_count++;
+			  break;
+		   }
+		   current_write_size += write_number;
+		  wrote = 1;
       }
       else 
       {
@@ -111,9 +124,16 @@ static void SyncToFile(void)
       {
          check_write_fail_count++;
       }
+	  end_time = HAL_GetTick();
+	  cost_time = end_time - start_time;  
+	  max_time = (cost_time > max_time ? cost_time : max_time);
+	  total_time += cost_time;
+	  averange_cnt++;
+	  averange_time = (float)total_time / averange_cnt;
+	  total_Mb += (float)current_write_size / MB; 
+	  averange_speed = (float)total_Mb / total_time * 1000;//MB/S
    }
-	 
-
+   
 } 
 
 
@@ -259,65 +279,6 @@ static uint8_t ReadRecorderFileHeader(const char *file_name, recorder_file_heade
     return 1;
 }
 
-//static uint8_t ReadRecorderFileHeader(
-//    const char *file_name,
-//    recorder_file_header_t *header)
-//{
-//    FIL fp;
-//    FRESULT res;
-//    UINT br;
-
-//    char buf[160] = {0};
-
-//    if (file_name == NULL || header == NULL)
-//        return 0;
-
-//    res = f_open(&fp,
-//                 (const TCHAR *)file_name,
-//                 FA_OPEN_EXISTING | FA_READ);
-
-//    if (res != FR_OK)
-//        return 0;
-
-//    res = f_read(&fp, buf, sizeof(buf) - 1, &br);
-
-//    f_close(&fp);
-
-//    if (res != FR_OK || br == 0)
-//        return 0;
-
-//    buf[br] = '\0';
-
-//    unsigned long version;
-//    unsigned long index;
-//    unsigned long create_seq;
-
-//    int ret = sscanf(buf,
-//                     "RECORDER_MAGIC=DCER\r\n"
-//                     "VERSION=%lu\r\n"
-//                     "INDEX=%lu\r\n"
-//                     "CREATE_SEQ=%lu",
-//                     &version,
-//                     &index,
-//                     &create_seq);
-
-//    if (ret != 3)
-//        return 0;
-
-//    if (version != RECORDER_FILE_VERSION)
-//        return 0;
-
-//    if (index >= FILE_MAX_NUM)
-//        return 0;
-
-//    header->magic = RECORDER_FILE_MAGIC;
-//    header->version = version;
-//    header->index = index;
-//    header->create_seq = create_seq;
-
-//    return 1;
-//}
-
 static uint8_t WriteRecorderFileHeader(FIL *fp, uint32_t index)
 {
     FRESULT res;
@@ -352,49 +313,6 @@ static uint8_t WriteRecorderFileHeader(FIL *fp, uint32_t index)
 
     return 1;
 }
-
-//static uint8_t WriteRecorderFileHeader(FIL *fp, uint32_t index)
-//{
-//    FRESULT res;
-//    UINT bw;
-
-//    char header[128];
-
-//    g_create_seq++;
-
-//    int len = snprintf(header, sizeof(header),
-//                       "RECORDER_MAGIC=DCER\r\n"
-//                       "VERSION=%lu\r\n"
-//                       "INDEX=%lu\r\n"
-//                       "CREATE_SEQ=%lu\r\n"
-//                       "\r\n",
-//                       (unsigned long)RECORDER_FILE_VERSION,
-//                       (unsigned long)index,
-//                       (unsigned long)g_create_seq);
-
-//    if (len <= 0 || len >= sizeof(header))
-//    {
-//        g_create_seq--;
-//        return 0;
-//    }
-
-//    res = f_write(fp, header, len, &bw);
-
-//    if (res != FR_OK || bw != (UINT)len)
-//    {
-//        g_create_seq--;
-//        return 0;
-//    }
-
-//    if (!SaveCreateSeq(g_create_seq))
-//    {
-//        g_create_seq--;
-//        return 0;
-//    }
-
-//    return 1;
-//}
-
 
 //判断日志文件是否存在
 static uint8_t IsFileExist(uint32_t index)
@@ -826,12 +744,11 @@ void RecorderInit(void)
 }
 
 
- void tskd_Task(const void *argu)
+void tskd_Task(const void *argu)
 {
 
   RecorderInit();
   for(;;)  {
-
 	RecorderStateUpdate();
     osDelay(TSKD_FRE);
   }
