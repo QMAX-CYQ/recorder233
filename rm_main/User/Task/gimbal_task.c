@@ -308,10 +308,10 @@ void gimbal_task(void const *argu)
 		//help 拆头 + 了下面两个函数     不拆头就不加
 //		yaw_control();
 //		gimbal_data_output();
-		if(log_flag)
-			for (int i = 0; i < 5; i++) {
-				DEBUG_INFO("ZGH IS THE MOST HANDSOME MAN IN THIS WORLD\r\n");
-			}
+//		if(log_flag)
+//			for (int i = 0; i < 5; i++) {
+//				DEBUG_INFO("ZGH IS THE MOST HANDSOME MAN IN THIS WORLD\r\n");
+//			}
 
         osDelayUntil(&thread_wake_time, 2);
     }

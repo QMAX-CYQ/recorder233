@@ -1349,10 +1349,10 @@ void chassis_task(void const *argu)
 		
 		//底盘待发送数据打包
 		chassis_set_container();
-		if(log_flag)
-			for (int i = 0; i < 5; i++) {
-				DEBUG_INFO("CYQ IS THE MOST HANDSOME MAN IN THIS WORLD\r\n");
-			}
+//		if(log_flag)
+//			for (int i = 0; i < 5; i++) {
+//				DEBUG_INFO("CYQ IS THE MOST HANDSOME MAN IN THIS WORLD\r\n");
+//			}
         status.task.chassis = 1;
         osDelayUntil(&thread_wake_time, 2);
     }

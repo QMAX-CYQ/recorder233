@@ -24,10 +24,12 @@
 #include "shoot_task.h"
 #include "prot_ms53l0m.h"
 #include "drv_lk_motor.h"
+#include "log.h"
+#include "fdcan.h"
 
 #define row_debug 2 * 10
 #define DEBUG_TEXT_LOG_DIV       2u
-#define DEBUG_TEXT_LOG_SLOT_NUM  21u
+#define DEBUG_TEXT_LOG_SLOT_NUM  26u
 uint8_t debug_wave = 0;
 uint8_t debug_text_log_enable = 1;
 float test_hex = 1;
@@ -146,23 +148,98 @@ static const char* debug_sky_name(uint16_t state)
     }
 }
 
+static void debug_log_time(void)
+{
+	DEBUG_INFO("[time] : %u\r\n",HAL_GetTick());
+}
+
+static void debug_log_stress_data(void)
+{
+    static uint32_t sequence = 0;
+    uint32_t pattern;
+
+    sequence++;
+    pattern = sequence * 0x9E3779B9UL;
+    DEBUG_INFO("[stress] seq=%lu tick=%lu data=%08lX%08lX%08lX%08lX%08lX%08lX%08lX%08lX\r\n",
+               (unsigned long)sequence,
+               (unsigned long)HAL_GetTick(),
+               (unsigned long)pattern,
+               (unsigned long)~pattern,
+               (unsigned long)(pattern ^ 0xA5A55A5AUL),
+               (unsigned long)(pattern + 0x13579BDFUL),
+               (unsigned long)(pattern ^ 0x3C6EF372UL),
+               (unsigned long)(pattern + 0x2468ACE0UL),
+               (unsigned long)~(pattern ^ 0x5A5AA5A5UL),
+               (unsigned long)(pattern ^ sequence));
+}
+
+static void debug_log_fdcan_status(const char *name, FDCAN_HandleTypeDef *handle)
+{
+    FDCAN_GlobalTypeDef *regs;
+
+    if ((name == NULL) || (handle == NULL) || (handle->Instance == NULL))
+    {
+        return;
+    }
+
+    regs = handle->Instance;
+    DEBUG_INFO("[fdcan-%s] cccr=%08lX nbtp=%08lX dbtp=%08lX psr=%08lX ecr=%08lX ir=%08lX rx0s=%08lX rx1s=%08lX txfqs=%08lX\r\n",
+               name,
+               (unsigned long)regs->CCCR,
+               (unsigned long)regs->NBTP,
+               (unsigned long)regs->DBTP,
+               (unsigned long)regs->PSR,
+               (unsigned long)regs->ECR,
+               (unsigned long)regs->IR,
+               (unsigned long)regs->RXF0S,
+               (unsigned long)regs->RXF1S,
+               (unsigned long)regs->TXFQS);
+}
+
+static void debug_log_fault_status(void)
+{
+    DEBUG_INFO("[fault] cfsr=%08lX hfsr=%08lX dfsr=%08lX mmfar=%08lX bfar=%08lX afsr=%08lX shcsr=%08lX\r\n",
+               (unsigned long)SCB->CFSR,
+               (unsigned long)SCB->HFSR,
+               (unsigned long)SCB->DFSR,
+               (unsigned long)SCB->MMFAR,
+               (unsigned long)SCB->BFAR,
+               (unsigned long)SCB->AFSR,
+               (unsigned long)SCB->SHCSR);
+}
+
+static void debug_log_fdcan_irq_status(void)
+{
+    DEBUG_INFO("[nvic-fdcan] en=%u/%u/%u pend=%u/%u/%u active=%u/%u/%u pri=%u/%u/%u\r\n",
+               (unsigned int)NVIC_GetEnableIRQ(FDCAN1_IT0_IRQn),
+               (unsigned int)NVIC_GetEnableIRQ(FDCAN2_IT0_IRQn),
+               (unsigned int)NVIC_GetEnableIRQ(FDCAN3_IT0_IRQn),
+               (unsigned int)NVIC_GetPendingIRQ(FDCAN1_IT0_IRQn),
+               (unsigned int)NVIC_GetPendingIRQ(FDCAN2_IT0_IRQn),
+               (unsigned int)NVIC_GetPendingIRQ(FDCAN3_IT0_IRQn),
+               (unsigned int)NVIC_GetActive(FDCAN1_IT0_IRQn),
+               (unsigned int)NVIC_GetActive(FDCAN2_IT0_IRQn),
+               (unsigned int)NVIC_GetActive(FDCAN3_IT0_IRQn),
+               (unsigned int)NVIC_GetPriority(FDCAN1_IT0_IRQn),
+               (unsigned int)NVIC_GetPriority(FDCAN2_IT0_IRQn),
+               (unsigned int)NVIC_GetPriority(FDCAN3_IT0_IRQn));
+}
+
 static void debug_log_fsm_status(void)
 {
-    // log_printf("[fsm] top=%s chassis=%s gimbal=%s shoot=%s online=%u lock=%u ch1=%u\r\n",
-    //            debug_top_mode_name(g_robot_ctx.output.top_mode),
-    //            debug_chassis_name(g_robot_ctx.output.chassis),
-    //            debug_gimbal_name(g_robot_ctx.output.gimbal),
-    //            debug_shoot_name(g_robot_ctx.output.shoot),
-    //            g_robot_ctx.is_online,
-    //            lock_flag,
-    //            rc.ch1);
-
-    log_printf("wtf!\r\n");
+     DEBUG_INFO("[fsm] top=%s chassis=%s gimbal=%s shoot=%s online=%u lock=%u ch1=%u\r\n",
+                debug_top_mode_name(g_robot_ctx.output.top_mode),
+                debug_chassis_name(g_robot_ctx.output.chassis),
+                debug_gimbal_name(g_robot_ctx.output.gimbal),
+                debug_shoot_name(g_robot_ctx.output.shoot),
+                g_robot_ctx.is_online,
+                lock_flag,
+                rc.ch1);
 }
 
 static void debug_log_chassis_status(void)
 {
-    log_printf("[chassis-mode] ctrl=%u high=%u rec=%u rescue=%u rot=%u jump=%s sky=%s\r\n",
+    DEBUG_INFO("[chassis-mode] ctrl=%u high=%u rec=%u rescue=%u rot=%u jump=%s sky=%s\r\n",
                wlr.ctrl_mode,
                wlr.high_flag,
                chassis.recover_flag,
@@ -174,7 +251,7 @@ static void debug_log_chassis_status(void)
 
 static void debug_log_chassis_ref_status(void)
 {
-    log_printf("[chassis-ref] v=%.2f/%.2f wz=%.2f/%.2f yaw=%.2f/%.2f s=%.2f/%.2f\r\n",
+    DEBUG_INFO("[chassis-ref] v=%.2f/%.2f wz=%.2f/%.2f yaw=%.2f/%.2f s=%.2f/%.2f\r\n",
                wlr.v_ref,
                wlr.v_fdb,
                wlr.wz_ref,
@@ -187,7 +264,7 @@ static void debug_log_chassis_ref_status(void)
 
 static void debug_log_wheel_motor_status(void)
 {
-    log_printf("[motor-wheel] L(on=%u vel=%.2f tq=%.2f) R(on=%u vel=%.2f tq=%.2f)\r\n",
+    DEBUG_INFO("[motor-wheel] L(on=%u vel=%.2f tq=%.2f) R(on=%u vel=%.2f tq=%.2f)\r\n",
                driver_motor[0].online,
                driver_motor[0].velocity,
                driver_motor[0].torque,
@@ -198,7 +275,7 @@ static void debug_log_wheel_motor_status(void)
 
 static void debug_log_joint_motor_status(void)
 {
-    log_printf("[motor-joint-l] LB(on=%u s=%u p=%.2f v=%.2f tq=%.2f) LS(on=%u s=%u p=%.2f v=%.2f tq=%.2f)\r\n",
+    DEBUG_INFO("[motor-joint-l] LB(on=%u s=%u p=%.2f v=%.2f tq=%.2f) LS(on=%u s=%u p=%.2f v=%.2f tq=%.2f)\r\n",
                joint_motor[0].online, joint_motor[0].state, joint_motor[0].position, joint_motor[0].velocity,
                joint_motor[0].torque,
                joint_motor[1].online, joint_motor[1].state, joint_motor[1].position, joint_motor[1].velocity,
@@ -207,7 +284,7 @@ static void debug_log_joint_motor_status(void)
 
 static void debug_log_joint_motor_right_status(void)
 {
-    log_printf("[motor-joint-r] RB(on=%u s=%u p=%.2f v=%.2f tq=%.2f) RS(on=%u s=%u p=%.2f v=%.2f tq=%.2f)\r\n",
+    DEBUG_INFO("[motor-joint-r] RB(on=%u s=%u p=%.2f v=%.2f tq=%.2f) RS(on=%u s=%u p=%.2f v=%.2f tq=%.2f)\r\n",
                joint_motor[2].online, joint_motor[2].state, joint_motor[2].position, joint_motor[2].velocity,
                joint_motor[2].torque,
                joint_motor[3].online, joint_motor[3].state, joint_motor[3].position, joint_motor[3].velocity,
@@ -216,7 +293,7 @@ static void debug_log_joint_motor_right_status(void)
 
 static void debug_log_lqr_diff_status(void)
 {
-    log_printf("[lqr-diff-body] ds=%.3f dv=%.3f dyaw=%.3f dwz=%.3f dpit=%.3f ddpit=%.3f\r\n",
+    DEBUG_INFO("[lqr-diff-body] ds=%.3f dv=%.3f dyaw=%.3f dwz=%.3f dpit=%.3f ddpit=%.3f\r\n",
                lqr.X_diff[0],
                lqr.X_diff[1],
                lqr.X_diff[2],
@@ -227,7 +304,7 @@ static void debug_log_lqr_diff_status(void)
 
 static void debug_log_lqr_diff_leg_status(void)
 {
-    log_printf("[lqr-diff-leg] dql=%.3f ddql=%.3f dqr=%.3f ddqr=%.3f\r\n",
+    DEBUG_INFO("[lqr-diff-leg] dql=%.3f ddql=%.3f dqr=%.3f ddqr=%.3f\r\n",
                lqr.X_diff[4],
                lqr.X_diff[5],
                lqr.X_diff[6],
@@ -236,7 +313,7 @@ static void debug_log_lqr_diff_leg_status(void)
 
 static void debug_log_lqr_wheel_left_status(void)
 {
-    log_printf("[lqr-wheel-l] s=%.3f v=%.3f yaw=%.3f wz=%.3f ql=%.3f dql=%.3f qr=%.3f dqr=%.3f pit=%.3f dpit=%.3f sum=%.3f\r\n",
+    DEBUG_INFO("[lqr-wheel-l] s=%.3f v=%.3f yaw=%.3f wz=%.3f ql=%.3f dql=%.3f qr=%.3f dqr=%.3f pit=%.3f dpit=%.3f sum=%.3f\r\n",
                lqr.K[0] * lqr.X_diff[0],
                lqr.K[1] * lqr.X_diff[1],
                lqr.K[2] * lqr.X_diff[2],
@@ -252,7 +329,7 @@ static void debug_log_lqr_wheel_left_status(void)
 
 static void debug_log_lqr_wheel_right_status(void)
 {
-    log_printf("[lqr-wheel-r] s=%.3f v=%.3f yaw=%.3f wz=%.3f ql=%.3f dql=%.3f qr=%.3f dqr=%.3f pit=%.3f dpit=%.3f sum=%.3f\r\n",
+    DEBUG_INFO("[lqr-wheel-r] s=%.3f v=%.3f yaw=%.3f wz=%.3f ql=%.3f dql=%.3f qr=%.3f dqr=%.3f pit=%.3f dpit=%.3f sum=%.3f\r\n",
                lqr.K[10] * lqr.X_diff[0],
                lqr.K[11] * lqr.X_diff[1],
                lqr.K[12] * lqr.X_diff[2],
@@ -268,7 +345,7 @@ static void debug_log_lqr_wheel_right_status(void)
 
 static void debug_log_lqr_output_status(void)
 {
-    log_printf("[lqr-u] uw_l=%.3f uw_r=%.3f ul_l=%.3f ul_r=%.3f x8=%.3f x9=%.3f r1=%.3f f1=%.3f\r\n",
+    DEBUG_INFO("[lqr-u] uw_l=%.3f uw_r=%.3f ul_l=%.3f ul_r=%.3f x8=%.3f x9=%.3f r1=%.3f f1=%.3f\r\n",
                lqr.U_ref[0],
                lqr.U_ref[1],
                lqr.U_ref[2],
@@ -281,7 +358,7 @@ static void debug_log_lqr_output_status(void)
 
 static void debug_log_motor_cmd_status(void)
 {
-    log_printf("[motor-cmd-wheel] L=%.3f R=%.3f lqr=%.3f/%.3f side=%.3f/%.3f\r\n",
+    DEBUG_INFO("[motor-cmd-wheel] L=%.3f R=%.3f lqr=%.3f/%.3f side=%.3f/%.3f\r\n",
                driver_motor[0].t,
                driver_motor[1].t,
                lqr.U_ref[0],
@@ -292,7 +369,7 @@ static void debug_log_motor_cmd_status(void)
 
 static void debug_log_joint_cmd_status(void)
 {
-    log_printf("[motor-cmd-joint] LB=%.3f LS=%.3f RB=%.3f RS=%.3f sideL=%.3f/%.3f sideR=%.3f/%.3f\r\n",
+    DEBUG_INFO("[motor-cmd-joint] LB=%.3f LS=%.3f RB=%.3f RS=%.3f sideL=%.3f/%.3f sideR=%.3f/%.3f\r\n",
                joint_motor[0].t,
                joint_motor[1].t,
                joint_motor[2].t,
@@ -305,7 +382,7 @@ static void debug_log_joint_cmd_status(void)
 
 static void debug_log_leg_status(void)
 {
-    log_printf("[leg-l] q1=%.3f q2=%.3f w1=%.2f w2=%.2f Fy=%.2f T0=%.2f Tw=%.2f\r\n",
+    DEBUG_INFO("[leg-l] q1=%.3f q2=%.3f w1=%.2f w2=%.2f Fy=%.2f T0=%.2f Tw=%.2f\r\n",
                wlr.side[0].q1,
                wlr.side[0].q2,
                wlr.side[0].w1,
@@ -317,7 +394,7 @@ static void debug_log_leg_status(void)
 
 static void debug_log_leg_right_status(void)
 {
-    log_printf("[leg-r] q1=%.3f q2=%.3f w1=%.2f w2=%.2f Fy=%.2f T0=%.2f Tw=%.2f\r\n",
+    DEBUG_INFO("[leg-r] q1=%.3f q2=%.3f w1=%.2f w2=%.2f Fy=%.2f T0=%.2f Tw=%.2f\r\n",
                wlr.side[1].q1,
                wlr.side[1].q2,
                wlr.side[1].w1,
@@ -329,7 +406,7 @@ static void debug_log_leg_right_status(void)
 
 static void debug_log_power_status(void)
 {
-    log_printf("[power] cap=%u%% v=%.2f i=%.2f mode=%u p=%.1f buf=%.1f lim=%.1f scale=%.2f wheel=%.1f\r\n",
+    DEBUG_INFO("[power] cap=%u%% v=%.2f i=%.2f mode=%u p=%.1f buf=%.1f lim=%.1f scale=%.2f wheel=%.1f\r\n",
                supercap.volume_percent,
                supercap.volage,
                supercap.current,
@@ -343,7 +420,7 @@ static void debug_log_power_status(void)
 
 static void debug_log_stack_status(void)
 {
-    log_printf("[stack] dbg=%lu chassis=%lu comm=%lu ui=%lu words\r\n",
+    DEBUG_INFO("[stack] dbg=%lu chassis=%lu comm=%lu ui=%lu words\r\n",
                (unsigned long)uxTaskGetStackHighWaterMark((TaskHandle_t)DebugTaskHandle),
                (unsigned long)uxTaskGetStackHighWaterMark((TaskHandle_t)ChassisTaskHandle),
                (unsigned long)uxTaskGetStackHighWaterMark((TaskHandle_t)CommTaskHandle),
@@ -352,7 +429,7 @@ static void debug_log_stack_status(void)
 
 static void debug_log_fly_status(void)
 {
-    log_printf("[fly-cond] pit=%.3f roll=%.3f gnd=%.3f ro=%.2f hs=%.3f rot=%u high=%u rec=%u jump=%s sky=%s\r\n",
+    DEBUG_INFO("[fly-cond] pit=%.3f roll=%.3f gnd=%.3f ro=%.2f hs=%.3f rot=%u high=%u rec=%u jump=%s sky=%s\r\n",
                chassis_imu.pit,
                wlr.roll_fdb,
                tlm.gnd_roll_fdb,
@@ -367,7 +444,7 @@ static void debug_log_fly_status(void)
 
 static void debug_log_fly_len_status(void)
 {
-    log_printf("[fly-len] Lref/fdb=%.3f/%.3f Rref/fdb=%.3f/%.3f ldiff=%.3f gnd=%.3f\r\n",
+    DEBUG_INFO("[fly-len] Lref/fdb=%.3f/%.3f Rref/fdb=%.3f/%.3f ldiff=%.3f gnd=%.3f\r\n",
                tlm.l_ref[0],
                vmc[0].L_fdb,
                tlm.l_ref[1],
@@ -378,7 +455,7 @@ static void debug_log_fly_len_status(void)
 
 static void debug_log_fly_left_status(void)
 {
-    log_printf("[fly-l] f=%u a=%u c=%d fc=%u fn=%.1f/%.1f dist=%.2f/%.2f wy=%.2f ta=%.2f\r\n",
+    DEBUG_INFO("[fly-l] f=%u a=%u c=%d fc=%u fn=%.1f/%.1f dist=%.2f/%.2f wy=%.2f ta=%.2f\r\n",
                wlr.side[0].fly_flag,
                wlr.side[0].fly_adapt,
                wlr.side[0].fly_cnt,
@@ -393,7 +470,7 @@ static void debug_log_fly_left_status(void)
 
 static void debug_log_fly_right_status(void)
 {
-    log_printf("[fly-r] f=%u a=%u c=%d fc=%u fn=%.1f/%.1f dist=%.2f/%.2f wy=%.2f ta=%.2f\r\n",
+    DEBUG_INFO("[fly-r] f=%u a=%u c=%d fc=%u fn=%.1f/%.1f dist=%.2f/%.2f wy=%.2f ta=%.2f\r\n",
                wlr.side[1].fly_flag,
                wlr.side[1].fly_adapt,
                wlr.side[1].fly_cnt,
@@ -415,7 +492,7 @@ static void debug_log_shoot_delay_update(void)
     }
 
     last_shoot_delay_update_cnt = shoot_delay_update_cnt;
-    log_printf("[shoot-delay] raw=%.1f filter=%.1f speed=%.2f update=%lu overflow=%lu timeout=%lu\r\n",
+    DEBUG_INFO("[shoot-delay] raw=%.1f filter=%.1f speed=%.2f update=%lu overflow=%lu timeout=%lu\r\n",
                shoot_delay_time,
                vision_send_time,
                shoot_data.initial_speed,
@@ -434,7 +511,7 @@ static void debug_log_text_output(void)
 
     switch (log_slot) {
         case 0:
-            debug_log_fsm_status();
+            debug_log_time();
             break;
         case 1:
             debug_log_chassis_status();
@@ -483,6 +560,7 @@ static void debug_log_text_output(void)
             break;
         case 16:
 //            debug_log_stack_status();
+			debug_log_fsm_status();
             break;
         case 17:
             debug_log_fly_status();
@@ -493,12 +571,29 @@ static void debug_log_text_output(void)
         case 19:
             debug_log_fly_left_status();
             break;
-        default:
+        case 20:
             debug_log_fly_right_status();
+            break;
+        case 21:
+            debug_log_fdcan_status("1", &hfdcan1);
+            break;
+        case 22:
+            debug_log_fdcan_status("2", &hfdcan2);
+            break;
+        case 23:
+            debug_log_fdcan_status("3", &hfdcan3);
+            break;
+        case 24:
+            debug_log_fault_status();
+            break;
+        case 25:
+            debug_log_fdcan_irq_status();
+            break;
+        default:
             break;
     }
 
-   // log_slot = (log_slot + 1) % DEBUG_TEXT_LOG_SLOT_NUM;
+   log_slot = (log_slot + 1) % DEBUG_TEXT_LOG_SLOT_NUM;
 }
 
 void log_scope_data_pkg(void)
@@ -585,6 +680,7 @@ void log_scope_data_pkg(void)
 	}
 	}
 }
+extern uint8_t log_flag;
 /* 串口上位机数据发送任务 */
 void debug_task(void const* argument)
 {
@@ -595,10 +691,18 @@ void debug_task(void const* argument)
         thread_wake_time = osKernelSysTick();
       //  log_scope_data_output();
       //  debug_log_shoot_delay_update();
-        if (++text_log_div >= DEBUG_TEXT_LOG_DIV) {
-            text_log_div = 0;
-         //   debug_log_text_output();
+//        if (++text_log_div >= DEBUG_TEXT_LOG_DIV) {
+//            text_log_div = 0;
+//            debug_log_text_output();
+//        }
+        if (log_flag)
+        {
+            debug_log_text_output();
+            if (debug_text_log_enable && (debug_wave == 0))
+            {
+                debug_log_stress_data();
+            }
         }
-        osDelayUntil(&thread_wake_time, 2);
+        osDelayUntil(&thread_wake_time, 1);
     }
 }
