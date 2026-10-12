@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include  "recorder.h"
 #include  "debug_task.h"
+#include  "usb_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +49,7 @@
 /* USER CODE BEGIN Variables */
 osThreadId tskdTaskHandle;
 osThreadId DebugTaskHandle;
+osThreadId USBTaskHandle;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 
@@ -58,6 +60,7 @@ extern void tskd_Task(const void *argu);
 
 void StartDefaultTask(void const * argument);
 
+extern void MX_USB_HOST_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
@@ -114,6 +117,9 @@ void MX_FREERTOS_Init(void) {
   
   osThreadDef(DebugTask, debug_task, osPriorityNormal, 0, 512);
   DebugTaskHandle = osThreadCreate(osThread(DebugTask), NULL);
+  
+  osThreadDef(USBTask, usb_task, osPriorityNormal, 0, 512);
+  USBTaskHandle = osThreadCreate(osThread(USBTask), NULL);
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -127,6 +133,8 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
 {
+  /* init code for USB_HOST */
+  MX_USB_HOST_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   for(;;)

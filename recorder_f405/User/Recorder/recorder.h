@@ -36,6 +36,7 @@ typedef struct
   void (*init) (void);
 }recorder_t;
 void RecorderData(const char *buf,size_t len);
+uint8_t RecorderDataWrite(const char *buf, size_t len);
 FRESULT SdCardInit(void);
 
 

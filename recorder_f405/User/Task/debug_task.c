@@ -4,10 +4,13 @@
 #include "data_log.h"
 #include "stdint.h"
 #include "log.h"
+#include "usbh_cdc.h"
+#include "usb_host.h"
+#include "recorder.h"
 
 #define row_debug 2 * 10
-#define DEBUG_TEXT_LOG_DIV       2u
-#define DEBUG_TEXT_LOG_SLOT_NUM  26u
+#define DEBUG_TEXT_LOG_DIV 2u
+#define DEBUG_TEXT_LOG_SLOT_NUM 26u
 uint8_t debug_wave = 0;
 uint8_t debug_text_log_enable = 1;
 float test_hex = 1;
@@ -36,34 +39,40 @@ static void debug_log_text_output(void)
 {
     static uint8_t log_slot = 0;
 
-    if (!debug_text_log_enable || debug_wave != 0) {
+    if (!debug_text_log_enable || debug_wave != 0)
+    {
         return;
     }
 
-    switch (log_slot) {
-        default:
-            break;
+    switch (log_slot)
+    {
+    default:
+        break;
     }
 
-   log_slot = (log_slot + 1) % DEBUG_TEXT_LOG_SLOT_NUM;
+    log_slot = (log_slot + 1) % DEBUG_TEXT_LOG_SLOT_NUM;
 }
 
 uint8_t log_flag;
+
+
+
 /* 串口上位机数据发送任务 */
-void debug_task(void const* argument)
+void debug_task(void const *argument)
 {
     uint32_t thread_wake_time = osKernelSysTick();
     uint8_t text_log_div = 0;
-    for(;;)
+
+    for (;;)
     {
         thread_wake_time = osKernelSysTick();
         if (log_flag)
         {
-//            debug_log_text_output();
-//            if (debug_text_log_enable && (debug_wave == 0))
-//            {
-                debug_log_stress_data();
-//            }
+			debug_log_text_output();
+			if (debug_text_log_enable && (debug_wave == 0))
+			{
+				debug_log_stress_data();
+			}
         }
         osDelayUntil(&thread_wake_time, 1);
     }

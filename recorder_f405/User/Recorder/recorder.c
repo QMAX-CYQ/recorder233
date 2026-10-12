@@ -822,14 +822,22 @@ static void RecorderStateUpdate(void)
 
 void RecorderData(const char *buf, size_t len)
 {
+    (void)RecorderDataWrite(buf, len);
+}
+
+uint8_t RecorderDataWrite(const char *buf, size_t len)
+{
+    uint8_t written;
+
     if ((buf == NULL) || (len == 0U))
     {
-        return;
+        return 0U;
     }
 
     taskENTER_CRITICAL();
-    (void)lwrb_write_ex(&pcfile_buffer_lwrb, buf, (lwrb_sz_t)len, NULL, LWRB_FLAG_WRITE_ALL);
+    written = lwrb_write_ex(&pcfile_buffer_lwrb, buf, (lwrb_sz_t)len, NULL, LWRB_FLAG_WRITE_ALL);
     taskEXIT_CRITICAL();
+    return written;
 }
 
 void RecorderInit(void)

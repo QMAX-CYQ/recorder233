@@ -15,10 +15,5 @@
 #define FILE_NAME_MAX_LEN 32
 #define FREE_SIZE_LIMIT  (23552UL * 1024) //单位KB
 
-
-
-
-
-
 #endif
 
