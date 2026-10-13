@@ -1,0 +1,327 @@
+{
+  "files": [
+    {
+      "name": "Rb55.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "rows_starting_in_file": 64987,
+      "first": {
+        "offset": 0,
+        "stamp": "1013-22:36:49",
+        "tag": "motor",
+        "tick": 1350
+      },
+      "last": {
+        "offset": 8404956,
+        "stamp": "1013-22:47:39",
+        "tag": "task",
+        "tick": 651380
+      },
+      "starts_at_line_boundary": true,
+      "ends_at_line_boundary": false
+    },
+    {
+      "name": "Rb56.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "rows_starting_in_file": 64674,
+      "first": {
+        "offset": 8405089,
+        "stamp": "1013-22:47:39",
+        "tag": "fdcan",
+        "tick": 651390
+      },
+      "last": {
+        "offset": 16809977,
+        "stamp": "1013-22:58:26",
+        "tag": "motor",
+        "tick": 1298240
+      },
+      "starts_at_line_boundary": false,
+      "ends_at_line_boundary": false
+    },
+    {
+      "name": "Rb57.txt",
+      "bytes": 6472032,
+      "body_bytes": 6471680,
+      "blocks16k": 395.0,
+      "rows_starting_in_file": 49590,
+      "first": {
+        "offset": 16810104,
+        "stamp": "1013-22:58:26",
+        "tag": "sys",
+        "tick": 1298250
+      },
+      "last": {
+        "offset": 23281497,
+        "stamp": "1013-23:06:42",
+        "tag": "uart610",
+        "tick": 1794210
+      },
+      "starts_at_line_boundary": false,
+      "ends_at_line_boundary": false
+    }
+  ],
+  "rows": 179251,
+  "first": {
+    "offset": 0,
+    "stamp": "1013-22:36:49",
+    "tag": "motor",
+    "tick": 1350
+  },
+  "last": {
+    "offset": 23281497,
+    "stamp": "1013-23:06:42",
+    "tag": "uart610",
+    "tick": 1794210
+  },
+  "gaps": [
+    {
+      "before": 130120,
+      "after": 130140,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:38:58"
+    },
+    {
+      "before": 169240,
+      "after": 169260,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:39:37"
+    },
+    {
+      "before": 209760,
+      "after": 209780,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:40:18"
+    },
+    {
+      "before": 222470,
+      "after": 222490,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:40:30"
+    },
+    {
+      "before": 245260,
+      "after": 245290,
+      "delta": 30,
+      "missing": 2,
+      "stamp": "1013-22:40:53"
+    },
+    {
+      "before": 247700,
+      "after": 247720,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:40:56"
+    },
+    {
+      "before": 249130,
+      "after": 249160,
+      "delta": 30,
+      "missing": 2,
+      "stamp": "1013-22:40:57"
+    },
+    {
+      "before": 255390,
+      "after": 255420,
+      "delta": 30,
+      "missing": 2,
+      "stamp": "1013-22:41:03"
+    },
+    {
+      "before": 293340,
+      "after": 293360,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:41:41"
+    },
+    {
+      "before": 302210,
+      "after": 302230,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:41:50"
+    },
+    {
+      "before": 486900,
+      "after": 486920,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:44:55"
+    },
+    {
+      "before": 526220,
+      "after": 526240,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:45:34"
+    },
+    {
+      "before": 579250,
+      "after": 579270,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:46:27"
+    },
+    {
+      "before": 645200,
+      "after": 645220,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:47:33"
+    },
+    {
+      "before": 755200,
+      "after": 755220,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:49:23"
+    },
+    {
+      "before": 764060,
+      "after": 764080,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:49:32"
+    },
+    {
+      "before": 789440,
+      "after": 789460,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:49:57"
+    },
+    {
+      "before": 790660,
+      "after": 790680,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:49:59"
+    },
+    {
+      "before": 794510,
+      "after": 794530,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:50:02"
+    },
+    {
+      "before": 805810,
+      "after": 805830,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:50:14"
+    },
+    {
+      "before": 816100,
+      "after": 816120,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:50:24"
+    },
+    {
+      "before": 817330,
+      "after": 817350,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:50:25"
+    },
+    {
+      "before": 833670,
+      "after": 833690,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:50:42"
+    },
+    {
+      "before": 1043500,
+      "after": 1043520,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:54:11"
+    },
+    {
+      "before": 1048540,
+      "after": 1048560,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:54:16"
+    },
+    {
+      "before": 1187860,
+      "after": 1187880,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-22:56:36"
+    },
+    {
+      "before": 1394990,
+      "after": 1395010,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-23:00:03"
+    },
+    {
+      "before": 1447820,
+      "after": 1447840,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-23:00:56"
+    },
+    {
+      "before": 1516770,
+      "after": 1516790,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-23:02:05"
+    },
+    {
+      "before": 1534510,
+      "after": 1534530,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-23:02:22"
+    },
+    {
+      "before": 1672440,
+      "after": 1672460,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-23:04:40"
+    },
+    {
+      "before": 1680100,
+      "after": 1680120,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-23:04:48"
+    },
+    {
+      "before": 1690200,
+      "after": 1690220,
+      "delta": 20,
+      "missing": 1,
+      "stamp": "1013-23:04:58"
+    }
+  ],
+  "missing": 36,
+  "backward": [],
+  "duplicates": [],
+  "rtc_events": [],
+  "frame_anomalies": [
+    {
+      "offset": 23281589,
+      "text": "1013-23:06:42 INFO: [nvic] t=1794220 ICSR=00400000 b0=121BF800/00000000/000",
+      "crlf": false
+    }
+  ],
+  "body_bytes": 23281664,
+  "complete_frame_shape_errors": [],
+  "snapshot_tick_rows": 178858
+}

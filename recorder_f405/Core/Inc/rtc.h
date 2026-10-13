@@ -41,6 +41,13 @@ extern RTC_HandleTypeDef hrtc;
 void MX_RTC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+/* year is 2000-2099; the first valid call stores and sets the initial time. */
+HAL_StatusTypeDef RTC_SetInitialTime(uint16_t year,
+                                     uint8_t month,
+                                     uint8_t day,
+                                     uint8_t hour,
+                                     uint8_t minute,
+                                     uint8_t second);
 
 /* USER CODE END Prototypes */
 
@@ -49,4 +56,3 @@ void MX_RTC_Init(void);
 #endif
 
 #endif /* __RTC_H__ */
-

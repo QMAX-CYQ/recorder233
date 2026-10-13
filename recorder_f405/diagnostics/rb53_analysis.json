@@ -1,0 +1,212 @@
+{
+  "bytes": 5341536,
+  "body_bytes": 5341184,
+  "blocks16k": 326.0,
+  "complete_tick_rows": 41383,
+  "segments": [
+    {
+      "first": {
+        "line": 9,
+        "stamp": "1013-22:15:33",
+        "tag": "uart610",
+        "tick": 4050
+      },
+      "last": {
+        "line": 6528,
+        "stamp": "1013-22:16:39",
+        "tag": "uart610",
+        "tick": 69250
+      },
+      "rows": 6520,
+      "missing": 1,
+      "gaps": 1
+    },
+    {
+      "first": {
+        "line": 6529,
+        "stamp": "1013-22:20:27",
+        "tag": "uart123",
+        "tick": 440
+      },
+      "last": {
+        "line": 41391,
+        "stamp": "1013-22:26:16",
+        "tag": "motor",
+        "tick": 349200
+      },
+      "rows": 34863,
+      "missing": 14,
+      "gaps": 13
+    }
+  ],
+  "reset_boundaries": [
+    {
+      "before": {
+        "line": 6528,
+        "stamp": "1013-22:16:39",
+        "tag": "uart610",
+        "tick": 69250
+      },
+      "after": {
+        "line": 6529,
+        "stamp": "1013-22:20:27",
+        "tag": "uart123",
+        "tick": 440
+      },
+      "rtc_seconds": 228.0
+    }
+  ],
+  "rtc_events": [
+    {
+      "before": {
+        "line": 6528,
+        "stamp": "1013-22:16:39",
+        "tag": "uart610",
+        "tick": 69250
+      },
+      "after": {
+        "line": 6529,
+        "stamp": "1013-22:20:27",
+        "tag": "uart123",
+        "tick": 440
+      },
+      "rtc_seconds": 228.0
+    }
+  ],
+  "frame_anomalies": [
+    {
+      "line": 41392,
+      "text": "1013-22:26:16 INFO: [sys] tick=349210 ",
+      "ends_crlf": false
+    }
+  ],
+  "gaps": [
+    {
+      "line": 144,
+      "stamp": "1013-22:15:35",
+      "before": 5390,
+      "after": 5410,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 10996,
+      "stamp": "1013-22:21:12",
+      "before": 45100,
+      "after": 45120,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 13937,
+      "stamp": "1013-22:21:41",
+      "before": 74520,
+      "after": 74540,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 20647,
+      "stamp": "1013-22:22:48",
+      "before": 141630,
+      "after": 141650,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 21533,
+      "stamp": "1013-22:22:57",
+      "before": 150500,
+      "after": 150530,
+      "delta": 30,
+      "missing": 2,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 21916,
+      "stamp": "1013-22:23:01",
+      "before": 154350,
+      "after": 154370,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 22420,
+      "stamp": "1013-22:23:06",
+      "before": 159400,
+      "after": 159420,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 22681,
+      "stamp": "1013-22:23:09",
+      "before": 162020,
+      "after": 162040,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 24192,
+      "stamp": "1013-22:23:24",
+      "before": 177140,
+      "after": 177160,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 28505,
+      "stamp": "1013-22:24:07",
+      "before": 220280,
+      "after": 220300,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 33822,
+      "stamp": "1013-22:25:00",
+      "before": 273460,
+      "after": 273480,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 35073,
+      "stamp": "1013-22:25:13",
+      "before": 285980,
+      "after": 286000,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 39125,
+      "stamp": "1013-22:25:53",
+      "before": 326510,
+      "after": 326530,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    },
+    {
+      "line": 40395,
+      "stamp": "1013-22:26:06",
+      "before": 339220,
+      "after": 339240,
+      "delta": 20,
+      "missing": 1,
+      "rtc_seconds": 0.0
+    }
+  ],
+  "total_missing_inside_segments": 15
+}

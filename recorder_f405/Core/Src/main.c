@@ -30,6 +30,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "usart_comm.h"
+#include "control_def.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,6 +101,12 @@ int main(void)
   MX_FATFS_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
+  (void)RTC_SetInitialTime(RTC_INITIAL_YEAR,
+                           RTC_INITIAL_MONTH,
+                           RTC_INITIAL_DAY,
+                           RTC_INITIAL_HOUR,
+                           RTC_INITIAL_MINUTE,
+                           RTC_INITIAL_SECOND);
   usart_comm_init();
   HAL_Delay(300);
   /* USER CODE END 2 */

@@ -1,0 +1,212 @@
+--- D:\RM\rm_main_gimbal\User\Support\log.h
++++ D:\RM\recorder233\recorder_f405\diagnostics\sender\User\Support\log.h
+@@ -15,6 +15,19 @@
+     LOG_LEVEL_NUM
+ };
+ 
++/* Debugger-only counters; no extra log traffic. Counts reset on MCU reset. */
++typedef struct {
++    uint32_t attempts, accepted, busy, failed;
++    uint32_t attempted_bytes, accepted_bytes;
++    uint32_t format_error, format_truncated;
++    uint32_t last_status, last_failure_tick;
++    uint32_t failure_streak, max_failure_streak;
++    uint32_t failure_history_next;
++    uint32_t failure_tick[8], failure_status[8];
++    uint32_t last_accepted_tick, max_accepted_gap_ms;
++} log_tx_diag_t;
++extern volatile log_tx_diag_t g_log_tx_diag;
++
+ void sys_printf(uint8_t level, const char *tag, const char *fmt, ...);
+ 
+ #define DEBUG_ERROR(fmt,...)   sys_printf(LOG_ERROR_LEVEL,"ERROR: ", fmt, ##__VA_ARGS__);
+--- D:\RM\rm_main_gimbal\User\Support\log.c
++++ D:\RM\recorder233\recorder_f405\diagnostics\sender\User\Support\log.c
+@@ -4,6 +4,8 @@
+ #include "usbd_cdc_if.h"
+ #include "usb_device.h"
+ #include "cmsis_os.h"
++
++volatile log_tx_diag_t g_log_tx_diag;
+ 
+ void sys_printf(uint8_t level, const char *tag, const char *fmt, ...)
+ {
+@@ -12,6 +14,9 @@
+     size_t len;
+     char buf[256 + 32];
+     int off = 0;
++    int format_len;
++    uint8_t tx_status;
++    uint32_t tx_tick;
+     const char *log_tag = (tag != NULL) ? tag : "";
+ 
+ 	off = snprintf(buf, sizeof(buf), "%s",log_tag);
+@@ -20,12 +25,40 @@
+     
+     va_list args;
+     va_start(args, fmt);
+-    vsnprintf(buf + off, sizeof(buf) - off, fmt, args);
++    format_len = vsnprintf(buf + off, sizeof(buf) - off, fmt, args);
+     va_end(args);
+ 	len = strlen(buf);
+ 	
+-	if(CDC_Transmit_HS((uint8_t*)buf,len) != USBD_OK)
+-		osDelay(1);
++    /* Observe the original single send attempt; do not retry or change payload. */
++    if (format_len < 0) g_log_tx_diag.format_error++;
++    else if ((size_t)format_len >= sizeof(buf) - (size_t)off)
++        g_log_tx_diag.format_truncated++;
++    tx_tick = osKernelSysTick();
++    g_log_tx_diag.attempts++;
++    g_log_tx_diag.attempted_bytes += (uint32_t)len;
++    tx_status = CDC_Transmit_HS((uint8_t*)buf, len);
++    g_log_tx_diag.last_status = tx_status;
++    if (tx_status == USBD_OK) {
++        uint32_t gap = tx_tick - g_log_tx_diag.last_accepted_tick;
++        if ((g_log_tx_diag.accepted != 0U) && (gap > g_log_tx_diag.max_accepted_gap_ms))
++            g_log_tx_diag.max_accepted_gap_ms = gap;
++        g_log_tx_diag.accepted++;
++        g_log_tx_diag.accepted_bytes += (uint32_t)len;
++        g_log_tx_diag.last_accepted_tick = tx_tick;
++        g_log_tx_diag.failure_streak = 0U;
++    } else {
++        if (tx_status == USBD_BUSY) g_log_tx_diag.busy++;
++        else g_log_tx_diag.failed++;
++        uint32_t failure_slot = g_log_tx_diag.failure_history_next % 8U;
++        g_log_tx_diag.failure_tick[failure_slot] = tx_tick;
++        g_log_tx_diag.failure_status[failure_slot] = tx_status;
++        g_log_tx_diag.failure_history_next++;
++        g_log_tx_diag.last_failure_tick = tx_tick;
++        g_log_tx_diag.failure_streak++;
++        if (g_log_tx_diag.failure_streak > g_log_tx_diag.max_failure_streak)
++            g_log_tx_diag.max_failure_streak = g_log_tx_diag.failure_streak;
++        osDelay(1);
++    }
+ }
+ 
+ 
+--- D:\RM\rm_main_gimbal\User\Task\debug_task.h
++++ D:\RM\recorder233\recorder_f405\diagnostics\sender\User\Task\debug_task.h
+@@ -1,5 +1,12 @@
+ #ifndef __DEFBUG_TASK_H
+ #define __DEFBUG_TASK_H
++
++#include "stdint.h"
++typedef struct {
++    uint32_t loops, last_tick, max_gap_ms, late_count, catchup_count;
++    uint32_t group_count[8];
++} debug_task_diag_t;
++extern volatile debug_task_diag_t g_debug_task_diag;
+ 
+ void debug_task(void const* argument);
+ 
+--- D:\RM\rm_main_gimbal\User\Task\debug_task.c
++++ D:\RM\recorder233\recorder_f405\diagnostics\sender\User\Task\debug_task.c
+@@ -174,6 +174,8 @@
+ //               (unsigned long)cdc_tx_start_error_count);
+ //}
+ 
++volatile debug_task_diag_t g_debug_task_diag;
++
+ void debug_task(void const *argument)
+ {
+     uint32_t wake_time = osKernelSysTick();
+@@ -184,6 +186,16 @@
+     for (;;)
+     {
+         uint32_t tick = osKernelSysTick();
++
++        if (g_debug_task_diag.loops != 0U) {
++            uint32_t gap = tick - g_debug_task_diag.last_tick;
++            if (gap > g_debug_task_diag.max_gap_ms) g_debug_task_diag.max_gap_ms = gap;
++            if (gap > 10U) g_debug_task_diag.late_count++;
++            if (gap < 10U) g_debug_task_diag.catchup_count++;
++        }
++        g_debug_task_diag.loops++;
++        g_debug_task_diag.last_tick = tick;
++        g_debug_task_diag.group_count[log_group]++;
+ 
+         switch (log_group)
+         {
+--- D:\RM\rm_main_gimbal\USB_DEVICE\App\usbd_cdc_if.h
++++ D:\RM\recorder233\recorder_f405\diagnostics\sender\USB_DEVICE\App\usbd_cdc_if.h
+@@ -101,6 +101,13 @@
+ extern volatile uint32_t cdc_tx_start_error_count;
+ 
+ /* USER CODE BEGIN EXPORTED_VARIABLES */
++/* All CDC callers (including vision), not just debug logs. */
++typedef struct {
++    uint32_t attempts, accepted, busy, invalid, start_failed;
++    uint32_t accepted_bytes, completed, completed_bytes;
++    uint32_t init_count, deinit_count;
++} cdc_tx_diag_t;
++extern volatile cdc_tx_diag_t g_cdc_tx_diag;
+ 
+ /* USER CODE END EXPORTED_VARIABLES */
+ 
+--- D:\RM\rm_main_gimbal\USB_DEVICE\App\usbd_cdc_if.c
++++ D:\RM\recorder233\recorder_f405\diagnostics\sender\USB_DEVICE\App\usbd_cdc_if.c
+@@ -32,6 +32,10 @@
+ 
+ /* USER CODE BEGIN PV */
+ /* Private variables ---------------------------------------------------------*/
++volatile cdc_tx_diag_t g_cdc_tx_diag;
++/* Multiple task callers: update only diagnostic counters atomically. */
++#define CDC_DIAG_ADD(field, value) \
++  ((void)__atomic_fetch_add(&g_cdc_tx_diag.field, (uint32_t)(value), __ATOMIC_RELAXED))
+ 
+ /* USER CODE END PV */
+ 
+@@ -156,6 +160,7 @@
+ static int8_t CDC_Init_HS(void)
+ {
+   /* USER CODE BEGIN 8 */
++  CDC_DIAG_ADD(init_count, 1U);
+   /* Set Application Buffers */
+   USBD_CDC_SetTxBuffer(&hUsbDeviceHS, UserTxBufferHS, 0);
+   USBD_CDC_SetRxBuffer(&hUsbDeviceHS, UserRxBufferHS);
+@@ -171,6 +176,7 @@
+ static int8_t CDC_DeInit_HS(void)
+ {
+   /* USER CODE BEGIN 9 */
++  CDC_DIAG_ADD(deinit_count, 1U);
+   return (USBD_OK);
+   /* USER CODE END 9 */
+ }
+@@ -286,11 +292,14 @@
+ {
+   uint8_t result = USBD_OK;
+   /* USER CODE BEGIN 12 */
++  CDC_DIAG_ADD(attempts, 1U);
+   USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceHS.pClassData;
+   if ((hcdc == NULL) || (Buf == NULL) || (Len > APP_TX_DATA_SIZE)){
++    CDC_DIAG_ADD(invalid, 1U);
+     return USBD_FAIL;
+   }
+   if (hcdc->TxState != 0){
++    CDC_DIAG_ADD(busy, 1U);
+     return USBD_BUSY;
+   }
+   if (Buf != UserTxBufferHS){
+@@ -299,6 +308,12 @@
+ //  CDC_CleanDCache(UserTxBufferHS, Len);
+   USBD_CDC_SetTxBuffer(&hUsbDeviceHS, UserTxBufferHS, Len);
+   result = USBD_CDC_TransmitPacket(&hUsbDeviceHS);
++  if (result == USBD_OK) {
++    CDC_DIAG_ADD(accepted, 1U);
++    CDC_DIAG_ADD(accepted_bytes, Len);
++  } else {
++    CDC_DIAG_ADD(start_failed, 1U);
++  }
+   /* USER CODE END 12 */
+   return result;
+ }
+@@ -319,6 +334,8 @@
+ {
+   uint8_t result = USBD_OK;
+   /* USER CODE BEGIN 14 */
++  CDC_DIAG_ADD(completed, 1U);
++  if (Len != NULL) CDC_DIAG_ADD(completed_bytes, *Len);
+   UNUSED(Buf);
+   UNUSED(Len);
+   UNUSED(epnum);

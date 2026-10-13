@@ -1,0 +1,462 @@
+{
+  "files": [
+    {
+      "name": "Rb50.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "prefix_rows": 64859,
+      "first": {
+        "line": 9,
+        "stamp": "1013-21:55:22",
+        "tag": "nvic",
+        "tick": 1100
+      },
+      "last": {
+        "line": 64867,
+        "stamp": "1013-22:06:11",
+        "tag": "motor",
+        "tick": 649840
+      },
+      "edge_or_shape_anomalies": [
+        {
+          "line": 64867,
+          "text": "1013-22:06:11 INFO: [motor] tick=649840 djiL=0/0/0 djiR=0/0/0 pit=0/0 p100=0 v100=0 t100",
+          "ends_crlf": false
+        }
+      ],
+      "gaps": [
+        {
+          "file": "Rb50.txt",
+          "line": 911,
+          "stamp": "1013-21:55:31",
+          "before": 10110,
+          "after": 10130,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 28817,
+          "stamp": "1013-22:00:10",
+          "before": 289180,
+          "after": 289210,
+          "delta": 30,
+          "missing": 2
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 29080,
+          "stamp": "1013-22:00:13",
+          "before": 291830,
+          "after": 291850,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 29201,
+          "stamp": "1013-22:00:14",
+          "before": 293050,
+          "after": 293070,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 29584,
+          "stamp": "1013-22:00:18",
+          "before": 296890,
+          "after": 296910,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 30089,
+          "stamp": "1013-22:00:23",
+          "before": 301950,
+          "after": 301970,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 31722,
+          "stamp": "1013-22:00:39",
+          "before": 318290,
+          "after": 318310,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 32490,
+          "stamp": "1013-22:00:47",
+          "before": 325980,
+          "after": 326000,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 32751,
+          "stamp": "1013-22:00:49",
+          "before": 328600,
+          "after": 328620,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 34506,
+          "stamp": "1013-22:01:07",
+          "before": 346160,
+          "after": 346180,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 35776,
+          "stamp": "1013-22:01:20",
+          "before": 358870,
+          "after": 358890,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 41099,
+          "stamp": "1013-22:02:13",
+          "before": 412110,
+          "after": 412140,
+          "delta": 30,
+          "missing": 2
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 55777,
+          "stamp": "1013-22:04:40",
+          "before": 558910,
+          "after": 558930,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb50.txt",
+          "line": 63864,
+          "stamp": "1013-22:06:01",
+          "before": 639790,
+          "after": 639810,
+          "delta": 20,
+          "missing": 1
+        }
+      ]
+    },
+    {
+      "name": "Rb51.txt",
+      "bytes": 1737056,
+      "body_bytes": 1736704,
+      "prefix_rows": 13410,
+      "first": {
+        "line": 10,
+        "stamp": "1013-22:06:11",
+        "tag": "sys",
+        "tick": 649850
+      },
+      "last": {
+        "line": 13419,
+        "stamp": "1013-22:08:26",
+        "tag": "uart610",
+        "tick": 784610
+      },
+      "edge_or_shape_anomalies": [
+        {
+          "line": 9,
+          "text": "=0 trig=0/0 joint0=0/0 yaw100=-778/0",
+          "ends_crlf": true
+        },
+        {
+          "line": 13420,
+          "text": "1013-22:08:",
+          "ends_crlf": false
+        }
+      ],
+      "gaps": [
+        {
+          "file": "Rb51.txt",
+          "line": 518,
+          "stamp": "1013-22:06:16",
+          "before": 654920,
+          "after": 654940,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb51.txt",
+          "line": 4061,
+          "stamp": "1013-22:06:51",
+          "before": 690360,
+          "after": 690380,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb51.txt",
+          "line": 11652,
+          "stamp": "1013-22:08:07",
+          "before": 766280,
+          "after": 766300,
+          "delta": 20,
+          "missing": 1
+        },
+        {
+          "file": "Rb51.txt",
+          "line": 13056,
+          "stamp": "1013-22:08:23",
+          "before": 780330,
+          "after": 780980,
+          "delta": 650,
+          "missing": 64
+        }
+      ]
+    }
+  ],
+  "combined": {
+    "complete_rows": 78269,
+    "parsed_tick_rows": 78269,
+    "first_tick": 1100,
+    "last_tick": 784610,
+    "span_seconds": 783.51,
+    "expected_rows": 78352,
+    "missing_rows": 83,
+    "gap_events": 18,
+    "gap_histogram": {
+      "20": 15,
+      "30": 2,
+      "650": 1
+    },
+    "frame_anomalies": [
+      {
+        "joined_line": 78270,
+        "text": "1013-22:08:",
+        "ends_crlf": false
+      }
+    ],
+    "clock_anomalies": [],
+    "phase_anomalies": [],
+    "gaps": [
+      {
+        "stamp": "1013-21:55:31",
+        "before": 10110,
+        "after": 10130,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:00:10",
+        "before": 289180,
+        "after": 289210,
+        "delta": 30,
+        "missing": 2
+      },
+      {
+        "stamp": "1013-22:00:13",
+        "before": 291830,
+        "after": 291850,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:00:14",
+        "before": 293050,
+        "after": 293070,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:00:18",
+        "before": 296890,
+        "after": 296910,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:00:23",
+        "before": 301950,
+        "after": 301970,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:00:39",
+        "before": 318290,
+        "after": 318310,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:00:47",
+        "before": 325980,
+        "after": 326000,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:00:49",
+        "before": 328600,
+        "after": 328620,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:01:07",
+        "before": 346160,
+        "after": 346180,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:01:20",
+        "before": 358870,
+        "after": 358890,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:02:13",
+        "before": 412110,
+        "after": 412140,
+        "delta": 30,
+        "missing": 2
+      },
+      {
+        "stamp": "1013-22:04:40",
+        "before": 558910,
+        "after": 558930,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:06:01",
+        "before": 639790,
+        "after": 639810,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:06:16",
+        "before": 654920,
+        "after": 654940,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:06:51",
+        "before": 690360,
+        "after": 690380,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:08:07",
+        "before": 766280,
+        "after": 766300,
+        "delta": 20,
+        "missing": 1
+      },
+      {
+        "stamp": "1013-22:08:23",
+        "before": 780330,
+        "after": 780980,
+        "delta": 650,
+        "missing": 64
+      }
+    ],
+    "boundary_reconstructed_ok": true,
+    "boundary_line": "1013-22:06:11 INFO: [motor] tick=649840 djiL=0/0/0 djiR=0/0/0 pit=0/0 p100=0 v100=0 t100=0 trig=0/0 joint0=0/0 yaw100=-778/0",
+    "known_failure_matches": {
+      "10120": [
+        {
+          "stamp": "1013-21:55:31",
+          "before": 10110,
+          "after": 10130,
+          "delta": 20,
+          "missing": 1
+        }
+      ],
+      "301960": [
+        {
+          "stamp": "1013-22:00:23",
+          "before": 301950,
+          "after": 301970,
+          "delta": 20,
+          "missing": 1
+        }
+      ],
+      "318300": [
+        {
+          "stamp": "1013-22:00:39",
+          "before": 318290,
+          "after": 318310,
+          "delta": 20,
+          "missing": 1
+        }
+      ],
+      "325990": [
+        {
+          "stamp": "1013-22:00:47",
+          "before": 325980,
+          "after": 326000,
+          "delta": 20,
+          "missing": 1
+        }
+      ],
+      "328610": [
+        {
+          "stamp": "1013-22:00:49",
+          "before": 328600,
+          "after": 328620,
+          "delta": 20,
+          "missing": 1
+        }
+      ],
+      "346170": [
+        {
+          "stamp": "1013-22:01:07",
+          "before": 346160,
+          "after": 346180,
+          "delta": 20,
+          "missing": 1
+        }
+      ],
+      "358880": [
+        {
+          "stamp": "1013-22:01:20",
+          "before": 358870,
+          "after": 358890,
+          "delta": 20,
+          "missing": 1
+        }
+      ],
+      "412120": [
+        {
+          "stamp": "1013-22:02:13",
+          "before": 412110,
+          "after": 412140,
+          "delta": 30,
+          "missing": 2
+        }
+      ],
+      "412130": [
+        {
+          "stamp": "1013-22:02:13",
+          "before": 412110,
+          "after": 412140,
+          "delta": 30,
+          "missing": 2
+        }
+      ]
+    }
+  }
+}

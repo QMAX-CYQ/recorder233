@@ -1,0 +1,32 @@
+[
+  {
+    "source": "D:\\RM\\rm_main_gimbal\\User\\Support\\log.h",
+    "staged": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\sender\\User\\Support\\log.h",
+    "sha256": "249e70494ada954f7bfaa3cea1c08015130b8bd3355a51ad90b6fe368a551d8c"
+  },
+  {
+    "source": "D:\\RM\\rm_main_gimbal\\User\\Support\\log.c",
+    "staged": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\sender\\User\\Support\\log.c",
+    "sha256": "cc54673b846032ec3c80a47f974969c947a6fa0866c42323efbf4999d7350ecd"
+  },
+  {
+    "source": "D:\\RM\\rm_main_gimbal\\User\\Task\\debug_task.h",
+    "staged": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\sender\\User\\Task\\debug_task.h",
+    "sha256": "5c3c3e48a78561f9b8a8cca159010379512c0194fd7a5e2b93d63d31234aa559"
+  },
+  {
+    "source": "D:\\RM\\rm_main_gimbal\\User\\Task\\debug_task.c",
+    "staged": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\sender\\User\\Task\\debug_task.c",
+    "sha256": "0967dd50de69b21ae938a8045a478302e33a305fffe4ba666441f9872fcc2e51"
+  },
+  {
+    "source": "D:\\RM\\rm_main_gimbal\\USB_DEVICE\\App\\usbd_cdc_if.h",
+    "staged": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\sender\\USB_DEVICE\\App\\usbd_cdc_if.h",
+    "sha256": "5f4aa4538c62d4e9c5fa7bd093a3bd4f2cb93d7f708da2f8ca8485a5413caf5b"
+  },
+  {
+    "source": "D:\\RM\\rm_main_gimbal\\USB_DEVICE\\App\\usbd_cdc_if.c",
+    "staged": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\sender\\USB_DEVICE\\App\\usbd_cdc_if.c",
+    "sha256": "1d600386a80f7909e773bc77dc7d42a81f8884ad2fb2d4eba98fb88ad286c1ec"
+  }
+]

@@ -7,6 +7,8 @@
 #include "recorder_inter.h"
 #include "sdio.h"
 
+volatile recorder_diag_t g_recorder_diag;
+
 #if USE_RECORDER
 
 #define FILE_NAME "Rb"                  // 日志文件前缀
@@ -42,6 +44,7 @@ FRESULT SdCardInit(void)
 {
     isSdCardInit = f_mount(&SDFatFS, (TCHAR const *)SDPath, 1); // SD卡挂载
 
+    g_recorder_diag.mount_result = (uint32_t)isSdCardInit;
     return isSdCardInit;
 }
 
@@ -53,6 +56,7 @@ static uint8_t IsSdCardExist(void)
         return 1;
     }
 
+    g_recorder_diag.card_not_ready++;
     if (++sd_not_ready_count >= 3)
     {
         f_close(&pcfile_now);
@@ -83,6 +87,8 @@ static void SyncToFile(void)
     FRESULT check_res = FR_DISK_ERR;
     FRESULT check_sync_res = FR_DISK_ERR;
     uint32_t current_write_size = 0;
+    uint32_t diagnostic_start;
+    uint32_t diagnostic_elapsed;
 
     start_time = HAL_GetTick();
 	uint32_t wait_time = start_time + 1000;//最多写1s
@@ -96,7 +102,26 @@ static void SyncToFile(void)
         {
             lwrb_read(&pcfile_buffer_lwrb, pcfile_write_buffer, PCFILE_WRITE_BUFFER_SIZE);
 
+            g_recorder_diag.dequeued_bytes += PCFILE_WRITE_BUFFER_SIZE;
+            g_recorder_diag.write_attempts++;
+            diagnostic_start = HAL_GetTick();
+            g_recorder_diag.last_write_tick = diagnostic_start;
+            g_recorder_diag.write_active = 1U;
             check_res = f_write(temp, pcfile_write_buffer, PCFILE_WRITE_BUFFER_SIZE, &write_number);
+            g_recorder_diag.write_active = 0U;
+            diagnostic_elapsed = HAL_GetTick() - diagnostic_start;
+            g_recorder_diag.last_write_ms = diagnostic_elapsed;
+            if (diagnostic_elapsed > g_recorder_diag.max_write_ms)
+                g_recorder_diag.max_write_ms = diagnostic_elapsed;
+            g_recorder_diag.last_write_result = (uint32_t)check_res;
+            g_recorder_diag.last_write_bytes = write_number;
+            g_recorder_diag.write_reported_bytes += write_number;
+            if (check_res != FR_OK) g_recorder_diag.write_error++;
+            if (write_number != PCFILE_WRITE_BUFFER_SIZE) g_recorder_diag.write_short++;
+            if (write_number < PCFILE_WRITE_BUFFER_SIZE)
+                g_recorder_diag.unconfirmed_bytes += PCFILE_WRITE_BUFFER_SIZE - write_number;
+            if ((check_res != FR_OK) || (write_number != PCFILE_WRITE_BUFFER_SIZE))
+                g_recorder_diag.last_write_error_tick = HAL_GetTick();
             if ((check_res != FR_OK) || (write_number != PCFILE_WRITE_BUFFER_SIZE))
             {
                 check_write_fail_count++;
@@ -113,7 +138,15 @@ static void SyncToFile(void)
 
     if (wrote)
     {
+        g_recorder_diag.sync_attempts++;
+        diagnostic_start = HAL_GetTick();
+        g_recorder_diag.last_sync_tick = diagnostic_start;
         check_sync_res = f_sync(temp);
+        diagnostic_elapsed = HAL_GetTick() - diagnostic_start;
+        if (diagnostic_elapsed > g_recorder_diag.max_sync_ms)
+            g_recorder_diag.max_sync_ms = diagnostic_elapsed;
+        g_recorder_diag.last_sync_result = (uint32_t)check_sync_res;
+        if (check_sync_res != FR_OK) g_recorder_diag.sync_error++;
         if (check_sync_res == FR_OK)
         {
             check_write_ok_count++;
@@ -835,7 +868,13 @@ uint8_t RecorderDataWrite(const char *buf, size_t len)
     }
 
     taskENTER_CRITICAL();
+    g_recorder_diag.ring_attempts++;
     written = lwrb_write_ex(&pcfile_buffer_lwrb, buf, (lwrb_sz_t)len, NULL, LWRB_FLAG_WRITE_ALL);
+    if (written) g_recorder_diag.ring_accepted_bytes += (uint32_t)len;
+    else {
+        g_recorder_diag.ring_rejected++;
+        g_recorder_diag.ring_rejected_bytes += (uint32_t)len;
+    }
     taskEXIT_CRITICAL();
     return written;
 }
