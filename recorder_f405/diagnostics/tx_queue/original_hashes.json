@@ -1,6 +1,0 @@
-{
-  "USB_DEVICE/App/usbd_cdc_if.c": "fc12c7ca433562cd413e66c2e28082420c6033147c9d7f36523b75e927d3d23a",
-  "USB_DEVICE/App/usbd_cdc_if.h": "1f889202277be436f58fe3aa2a2704adbde81e470f766bf54509bbaf8e3e1ade",
-  "User/Task/debug_task.c": "55ff91e61dea445b7d92c81fe8f87494008f3c1d220d5bf8e41ab2702110628b",
-  "User/Support/log.c": "05dda73b456074993fc89e83c38a3aaeae75a1ed27f0f4c3e891fb8caa31c6c7"
-}

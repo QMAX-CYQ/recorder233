@@ -1,5 +1,7 @@
 # 日志链路诊断
 
+> 资料归档更新：发送端脚本、暂存代码、源码备份和编译记录已移至 `D:/RM/rm_main_gimbal/diagnostics`。本目录保留日志分析及 F405 接收端资料。下面的初期诊断说明属于历史记录；发送队列的当前说明见主板目录 `diagnostics/README.md` 和 `diagnostics/tx_queue/README.md`。
+
 本次只增加 RAM 统计、时长测量和接收侧 tick 观察。没有新增线上日志、改变日志格式、任务周期、优先级、发送重试、USB 队列、缓存消费方式或 SD 写入策略。统计会带来少量 CPU/RAM 开销。
 
 主板 Keil Watch 添加 `g_debug_task_diag`、`g_log_tx_diag`、`g_cdc_tx_diag`；F405 添加 `g_usb_rx_diag`、`g_recorder_diag`。在连接稳定后记录开始快照，运行 30～60 秒后记录结束快照，用计数增量比较。同一窗口内同时保存日志文件。尽量使用运行中观察，停机断点会影响 USB 时序。

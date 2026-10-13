@@ -4,7 +4,8 @@ import hashlib, json, difflib
 
 ROOT = Path(__file__).resolve().parents[1]
 SENDER = Path('D:/RM/rm_main_gimbal')
-STAGE = ROOT / 'diagnostics' / 'sender'
+SENDER_DIAGNOSTICS = SENDER / 'diagnostics'
+STAGE = SENDER_DIAGNOSTICS / 'sender'
 manifest = []
 
 def edit(root, relative, replacements, staged=False):
@@ -23,7 +24,7 @@ def edit(root, relative, replacements, staged=False):
         dest.write_bytes(result)
         manifest.append({'source': str(path), 'staged': str(dest),
                          'sha256': hashlib.sha256(original).hexdigest()})
-        with (ROOT / 'diagnostics' / 'sender.patch').open('a', encoding='utf8') as out:
+        with (SENDER_DIAGNOSTICS / 'sender.patch').open('a', encoding='utf8') as out:
             out.writelines(difflib.unified_diff(before.splitlines(True), text.splitlines(True),
                                                 fromfile=str(path), tofile=str(dest)))
     else:
@@ -32,7 +33,7 @@ def edit(root, relative, replacements, staged=False):
         backup.write_bytes(original)
         path.write_bytes(result)
 
-(ROOT / 'diagnostics' / 'sender.patch').write_text('', encoding='utf8')
+(SENDER_DIAGNOSTICS / 'sender.patch').write_text('', encoding='utf8')
 edit(SENDER, 'User/Support/log.h', [('void sys_printf', '''/* Debugger-only counters; no extra log traffic. Counts reset on MCU reset. */
 typedef struct {
     uint32_t attempts, accepted, busy, failed;
@@ -124,7 +125,7 @@ edit(SENDER, 'USB_DEVICE/App/usbd_cdc_if.c', [
     ('  /* USER CODE BEGIN 14 */', '''  /* USER CODE BEGIN 14 */
   g_cdc_tx_diag.completed++;
   if (Len != NULL) g_cdc_tx_diag.completed_bytes += *Len;''')], True)
-(ROOT / 'diagnostics' / 'sender_manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf8')
+(SENDER_DIAGNOSTICS / 'sender_manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf8')
 
 edit(ROOT, 'User/Recorder/recorder.h', [('void RecorderData(', '''/* Log-data writes only; excludes file headers and index metadata. */
 typedef struct {
