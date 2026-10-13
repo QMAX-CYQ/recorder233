@@ -25,7 +25,7 @@
 #include "usbh_cdc.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "control_def.h"
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN PV */
@@ -68,7 +68,7 @@ static void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id);
 void MX_USB_HOST_Init(void)
 {
   /* USER CODE BEGIN USB_HOST_Init_PreTreatment */
-
+#ifdef USB_COMM
   /* USER CODE END USB_HOST_Init_PreTreatment */
 
   /* Init host Library, add supported class and start the library. */
@@ -85,7 +85,7 @@ void MX_USB_HOST_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USB_HOST_Init_PostTreatment */
-
+#endif
   /* USER CODE END USB_HOST_Init_PostTreatment */
 }
 

@@ -840,6 +840,20 @@ uint8_t RecorderDataWrite(const char *buf, size_t len)
     return written;
 }
 
+uint8_t RecorderDataGetBufferStatus(size_t *free_size)
+{
+    uint8_t ready;
+
+    taskENTER_CRITICAL();
+    ready = lwrb_is_ready(&pcfile_buffer_lwrb);
+    if (free_size != NULL)
+    {
+        *free_size = (size_t)lwrb_get_free(&pcfile_buffer_lwrb);
+    }
+    taskEXIT_CRITICAL();
+    return ready;
+}
+
 void RecorderInit(void)
 {
     lwrb_init(&pcfile_buffer_lwrb, pcfile_buffer, PCFILE_BUFFER_SIZE);

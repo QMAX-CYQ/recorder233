@@ -32,7 +32,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#include "control_def.h"
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -115,11 +115,15 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(tskdTask, tskd_Task, osPriorityHigh, 0, 2560);
   tskdTaskHandle = osThreadCreate(osThread(tskdTask), NULL);
   
+#ifdef DEBUG_USE
   osThreadDef(DebugTask, debug_task, osPriorityNormal, 0, 512);
   DebugTaskHandle = osThreadCreate(osThread(DebugTask), NULL);
-  
+#endif
+
+#ifdef USB_COMM
   osThreadDef(USBTask, usb_task, osPriorityNormal, 0, 512);
   USBTaskHandle = osThreadCreate(osThread(USBTask), NULL);
+#endif
   /* USER CODE END RTOS_THREADS */
 
 }
