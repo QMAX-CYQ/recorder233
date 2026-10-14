@@ -52,6 +52,8 @@ void RecorderData(const char *buf,size_t len);
 uint8_t RecorderDataWrite(const char *buf, size_t len);
 uint8_t RecorderDataGetBufferStatus(size_t *free_size);
 FRESULT SdCardInit(void);
+/* 文件头已经写入并同步、文件可以接收日志。 */
+uint8_t RecorderLogIsReady(void);
 
 
 #endif

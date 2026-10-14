@@ -1,0 +1,2982 @@
+{
+  "file_count": 70,
+  "total_file_bytes": 582770752,
+  "total_body_bytes": 582746112,
+  "files": [
+    {
+      "file": "Rb91.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 17033,
+      "first": {
+        "file": "Rb91.txt",
+        "body_line": 1,
+        "stamp": "1014-16:15:57",
+        "tag": "sys",
+        "tick": 10,
+        "seq": 0,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb91.txt",
+        "body_line": 17033,
+        "stamp": "1014-16:18:47",
+        "tag": "nvic",
+        "tick": 171770,
+        "seq": 17176,
+        "ch": 6
+      },
+      "incoming_partial_bytes": 0,
+      "outgoing_partial_bytes": 275,
+      "seq_missing": 144,
+      "tick_error_count": 1
+    },
+    {
+      "file": "Rb92.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 17123,
+      "first": {
+        "file": "Rb91.txt",
+        "body_line": 17034,
+        "stamp": "1014-16:18:47",
+        "tag": "dji",
+        "tick": 171780,
+        "seq": 17177,
+        "ch": 7
+      },
+      "last": {
+        "file": "Rb92.txt",
+        "body_line": 17123,
+        "stamp": "1014-16:21:38",
+        "tag": "imu",
+        "tick": 343000,
+        "seq": 34299,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 275,
+      "outgoing_partial_bytes": 61,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb93.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 17056,
+      "first": {
+        "file": "Rb92.txt",
+        "body_line": 17124,
+        "stamp": "1014-16:21:38",
+        "tag": "sys",
+        "tick": 343010,
+        "seq": 34300,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb93.txt",
+        "body_line": 17056,
+        "stamp": "1014-16:24:29",
+        "tag": "uart6910",
+        "tick": 513560,
+        "seq": 51355,
+        "ch": 5
+      },
+      "incoming_partial_bytes": 61,
+      "outgoing_partial_bytes": 211,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb94.txt",
+      "bytes": 8487264,
+      "body_bytes": 8486912,
+      "blocks16k": 518.0,
+      "header_valid": true,
+      "rows_completed": 17156,
+      "first": {
+        "file": "Rb93.txt",
+        "body_line": 17057,
+        "stamp": "1014-16:24:29",
+        "tag": "nvic",
+        "tick": 513570,
+        "seq": 51356,
+        "ch": 6
+      },
+      "last": {
+        "file": "Rb94.txt",
+        "body_line": 17156,
+        "stamp": "1014-16:27:21",
+        "tag": "task",
+        "tick": 685120,
+        "seq": 68511,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 211,
+      "outgoing_partial_bytes": 59,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb95.txt",
+      "bytes": 8454496,
+      "body_bytes": 8454144,
+      "blocks16k": 516.0,
+      "header_valid": true,
+      "rows_completed": 17089,
+      "first": {
+        "file": "Rb94.txt",
+        "body_line": 17157,
+        "stamp": "1014-16:27:21",
+        "tag": "fdcan1",
+        "tick": 685130,
+        "seq": 68512,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb95.txt",
+        "body_line": 17089,
+        "stamp": "1014-16:30:11",
+        "tag": "sys",
+        "tick": 856010,
+        "seq": 85600,
+        "ch": 0
+      },
+      "incoming_partial_bytes": 59,
+      "outgoing_partial_bytes": 274,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb96.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 17112,
+      "first": {
+        "file": "Rb95.txt",
+        "body_line": 17090,
+        "stamp": "1014-16:30:11",
+        "tag": "task",
+        "tick": 856020,
+        "seq": 85601,
+        "ch": 1
+      },
+      "last": {
+        "file": "Rb96.txt",
+        "body_line": 17112,
+        "stamp": "1014-16:33:03",
+        "tag": "fdcan1",
+        "tick": 1027130,
+        "seq": 102712,
+        "ch": 2
+      },
+      "incoming_partial_bytes": 274,
+      "outgoing_partial_bytes": 68,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb97.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16888,
+      "first": {
+        "file": "Rb96.txt",
+        "body_line": 17113,
+        "stamp": "1014-16:33:03",
+        "tag": "fdcan23",
+        "tick": 1027140,
+        "seq": 102713,
+        "ch": 3
+      },
+      "last": {
+        "file": "Rb97.txt",
+        "body_line": 16888,
+        "stamp": "1014-16:35:51",
+        "tag": "sys",
+        "tick": 1196010,
+        "seq": 119600,
+        "ch": 0
+      },
+      "incoming_partial_bytes": 68,
+      "outgoing_partial_bytes": 407,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb98.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16889,
+      "first": {
+        "file": "Rb97.txt",
+        "body_line": 16889,
+        "stamp": "1014-16:35:51",
+        "tag": "task",
+        "tick": 1196020,
+        "seq": 119601,
+        "ch": 1
+      },
+      "last": {
+        "file": "Rb98.txt",
+        "body_line": 16889,
+        "stamp": "1014-16:38:40",
+        "tag": "imu",
+        "tick": 1364900,
+        "seq": 136489,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 407,
+      "outgoing_partial_bytes": 247,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb99.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb98.txt",
+        "body_line": 16890,
+        "stamp": "1014-16:38:40",
+        "tag": "sys",
+        "tick": 1364910,
+        "seq": 136490,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb99.txt",
+        "body_line": 16955,
+        "stamp": "1014-16:41:30",
+        "tag": "uart123",
+        "tick": 1534450,
+        "seq": 153444,
+        "ch": 4
+      },
+      "incoming_partial_bytes": 247,
+      "outgoing_partial_bytes": 71,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb100.txt",
+      "bytes": 8487264,
+      "body_bytes": 8486912,
+      "blocks16k": 518.0,
+      "header_valid": true,
+      "rows_completed": 17086,
+      "first": {
+        "file": "Rb99.txt",
+        "body_line": 16956,
+        "stamp": "1014-16:41:30",
+        "tag": "uart6910",
+        "tick": 1534460,
+        "seq": 153445,
+        "ch": 5
+      },
+      "last": {
+        "file": "Rb100.txt",
+        "body_line": 17086,
+        "stamp": "1014-16:44:21",
+        "tag": "sys",
+        "tick": 1705310,
+        "seq": 170530,
+        "ch": 0
+      },
+      "incoming_partial_bytes": 71,
+      "outgoing_partial_bytes": 372,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb101.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16889,
+      "first": {
+        "file": "Rb100.txt",
+        "body_line": 17087,
+        "stamp": "1014-16:44:21",
+        "tag": "task",
+        "tick": 1705320,
+        "seq": 170531,
+        "ch": 1
+      },
+      "last": {
+        "file": "Rb101.txt",
+        "body_line": 16889,
+        "stamp": "1014-16:47:10",
+        "tag": "imu",
+        "tick": 1874200,
+        "seq": 187419,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 372,
+      "outgoing_partial_bytes": 212,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb102.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16889,
+      "first": {
+        "file": "Rb101.txt",
+        "body_line": 16890,
+        "stamp": "1014-16:47:10",
+        "tag": "sys",
+        "tick": 1874210,
+        "seq": 187420,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb102.txt",
+        "body_line": 16889,
+        "stamp": "1014-16:49:59",
+        "tag": "dm",
+        "tick": 2043090,
+        "seq": 204308,
+        "ch": 8
+      },
+      "incoming_partial_bytes": 212,
+      "outgoing_partial_bytes": 52,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb103.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16921,
+      "first": {
+        "file": "Rb102.txt",
+        "body_line": 16890,
+        "stamp": "1014-16:49:59",
+        "tag": "imu",
+        "tick": 2043100,
+        "seq": 204309,
+        "ch": 9
+      },
+      "last": {
+        "file": "Rb103.txt",
+        "body_line": 16921,
+        "stamp": "1014-16:52:48",
+        "tag": "imu",
+        "tick": 2212300,
+        "seq": 221229,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 52,
+      "outgoing_partial_bytes": 385,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb104.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16922,
+      "first": {
+        "file": "Rb103.txt",
+        "body_line": 16922,
+        "stamp": "1014-16:52:48",
+        "tag": "sys",
+        "tick": 2212310,
+        "seq": 221230,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb104.txt",
+        "body_line": 16922,
+        "stamp": "1014-16:55:37",
+        "tag": "task",
+        "tick": 2381520,
+        "seq": 238151,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 385,
+      "outgoing_partial_bytes": 222,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb105.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16889,
+      "first": {
+        "file": "Rb104.txt",
+        "body_line": 16923,
+        "stamp": "1014-16:55:37",
+        "tag": "fdcan1",
+        "tick": 2381530,
+        "seq": 238152,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb105.txt",
+        "body_line": 16889,
+        "stamp": "1014-16:58:26",
+        "tag": "sys",
+        "tick": 2550410,
+        "seq": 255040,
+        "ch": 0
+      },
+      "incoming_partial_bytes": 222,
+      "outgoing_partial_bytes": 63,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb106.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16921,
+      "first": {
+        "file": "Rb105.txt",
+        "body_line": 16890,
+        "stamp": "1014-16:58:26",
+        "tag": "task",
+        "tick": 2550420,
+        "seq": 255041,
+        "ch": 1
+      },
+      "last": {
+        "file": "Rb106.txt",
+        "body_line": 16921,
+        "stamp": "1014-17:01:15",
+        "tag": "task",
+        "tick": 2719620,
+        "seq": 271961,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 63,
+      "outgoing_partial_bytes": 395,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb107.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16922,
+      "first": {
+        "file": "Rb106.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:01:15",
+        "tag": "fdcan1",
+        "tick": 2719630,
+        "seq": 271962,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb107.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:04:04",
+        "tag": "fdcan23",
+        "tick": 2888840,
+        "seq": 288883,
+        "ch": 3
+      },
+      "incoming_partial_bytes": 395,
+      "outgoing_partial_bytes": 226,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb108.txt",
+      "bytes": 8487264,
+      "body_bytes": 8486912,
+      "blocks16k": 518.0,
+      "header_valid": true,
+      "rows_completed": 17087,
+      "first": {
+        "file": "Rb107.txt",
+        "body_line": 16923,
+        "stamp": "1014-17:04:04",
+        "tag": "uart123",
+        "tick": 2888850,
+        "seq": 288884,
+        "ch": 4
+      },
+      "last": {
+        "file": "Rb108.txt",
+        "body_line": 17087,
+        "stamp": "1014-17:06:55",
+        "tag": "sys",
+        "tick": 3059710,
+        "seq": 305970,
+        "ch": 0
+      },
+      "incoming_partial_bytes": 226,
+      "outgoing_partial_bytes": 28,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb109.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16921,
+      "first": {
+        "file": "Rb108.txt",
+        "body_line": 17088,
+        "stamp": "1014-17:06:55",
+        "tag": "task",
+        "tick": 3059720,
+        "seq": 305971,
+        "ch": 1
+      },
+      "last": {
+        "file": "Rb109.txt",
+        "body_line": 16921,
+        "stamp": "1014-17:09:45",
+        "tag": "task",
+        "tick": 3228920,
+        "seq": 322891,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 28,
+      "outgoing_partial_bytes": 360,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb110.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 17054,
+      "first": {
+        "file": "Rb109.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:09:45",
+        "tag": "fdcan1",
+        "tick": 3228930,
+        "seq": 322892,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb110.txt",
+        "body_line": 17054,
+        "stamp": "1014-17:12:35",
+        "tag": "uart6910",
+        "tick": 3399460,
+        "seq": 339945,
+        "ch": 5
+      },
+      "incoming_partial_bytes": 360,
+      "outgoing_partial_bytes": 157,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb111.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16954,
+      "first": {
+        "file": "Rb110.txt",
+        "body_line": 17055,
+        "stamp": "1014-17:12:35",
+        "tag": "nvic",
+        "tick": 3399470,
+        "seq": 339946,
+        "ch": 6
+      },
+      "last": {
+        "file": "Rb111.txt",
+        "body_line": 16954,
+        "stamp": "1014-17:15:25",
+        "tag": "imu",
+        "tick": 3569000,
+        "seq": 356899,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 157,
+      "outgoing_partial_bytes": 488,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb112.txt",
+      "bytes": 8454496,
+      "body_bytes": 8454144,
+      "blocks16k": 516.0,
+      "header_valid": true,
+      "rows_completed": 17021,
+      "first": {
+        "file": "Rb111.txt",
+        "body_line": 16955,
+        "stamp": "1014-17:15:25",
+        "tag": "sys",
+        "tick": 3569010,
+        "seq": 356900,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb112.txt",
+        "body_line": 17021,
+        "stamp": "1014-17:18:15",
+        "tag": "sys",
+        "tick": 3739210,
+        "seq": 373920,
+        "ch": 0
+      },
+      "incoming_partial_bytes": 488,
+      "outgoing_partial_bytes": 303,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb113.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb112.txt",
+        "body_line": 17022,
+        "stamp": "1014-17:18:15",
+        "tag": "task",
+        "tick": 3739220,
+        "seq": 373921,
+        "ch": 1
+      },
+      "last": {
+        "file": "Rb113.txt",
+        "body_line": 16955,
+        "stamp": "1014-17:21:04",
+        "tag": "uart6910",
+        "tick": 3908760,
+        "seq": 390875,
+        "ch": 5
+      },
+      "incoming_partial_bytes": 303,
+      "outgoing_partial_bytes": 122,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb114.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16888,
+      "first": {
+        "file": "Rb113.txt",
+        "body_line": 16956,
+        "stamp": "1014-17:21:04",
+        "tag": "nvic",
+        "tick": 3908770,
+        "seq": 390876,
+        "ch": 6
+      },
+      "last": {
+        "file": "Rb114.txt",
+        "body_line": 16888,
+        "stamp": "1014-17:23:53",
+        "tag": "fdcan23",
+        "tick": 4077640,
+        "seq": 407763,
+        "ch": 3
+      },
+      "incoming_partial_bytes": 122,
+      "outgoing_partial_bytes": 466,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb115.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16922,
+      "first": {
+        "file": "Rb114.txt",
+        "body_line": 16889,
+        "stamp": "1014-17:23:53",
+        "tag": "uart123",
+        "tick": 4077650,
+        "seq": 407764,
+        "ch": 4
+      },
+      "last": {
+        "file": "Rb115.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:26:43",
+        "tag": "uart6910",
+        "tick": 4246860,
+        "seq": 424685,
+        "ch": 5
+      },
+      "incoming_partial_bytes": 466,
+      "outgoing_partial_bytes": 295,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb116.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16922,
+      "first": {
+        "file": "Rb115.txt",
+        "body_line": 16923,
+        "stamp": "1014-17:26:43",
+        "tag": "nvic",
+        "tick": 4246870,
+        "seq": 424686,
+        "ch": 6
+      },
+      "last": {
+        "file": "Rb116.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:29:32",
+        "tag": "dji",
+        "tick": 4416080,
+        "seq": 441607,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 295,
+      "outgoing_partial_bytes": 132,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb117.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16921,
+      "first": {
+        "file": "Rb116.txt",
+        "body_line": 16923,
+        "stamp": "1014-17:29:32",
+        "tag": "dm",
+        "tick": 4416090,
+        "seq": 441608,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb117.txt",
+        "body_line": 16921,
+        "stamp": "1014-17:32:21",
+        "tag": "dm",
+        "tick": 4585290,
+        "seq": 458528,
+        "ch": 8
+      },
+      "incoming_partial_bytes": 132,
+      "outgoing_partial_bytes": 466,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb118.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 16988,
+      "first": {
+        "file": "Rb117.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:32:21",
+        "tag": "imu",
+        "tick": 4585300,
+        "seq": 458529,
+        "ch": 9
+      },
+      "last": {
+        "file": "Rb118.txt",
+        "body_line": 16988,
+        "stamp": "1014-17:35:11",
+        "tag": "nvic",
+        "tick": 4755170,
+        "seq": 475516,
+        "ch": 6
+      },
+      "incoming_partial_bytes": 466,
+      "outgoing_partial_bytes": 282,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb119.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb118.txt",
+        "body_line": 16989,
+        "stamp": "1014-17:35:11",
+        "tag": "dji",
+        "tick": 4755180,
+        "seq": 475517,
+        "ch": 7
+      },
+      "last": {
+        "file": "Rb119.txt",
+        "body_line": 16955,
+        "stamp": "1014-17:38:00",
+        "tag": "task",
+        "tick": 4924720,
+        "seq": 492471,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 282,
+      "outgoing_partial_bytes": 118,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb120.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16921,
+      "first": {
+        "file": "Rb119.txt",
+        "body_line": 16956,
+        "stamp": "1014-17:38:00",
+        "tag": "fdcan1",
+        "tick": 4924730,
+        "seq": 492472,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb120.txt",
+        "body_line": 16921,
+        "stamp": "1014-17:40:50",
+        "tag": "fdcan1",
+        "tick": 5093930,
+        "seq": 509392,
+        "ch": 2
+      },
+      "incoming_partial_bytes": 118,
+      "outgoing_partial_bytes": 448,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb121.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16889,
+      "first": {
+        "file": "Rb120.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:40:50",
+        "tag": "fdcan23",
+        "tick": 5093940,
+        "seq": 509393,
+        "ch": 3
+      },
+      "last": {
+        "file": "Rb121.txt",
+        "body_line": 16889,
+        "stamp": "1014-17:43:39",
+        "tag": "task",
+        "tick": 5262820,
+        "seq": 526281,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 448,
+      "outgoing_partial_bytes": 291,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb122.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16922,
+      "first": {
+        "file": "Rb121.txt",
+        "body_line": 16890,
+        "stamp": "1014-17:43:39",
+        "tag": "fdcan1",
+        "tick": 5262830,
+        "seq": 526282,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb122.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:46:28",
+        "tag": "fdcan23",
+        "tick": 5432040,
+        "seq": 543203,
+        "ch": 3
+      },
+      "incoming_partial_bytes": 291,
+      "outgoing_partial_bytes": 122,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb123.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16921,
+      "first": {
+        "file": "Rb122.txt",
+        "body_line": 16923,
+        "stamp": "1014-17:46:28",
+        "tag": "uart123",
+        "tick": 5432050,
+        "seq": 543204,
+        "ch": 4
+      },
+      "last": {
+        "file": "Rb123.txt",
+        "body_line": 16921,
+        "stamp": "1014-17:49:17",
+        "tag": "uart123",
+        "tick": 5601250,
+        "seq": 560124,
+        "ch": 4
+      },
+      "incoming_partial_bytes": 122,
+      "outgoing_partial_bytes": 451,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb124.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 17054,
+      "first": {
+        "file": "Rb123.txt",
+        "body_line": 16922,
+        "stamp": "1014-17:49:17",
+        "tag": "uart6910",
+        "tick": 5601260,
+        "seq": 560125,
+        "ch": 5
+      },
+      "last": {
+        "file": "Rb124.txt",
+        "body_line": 17054,
+        "stamp": "1014-17:52:08",
+        "tag": "dm",
+        "tick": 5771790,
+        "seq": 577178,
+        "ch": 8
+      },
+      "incoming_partial_bytes": 451,
+      "outgoing_partial_bytes": 259,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb125.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16889,
+      "first": {
+        "file": "Rb124.txt",
+        "body_line": 17055,
+        "stamp": "1014-17:52:08",
+        "tag": "imu",
+        "tick": 5771800,
+        "seq": 577179,
+        "ch": 9
+      },
+      "last": {
+        "file": "Rb125.txt",
+        "body_line": 16889,
+        "stamp": "1014-17:54:56",
+        "tag": "dji",
+        "tick": 5940680,
+        "seq": 594067,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 259,
+      "outgoing_partial_bytes": 98,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb126.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16954,
+      "first": {
+        "file": "Rb125.txt",
+        "body_line": 16890,
+        "stamp": "1014-17:54:56",
+        "tag": "dm",
+        "tick": 5940690,
+        "seq": 594068,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb126.txt",
+        "body_line": 16954,
+        "stamp": "1014-17:57:46",
+        "tag": "task",
+        "tick": 6110220,
+        "seq": 611021,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 98,
+      "outgoing_partial_bytes": 429,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb127.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb126.txt",
+        "body_line": 16955,
+        "stamp": "1014-17:57:46",
+        "tag": "fdcan1",
+        "tick": 6110230,
+        "seq": 611022,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb127.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:00:36",
+        "tag": "nvic",
+        "tick": 6279770,
+        "seq": 627976,
+        "ch": 6
+      },
+      "incoming_partial_bytes": 429,
+      "outgoing_partial_bytes": 248,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb128.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb127.txt",
+        "body_line": 16956,
+        "stamp": "1014-18:00:36",
+        "tag": "dji",
+        "tick": 6279780,
+        "seq": 627977,
+        "ch": 7
+      },
+      "last": {
+        "file": "Rb128.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:03:25",
+        "tag": "task",
+        "tick": 6449320,
+        "seq": 644931,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 248,
+      "outgoing_partial_bytes": 84,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb129.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16954,
+      "first": {
+        "file": "Rb128.txt",
+        "body_line": 16956,
+        "stamp": "1014-18:03:25",
+        "tag": "fdcan1",
+        "tick": 6449330,
+        "seq": 644932,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb129.txt",
+        "body_line": 16954,
+        "stamp": "1014-18:06:15",
+        "tag": "uart6910",
+        "tick": 6618860,
+        "seq": 661885,
+        "ch": 5
+      },
+      "incoming_partial_bytes": 84,
+      "outgoing_partial_bytes": 399,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb130.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 16988,
+      "first": {
+        "file": "Rb129.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:06:15",
+        "tag": "nvic",
+        "tick": 6618870,
+        "seq": 661886,
+        "ch": 6
+      },
+      "last": {
+        "file": "Rb130.txt",
+        "body_line": 16988,
+        "stamp": "1014-18:09:05",
+        "tag": "fdcan23",
+        "tick": 6788740,
+        "seq": 678873,
+        "ch": 3
+      },
+      "incoming_partial_bytes": 399,
+      "outgoing_partial_bytes": 225,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb131.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb130.txt",
+        "body_line": 16989,
+        "stamp": "1014-18:09:05",
+        "tag": "uart123",
+        "tick": 6788750,
+        "seq": 678874,
+        "ch": 4
+      },
+      "last": {
+        "file": "Rb131.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:11:54",
+        "tag": "dm",
+        "tick": 6958290,
+        "seq": 695828,
+        "ch": 8
+      },
+      "incoming_partial_bytes": 225,
+      "outgoing_partial_bytes": 52,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb132.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 16987,
+      "first": {
+        "file": "Rb131.txt",
+        "body_line": 16956,
+        "stamp": "1014-18:11:54",
+        "tag": "imu",
+        "tick": 6958300,
+        "seq": 695829,
+        "ch": 9
+      },
+      "last": {
+        "file": "Rb132.txt",
+        "body_line": 16987,
+        "stamp": "1014-18:14:44",
+        "tag": "uart6910",
+        "tick": 7128160,
+        "seq": 712815,
+        "ch": 5
+      },
+      "incoming_partial_bytes": 52,
+      "outgoing_partial_bytes": 364,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb133.txt",
+      "bytes": 8454496,
+      "body_bytes": 8454144,
+      "blocks16k": 516.0,
+      "header_valid": true,
+      "rows_completed": 17021,
+      "first": {
+        "file": "Rb132.txt",
+        "body_line": 16988,
+        "stamp": "1014-18:14:44",
+        "tag": "nvic",
+        "tick": 7128170,
+        "seq": 712816,
+        "ch": 6
+      },
+      "last": {
+        "file": "Rb133.txt",
+        "body_line": 17021,
+        "stamp": "1014-18:17:34",
+        "tag": "nvic",
+        "tick": 7298370,
+        "seq": 729836,
+        "ch": 6
+      },
+      "incoming_partial_bytes": 364,
+      "outgoing_partial_bytes": 178,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb134.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16922,
+      "first": {
+        "file": "Rb133.txt",
+        "body_line": 17022,
+        "stamp": "1014-18:17:34",
+        "tag": "dji",
+        "tick": 7298380,
+        "seq": 729837,
+        "ch": 7
+      },
+      "last": {
+        "file": "Rb134.txt",
+        "body_line": 16922,
+        "stamp": "1014-18:20:23",
+        "tag": "dm",
+        "tick": 7467590,
+        "seq": 746758,
+        "ch": 8
+      },
+      "incoming_partial_bytes": 178,
+      "outgoing_partial_bytes": 17,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb135.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16954,
+      "first": {
+        "file": "Rb134.txt",
+        "body_line": 16923,
+        "stamp": "1014-18:20:24",
+        "tag": "imu",
+        "tick": 7467600,
+        "seq": 746759,
+        "ch": 9
+      },
+      "last": {
+        "file": "Rb135.txt",
+        "body_line": 16954,
+        "stamp": "1014-18:23:13",
+        "tag": "fdcan1",
+        "tick": 7637130,
+        "seq": 763712,
+        "ch": 2
+      },
+      "incoming_partial_bytes": 17,
+      "outgoing_partial_bytes": 344,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb136.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb135.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:23:13",
+        "tag": "fdcan23",
+        "tick": 7637140,
+        "seq": 763713,
+        "ch": 3
+      },
+      "last": {
+        "file": "Rb136.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:26:03",
+        "tag": "dji",
+        "tick": 7806680,
+        "seq": 780667,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 344,
+      "outgoing_partial_bytes": 166,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb137.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 16987,
+      "first": {
+        "file": "Rb136.txt",
+        "body_line": 16956,
+        "stamp": "1014-18:26:03",
+        "tag": "dm",
+        "tick": 7806690,
+        "seq": 780668,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb137.txt",
+        "body_line": 16987,
+        "stamp": "1014-18:28:52",
+        "tag": "uart123",
+        "tick": 7976550,
+        "seq": 797654,
+        "ch": 4
+      },
+      "incoming_partial_bytes": 166,
+      "outgoing_partial_bytes": 484,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb138.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb137.txt",
+        "body_line": 16988,
+        "stamp": "1014-18:28:53",
+        "tag": "uart6910",
+        "tick": 7976560,
+        "seq": 797655,
+        "ch": 5
+      },
+      "last": {
+        "file": "Rb138.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:31:42",
+        "tag": "imu",
+        "tick": 8146100,
+        "seq": 814609,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 484,
+      "outgoing_partial_bytes": 315,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb139.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16955,
+      "first": {
+        "file": "Rb138.txt",
+        "body_line": 16956,
+        "stamp": "1014-18:31:42",
+        "tag": "sys",
+        "tick": 8146110,
+        "seq": 814610,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb139.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:34:32",
+        "tag": "uart123",
+        "tick": 8315650,
+        "seq": 831564,
+        "ch": 4
+      },
+      "incoming_partial_bytes": 315,
+      "outgoing_partial_bytes": 139,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb140.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 16987,
+      "first": {
+        "file": "Rb139.txt",
+        "body_line": 16956,
+        "stamp": "1014-18:34:32",
+        "tag": "uart6910",
+        "tick": 8315660,
+        "seq": 831565,
+        "ch": 5
+      },
+      "last": {
+        "file": "Rb140.txt",
+        "body_line": 16987,
+        "stamp": "1014-18:37:21",
+        "tag": "task",
+        "tick": 8485520,
+        "seq": 848551,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 139,
+      "outgoing_partial_bytes": 462,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb141.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 16988,
+      "first": {
+        "file": "Rb140.txt",
+        "body_line": 16988,
+        "stamp": "1014-18:37:22",
+        "tag": "fdcan1",
+        "tick": 8485530,
+        "seq": 848552,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb141.txt",
+        "body_line": 16988,
+        "stamp": "1014-18:40:11",
+        "tag": "imu",
+        "tick": 8655400,
+        "seq": 865539,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 462,
+      "outgoing_partial_bytes": 280,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb142.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16889,
+      "first": {
+        "file": "Rb141.txt",
+        "body_line": 16989,
+        "stamp": "1014-18:40:11",
+        "tag": "sys",
+        "tick": 8655410,
+        "seq": 865540,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb142.txt",
+        "body_line": 16889,
+        "stamp": "1014-18:43:00",
+        "tag": "dm",
+        "tick": 8824290,
+        "seq": 882428,
+        "ch": 8
+      },
+      "incoming_partial_bytes": 280,
+      "outgoing_partial_bytes": 120,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb143.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16921,
+      "first": {
+        "file": "Rb142.txt",
+        "body_line": 16890,
+        "stamp": "1014-18:43:00",
+        "tag": "imu",
+        "tick": 8824300,
+        "seq": 882429,
+        "ch": 9
+      },
+      "last": {
+        "file": "Rb143.txt",
+        "body_line": 16921,
+        "stamp": "1014-18:45:50",
+        "tag": "imu",
+        "tick": 8993500,
+        "seq": 899349,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 120,
+      "outgoing_partial_bytes": 453,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb144.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 16988,
+      "first": {
+        "file": "Rb143.txt",
+        "body_line": 16922,
+        "stamp": "1014-18:45:50",
+        "tag": "sys",
+        "tick": 8993510,
+        "seq": 899350,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb144.txt",
+        "body_line": 16988,
+        "stamp": "1014-18:48:39",
+        "tag": "dji",
+        "tick": 9163380,
+        "seq": 916337,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 453,
+      "outgoing_partial_bytes": 269,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb145.txt",
+      "bytes": 8487264,
+      "body_bytes": 8486912,
+      "blocks16k": 518.0,
+      "header_valid": true,
+      "rows_completed": 17087,
+      "first": {
+        "file": "Rb144.txt",
+        "body_line": 16989,
+        "stamp": "1014-18:48:39",
+        "tag": "dm",
+        "tick": 9163390,
+        "seq": 916338,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb145.txt",
+        "body_line": 17087,
+        "stamp": "1014-18:51:30",
+        "tag": "uart123",
+        "tick": 9334250,
+        "seq": 933424,
+        "ch": 4
+      },
+      "incoming_partial_bytes": 269,
+      "outgoing_partial_bytes": 69,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb146.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 16954,
+      "first": {
+        "file": "Rb145.txt",
+        "body_line": 17088,
+        "stamp": "1014-18:51:30",
+        "tag": "uart6910",
+        "tick": 9334260,
+        "seq": 933425,
+        "ch": 5
+      },
+      "last": {
+        "file": "Rb146.txt",
+        "body_line": 16954,
+        "stamp": "1014-18:54:20",
+        "tag": "dm",
+        "tick": 9503790,
+        "seq": 950378,
+        "ch": 8
+      },
+      "incoming_partial_bytes": 69,
+      "outgoing_partial_bytes": 395,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb147.txt",
+      "bytes": 8454496,
+      "body_bytes": 8454144,
+      "blocks16k": 516.0,
+      "header_valid": true,
+      "rows_completed": 17021,
+      "first": {
+        "file": "Rb146.txt",
+        "body_line": 16955,
+        "stamp": "1014-18:54:20",
+        "tag": "imu",
+        "tick": 9503800,
+        "seq": 950379,
+        "ch": 9
+      },
+      "last": {
+        "file": "Rb147.txt",
+        "body_line": 17021,
+        "stamp": "1014-18:57:10",
+        "tag": "imu",
+        "tick": 9674000,
+        "seq": 967399,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 395,
+      "outgoing_partial_bytes": 210,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb148.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 16988,
+      "first": {
+        "file": "Rb147.txt",
+        "body_line": 17022,
+        "stamp": "1014-18:57:10",
+        "tag": "sys",
+        "tick": 9674010,
+        "seq": 967400,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb148.txt",
+        "body_line": 16988,
+        "stamp": "1014-19:00:00",
+        "tag": "dji",
+        "tick": 9843880,
+        "seq": 984387,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 210,
+      "outgoing_partial_bytes": 26,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb149.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 17047,
+      "first": {
+        "file": "Rb148.txt",
+        "body_line": 16989,
+        "stamp": "1014-19:00:00",
+        "tag": "dm",
+        "tick": 9843890,
+        "seq": 984388,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb149.txt",
+        "body_line": 17047,
+        "stamp": "1014-19:02:50",
+        "tag": "uart123",
+        "tick": 10014350,
+        "seq": 1001434,
+        "ch": 4
+      },
+      "incoming_partial_bytes": 26,
+      "outgoing_partial_bytes": 439,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb150.txt",
+      "bytes": 8454496,
+      "body_bytes": 8454144,
+      "blocks16k": 516.0,
+      "header_valid": true,
+      "rows_completed": 16953,
+      "first": {
+        "file": "Rb149.txt",
+        "body_line": 17048,
+        "stamp": "1014-19:02:50",
+        "tag": "uart6910",
+        "tick": 10014360,
+        "seq": 1001435,
+        "ch": 5
+      },
+      "last": {
+        "file": "Rb150.txt",
+        "body_line": 16953,
+        "stamp": "1014-19:05:40",
+        "tag": "dji",
+        "tick": 10183880,
+        "seq": 1018387,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 439,
+      "outgoing_partial_bytes": 121,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb151.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 16985,
+      "first": {
+        "file": "Rb150.txt",
+        "body_line": 16954,
+        "stamp": "1014-19:05:40",
+        "tag": "dm",
+        "tick": 10183890,
+        "seq": 1018388,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb151.txt",
+        "body_line": 16985,
+        "stamp": "1014-19:08:30",
+        "tag": "fdcan1",
+        "tick": 10353730,
+        "seq": 1035372,
+        "ch": 2
+      },
+      "incoming_partial_bytes": 121,
+      "outgoing_partial_bytes": 235,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb152.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 16985,
+      "first": {
+        "file": "Rb151.txt",
+        "body_line": 16986,
+        "stamp": "1014-19:08:30",
+        "tag": "fdcan23",
+        "tick": 10353740,
+        "seq": 1035373,
+        "ch": 3
+      },
+      "last": {
+        "file": "Rb152.txt",
+        "body_line": 16985,
+        "stamp": "1014-19:11:20",
+        "tag": "dji",
+        "tick": 10523580,
+        "seq": 1052357,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 235,
+      "outgoing_partial_bytes": 338,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb153.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 16985,
+      "first": {
+        "file": "Rb152.txt",
+        "body_line": 16986,
+        "stamp": "1014-19:11:20",
+        "tag": "dm",
+        "tick": 10523590,
+        "seq": 1052358,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb153.txt",
+        "body_line": 16985,
+        "stamp": "1014-19:14:10",
+        "tag": "fdcan1",
+        "tick": 10693430,
+        "seq": 1069342,
+        "ch": 2
+      },
+      "incoming_partial_bytes": 338,
+      "outgoing_partial_bytes": 452,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb154.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16821,
+      "first": {
+        "file": "Rb153.txt",
+        "body_line": 16986,
+        "stamp": "1014-19:14:10",
+        "tag": "fdcan23",
+        "tick": 10693440,
+        "seq": 1069343,
+        "ch": 3
+      },
+      "last": {
+        "file": "Rb154.txt",
+        "body_line": 16821,
+        "stamp": "1014-19:16:58",
+        "tag": "fdcan23",
+        "tick": 10861640,
+        "seq": 1086163,
+        "ch": 3
+      },
+      "incoming_partial_bytes": 452,
+      "outgoing_partial_bytes": 425,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb155.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 16986,
+      "first": {
+        "file": "Rb154.txt",
+        "body_line": 16822,
+        "stamp": "1014-19:16:58",
+        "tag": "uart123",
+        "tick": 10861650,
+        "seq": 1086164,
+        "ch": 4
+      },
+      "last": {
+        "file": "Rb155.txt",
+        "body_line": 16986,
+        "stamp": "1014-19:19:48",
+        "tag": "imu",
+        "tick": 11031500,
+        "seq": 1103149,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 425,
+      "outgoing_partial_bytes": 36,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb156.txt",
+      "bytes": 8487264,
+      "body_bytes": 8486912,
+      "blocks16k": 518.0,
+      "header_valid": true,
+      "rows_completed": 17018,
+      "first": {
+        "file": "Rb155.txt",
+        "body_line": 16987,
+        "stamp": "1014-19:19:48",
+        "tag": "sys",
+        "tick": 11031510,
+        "seq": 1103150,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb156.txt",
+        "body_line": 17018,
+        "stamp": "1014-19:22:38",
+        "tag": "dji",
+        "tick": 11201680,
+        "seq": 1120167,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 36,
+      "outgoing_partial_bytes": 67,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb157.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 16821,
+      "first": {
+        "file": "Rb156.txt",
+        "body_line": 17019,
+        "stamp": "1014-19:22:38",
+        "tag": "dm",
+        "tick": 11201690,
+        "seq": 1120168,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb157.txt",
+        "body_line": 16821,
+        "stamp": "1014-19:25:26",
+        "tag": "dm",
+        "tick": 11369890,
+        "seq": 1136988,
+        "ch": 8
+      },
+      "incoming_partial_bytes": 67,
+      "outgoing_partial_bytes": 45,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb158.txt",
+      "bytes": 8487264,
+      "body_bytes": 8486912,
+      "blocks16k": 518.0,
+      "header_valid": true,
+      "rows_completed": 17018,
+      "first": {
+        "file": "Rb157.txt",
+        "body_line": 16822,
+        "stamp": "1014-19:25:26",
+        "tag": "imu",
+        "tick": 11369900,
+        "seq": 1136989,
+        "ch": 9
+      },
+      "last": {
+        "file": "Rb158.txt",
+        "body_line": 17018,
+        "stamp": "1014-19:28:16",
+        "tag": "nvic",
+        "tick": 11540070,
+        "seq": 1154006,
+        "ch": 6
+      },
+      "incoming_partial_bytes": 45,
+      "outgoing_partial_bytes": 76,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb159.txt",
+      "bytes": 8470880,
+      "body_bytes": 8470528,
+      "blocks16k": 517.0,
+      "header_valid": true,
+      "rows_completed": 16985,
+      "first": {
+        "file": "Rb158.txt",
+        "body_line": 17019,
+        "stamp": "1014-19:28:16",
+        "tag": "dji",
+        "tick": 11540080,
+        "seq": 1154007,
+        "ch": 7
+      },
+      "last": {
+        "file": "Rb159.txt",
+        "body_line": 16985,
+        "stamp": "1014-19:31:06",
+        "tag": "task",
+        "tick": 11709920,
+        "seq": 1170991,
+        "ch": 1
+      },
+      "incoming_partial_bytes": 76,
+      "outgoing_partial_bytes": 193,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb160.txt",
+      "bytes": 1065312,
+      "body_bytes": 1064960,
+      "blocks16k": 65.0,
+      "header_valid": true,
+      "rows_completed": 2135,
+      "first": {
+        "file": "Rb159.txt",
+        "body_line": 16986,
+        "stamp": "1014-19:31:06",
+        "tag": "fdcan1",
+        "tick": 11709930,
+        "seq": 1170992,
+        "ch": 2
+      },
+      "last": {
+        "file": "Rb160.txt",
+        "body_line": 2135,
+        "stamp": "1014-19:31:27",
+        "tag": "nvic",
+        "tick": 11731270,
+        "seq": 1173126,
+        "ch": 6
+      },
+      "incoming_partial_bytes": 193,
+      "outgoing_partial_bytes": 420,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    }
+  ],
+  "first": {
+    "file": "Rb91.txt",
+    "body_line": 1,
+    "stamp": "1014-16:15:57",
+    "tag": "sys",
+    "tick": 10,
+    "seq": 0,
+    "ch": 0
+  },
+  "last": {
+    "file": "Rb160.txt",
+    "body_line": 2135,
+    "stamp": "1014-19:31:27",
+    "tag": "nvic",
+    "tick": 11731270,
+    "seq": 1173126,
+    "ch": 6
+  },
+  "tick_span_seconds": 11731.26,
+  "complete_rows": 1172983,
+  "expected_records": 1173127,
+  "missing_records": 144,
+  "missing_rate_pct": 0.012274885839299582,
+  "complete_rate_pct": 99.9877251141607,
+  "seq_gaps": [
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 32,
+        "stamp": "1014-16:15:57",
+        "tag": "task",
+        "tick": 320,
+        "seq": 31,
+        "ch": 1
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 33,
+        "stamp": "1014-16:15:57",
+        "tag": "nvic",
+        "tick": 1770,
+        "seq": 176,
+        "ch": 6
+      },
+      "delta": 145,
+      "missing": 144,
+      "tick_delta_ms": 1450,
+      "rtc_delta_seconds": 0.0
+    }
+  ],
+  "seq_reset_count": 0,
+  "duplicate_seq_count": 0,
+  "tick_error_count": 1,
+  "tick_errors_first100": [
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 32,
+        "stamp": "1014-16:15:57",
+        "tag": "task",
+        "tick": 320,
+        "seq": 31,
+        "ch": 1
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 33,
+        "stamp": "1014-16:15:57",
+        "tag": "nvic",
+        "tick": 1770,
+        "seq": 176,
+        "ch": 6
+      },
+      "delta_ms": 1450
+    }
+  ],
+  "channel_error_count": 0,
+  "channel_errors_first30": [],
+  "channel_period_error_count": 10,
+  "channel_period_errors_first30": [
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 27,
+        "stamp": "1014-16:15:57",
+        "tag": "nvic",
+        "tick": 270,
+        "seq": 26,
+        "ch": 6
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 33,
+        "stamp": "1014-16:15:57",
+        "tag": "nvic",
+        "tick": 1770,
+        "seq": 176,
+        "ch": 6
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 28,
+        "stamp": "1014-16:15:57",
+        "tag": "dji",
+        "tick": 280,
+        "seq": 27,
+        "ch": 7
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 34,
+        "stamp": "1014-16:15:57",
+        "tag": "dji",
+        "tick": 1780,
+        "seq": 177,
+        "ch": 7
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 29,
+        "stamp": "1014-16:15:57",
+        "tag": "dm",
+        "tick": 290,
+        "seq": 28,
+        "ch": 8
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 35,
+        "stamp": "1014-16:15:57",
+        "tag": "dm",
+        "tick": 1790,
+        "seq": 178,
+        "ch": 8
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 30,
+        "stamp": "1014-16:15:57",
+        "tag": "imu",
+        "tick": 300,
+        "seq": 29,
+        "ch": 9
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 36,
+        "stamp": "1014-16:15:57",
+        "tag": "imu",
+        "tick": 1800,
+        "seq": 179,
+        "ch": 9
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 31,
+        "stamp": "1014-16:15:57",
+        "tag": "sys",
+        "tick": 310,
+        "seq": 30,
+        "ch": 0
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 37,
+        "stamp": "1014-16:15:57",
+        "tag": "sys",
+        "tick": 1810,
+        "seq": 180,
+        "ch": 0
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 32,
+        "stamp": "1014-16:15:57",
+        "tag": "task",
+        "tick": 320,
+        "seq": 31,
+        "ch": 1
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 38,
+        "stamp": "1014-16:15:57",
+        "tag": "task",
+        "tick": 1820,
+        "seq": 181,
+        "ch": 1
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 23,
+        "stamp": "1014-16:15:57",
+        "tag": "fdcan1",
+        "tick": 230,
+        "seq": 22,
+        "ch": 2
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 39,
+        "stamp": "1014-16:15:57",
+        "tag": "fdcan1",
+        "tick": 1830,
+        "seq": 182,
+        "ch": 2
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 24,
+        "stamp": "1014-16:15:57",
+        "tag": "fdcan23",
+        "tick": 240,
+        "seq": 23,
+        "ch": 3
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 40,
+        "stamp": "1014-16:15:57",
+        "tag": "fdcan23",
+        "tick": 1840,
+        "seq": 183,
+        "ch": 3
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 25,
+        "stamp": "1014-16:15:57",
+        "tag": "uart123",
+        "tick": 250,
+        "seq": 24,
+        "ch": 4
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 41,
+        "stamp": "1014-16:15:57",
+        "tag": "uart123",
+        "tick": 1850,
+        "seq": 184,
+        "ch": 4
+      }
+    },
+    {
+      "before": {
+        "file": "Rb91.txt",
+        "body_line": 26,
+        "stamp": "1014-16:15:57",
+        "tag": "uart6910",
+        "tick": 260,
+        "seq": 25,
+        "ch": 5
+      },
+      "after": {
+        "file": "Rb91.txt",
+        "body_line": 42,
+        "stamp": "1014-16:15:57",
+        "tag": "uart6910",
+        "tick": 1860,
+        "seq": 185,
+        "ch": 5
+      }
+    }
+  ],
+  "rtc_events": [],
+  "rtc_minus_tick_drift_ms_range": [
+    -2100.0,
+    0
+  ],
+  "malformed_complete_lines": 0,
+  "malformed_samples": [],
+  "boundaries": [
+    {
+      "from": "Rb91.txt",
+      "to": "Rb92.txt",
+      "valid": true,
+      "tick": 171780,
+      "seq": 17177
+    },
+    {
+      "from": "Rb92.txt",
+      "to": "Rb93.txt",
+      "valid": true,
+      "tick": 343010,
+      "seq": 34300
+    },
+    {
+      "from": "Rb93.txt",
+      "to": "Rb94.txt",
+      "valid": true,
+      "tick": 513570,
+      "seq": 51356
+    },
+    {
+      "from": "Rb94.txt",
+      "to": "Rb95.txt",
+      "valid": true,
+      "tick": 685130,
+      "seq": 68512
+    },
+    {
+      "from": "Rb95.txt",
+      "to": "Rb96.txt",
+      "valid": true,
+      "tick": 856020,
+      "seq": 85601
+    },
+    {
+      "from": "Rb96.txt",
+      "to": "Rb97.txt",
+      "valid": true,
+      "tick": 1027140,
+      "seq": 102713
+    },
+    {
+      "from": "Rb97.txt",
+      "to": "Rb98.txt",
+      "valid": true,
+      "tick": 1196020,
+      "seq": 119601
+    },
+    {
+      "from": "Rb98.txt",
+      "to": "Rb99.txt",
+      "valid": true,
+      "tick": 1364910,
+      "seq": 136490
+    },
+    {
+      "from": "Rb99.txt",
+      "to": "Rb100.txt",
+      "valid": true,
+      "tick": 1534460,
+      "seq": 153445
+    },
+    {
+      "from": "Rb100.txt",
+      "to": "Rb101.txt",
+      "valid": true,
+      "tick": 1705320,
+      "seq": 170531
+    },
+    {
+      "from": "Rb101.txt",
+      "to": "Rb102.txt",
+      "valid": true,
+      "tick": 1874210,
+      "seq": 187420
+    },
+    {
+      "from": "Rb102.txt",
+      "to": "Rb103.txt",
+      "valid": true,
+      "tick": 2043100,
+      "seq": 204309
+    },
+    {
+      "from": "Rb103.txt",
+      "to": "Rb104.txt",
+      "valid": true,
+      "tick": 2212310,
+      "seq": 221230
+    },
+    {
+      "from": "Rb104.txt",
+      "to": "Rb105.txt",
+      "valid": true,
+      "tick": 2381530,
+      "seq": 238152
+    },
+    {
+      "from": "Rb105.txt",
+      "to": "Rb106.txt",
+      "valid": true,
+      "tick": 2550420,
+      "seq": 255041
+    },
+    {
+      "from": "Rb106.txt",
+      "to": "Rb107.txt",
+      "valid": true,
+      "tick": 2719630,
+      "seq": 271962
+    },
+    {
+      "from": "Rb107.txt",
+      "to": "Rb108.txt",
+      "valid": true,
+      "tick": 2888850,
+      "seq": 288884
+    },
+    {
+      "from": "Rb108.txt",
+      "to": "Rb109.txt",
+      "valid": true,
+      "tick": 3059720,
+      "seq": 305971
+    },
+    {
+      "from": "Rb109.txt",
+      "to": "Rb110.txt",
+      "valid": true,
+      "tick": 3228930,
+      "seq": 322892
+    },
+    {
+      "from": "Rb110.txt",
+      "to": "Rb111.txt",
+      "valid": true,
+      "tick": 3399470,
+      "seq": 339946
+    },
+    {
+      "from": "Rb111.txt",
+      "to": "Rb112.txt",
+      "valid": true,
+      "tick": 3569010,
+      "seq": 356900
+    },
+    {
+      "from": "Rb112.txt",
+      "to": "Rb113.txt",
+      "valid": true,
+      "tick": 3739220,
+      "seq": 373921
+    },
+    {
+      "from": "Rb113.txt",
+      "to": "Rb114.txt",
+      "valid": true,
+      "tick": 3908770,
+      "seq": 390876
+    },
+    {
+      "from": "Rb114.txt",
+      "to": "Rb115.txt",
+      "valid": true,
+      "tick": 4077650,
+      "seq": 407764
+    },
+    {
+      "from": "Rb115.txt",
+      "to": "Rb116.txt",
+      "valid": true,
+      "tick": 4246870,
+      "seq": 424686
+    },
+    {
+      "from": "Rb116.txt",
+      "to": "Rb117.txt",
+      "valid": true,
+      "tick": 4416090,
+      "seq": 441608
+    },
+    {
+      "from": "Rb117.txt",
+      "to": "Rb118.txt",
+      "valid": true,
+      "tick": 4585300,
+      "seq": 458529
+    },
+    {
+      "from": "Rb118.txt",
+      "to": "Rb119.txt",
+      "valid": true,
+      "tick": 4755180,
+      "seq": 475517
+    },
+    {
+      "from": "Rb119.txt",
+      "to": "Rb120.txt",
+      "valid": true,
+      "tick": 4924730,
+      "seq": 492472
+    },
+    {
+      "from": "Rb120.txt",
+      "to": "Rb121.txt",
+      "valid": true,
+      "tick": 5093940,
+      "seq": 509393
+    },
+    {
+      "from": "Rb121.txt",
+      "to": "Rb122.txt",
+      "valid": true,
+      "tick": 5262830,
+      "seq": 526282
+    },
+    {
+      "from": "Rb122.txt",
+      "to": "Rb123.txt",
+      "valid": true,
+      "tick": 5432050,
+      "seq": 543204
+    },
+    {
+      "from": "Rb123.txt",
+      "to": "Rb124.txt",
+      "valid": true,
+      "tick": 5601260,
+      "seq": 560125
+    },
+    {
+      "from": "Rb124.txt",
+      "to": "Rb125.txt",
+      "valid": true,
+      "tick": 5771800,
+      "seq": 577179
+    },
+    {
+      "from": "Rb125.txt",
+      "to": "Rb126.txt",
+      "valid": true,
+      "tick": 5940690,
+      "seq": 594068
+    },
+    {
+      "from": "Rb126.txt",
+      "to": "Rb127.txt",
+      "valid": true,
+      "tick": 6110230,
+      "seq": 611022
+    },
+    {
+      "from": "Rb127.txt",
+      "to": "Rb128.txt",
+      "valid": true,
+      "tick": 6279780,
+      "seq": 627977
+    },
+    {
+      "from": "Rb128.txt",
+      "to": "Rb129.txt",
+      "valid": true,
+      "tick": 6449330,
+      "seq": 644932
+    },
+    {
+      "from": "Rb129.txt",
+      "to": "Rb130.txt",
+      "valid": true,
+      "tick": 6618870,
+      "seq": 661886
+    },
+    {
+      "from": "Rb130.txt",
+      "to": "Rb131.txt",
+      "valid": true,
+      "tick": 6788750,
+      "seq": 678874
+    },
+    {
+      "from": "Rb131.txt",
+      "to": "Rb132.txt",
+      "valid": true,
+      "tick": 6958300,
+      "seq": 695829
+    },
+    {
+      "from": "Rb132.txt",
+      "to": "Rb133.txt",
+      "valid": true,
+      "tick": 7128170,
+      "seq": 712816
+    },
+    {
+      "from": "Rb133.txt",
+      "to": "Rb134.txt",
+      "valid": true,
+      "tick": 7298380,
+      "seq": 729837
+    },
+    {
+      "from": "Rb134.txt",
+      "to": "Rb135.txt",
+      "valid": true,
+      "tick": 7467600,
+      "seq": 746759
+    },
+    {
+      "from": "Rb135.txt",
+      "to": "Rb136.txt",
+      "valid": true,
+      "tick": 7637140,
+      "seq": 763713
+    },
+    {
+      "from": "Rb136.txt",
+      "to": "Rb137.txt",
+      "valid": true,
+      "tick": 7806690,
+      "seq": 780668
+    },
+    {
+      "from": "Rb137.txt",
+      "to": "Rb138.txt",
+      "valid": true,
+      "tick": 7976560,
+      "seq": 797655
+    },
+    {
+      "from": "Rb138.txt",
+      "to": "Rb139.txt",
+      "valid": true,
+      "tick": 8146110,
+      "seq": 814610
+    },
+    {
+      "from": "Rb139.txt",
+      "to": "Rb140.txt",
+      "valid": true,
+      "tick": 8315660,
+      "seq": 831565
+    },
+    {
+      "from": "Rb140.txt",
+      "to": "Rb141.txt",
+      "valid": true,
+      "tick": 8485530,
+      "seq": 848552
+    },
+    {
+      "from": "Rb141.txt",
+      "to": "Rb142.txt",
+      "valid": true,
+      "tick": 8655410,
+      "seq": 865540
+    },
+    {
+      "from": "Rb142.txt",
+      "to": "Rb143.txt",
+      "valid": true,
+      "tick": 8824300,
+      "seq": 882429
+    },
+    {
+      "from": "Rb143.txt",
+      "to": "Rb144.txt",
+      "valid": true,
+      "tick": 8993510,
+      "seq": 899350
+    },
+    {
+      "from": "Rb144.txt",
+      "to": "Rb145.txt",
+      "valid": true,
+      "tick": 9163390,
+      "seq": 916338
+    },
+    {
+      "from": "Rb145.txt",
+      "to": "Rb146.txt",
+      "valid": true,
+      "tick": 9334260,
+      "seq": 933425
+    },
+    {
+      "from": "Rb146.txt",
+      "to": "Rb147.txt",
+      "valid": true,
+      "tick": 9503800,
+      "seq": 950379
+    },
+    {
+      "from": "Rb147.txt",
+      "to": "Rb148.txt",
+      "valid": true,
+      "tick": 9674010,
+      "seq": 967400
+    },
+    {
+      "from": "Rb148.txt",
+      "to": "Rb149.txt",
+      "valid": true,
+      "tick": 9843890,
+      "seq": 984388
+    },
+    {
+      "from": "Rb149.txt",
+      "to": "Rb150.txt",
+      "valid": true,
+      "tick": 10014360,
+      "seq": 1001435
+    },
+    {
+      "from": "Rb150.txt",
+      "to": "Rb151.txt",
+      "valid": true,
+      "tick": 10183890,
+      "seq": 1018388
+    },
+    {
+      "from": "Rb151.txt",
+      "to": "Rb152.txt",
+      "valid": true,
+      "tick": 10353740,
+      "seq": 1035373
+    },
+    {
+      "from": "Rb152.txt",
+      "to": "Rb153.txt",
+      "valid": true,
+      "tick": 10523590,
+      "seq": 1052358
+    },
+    {
+      "from": "Rb153.txt",
+      "to": "Rb154.txt",
+      "valid": true,
+      "tick": 10693440,
+      "seq": 1069343
+    },
+    {
+      "from": "Rb154.txt",
+      "to": "Rb155.txt",
+      "valid": true,
+      "tick": 10861650,
+      "seq": 1086164
+    },
+    {
+      "from": "Rb155.txt",
+      "to": "Rb156.txt",
+      "valid": true,
+      "tick": 11031510,
+      "seq": 1103150
+    },
+    {
+      "from": "Rb156.txt",
+      "to": "Rb157.txt",
+      "valid": true,
+      "tick": 11201690,
+      "seq": 1120168
+    },
+    {
+      "from": "Rb157.txt",
+      "to": "Rb158.txt",
+      "valid": true,
+      "tick": 11369900,
+      "seq": 1136989
+    },
+    {
+      "from": "Rb158.txt",
+      "to": "Rb159.txt",
+      "valid": true,
+      "tick": 11540080,
+      "seq": 1154007
+    },
+    {
+      "from": "Rb159.txt",
+      "to": "Rb160.txt",
+      "valid": true,
+      "tick": 11709930,
+      "seq": 1170992
+    }
+  ],
+  "channel_counts": {
+    "sys": 117299,
+    "task": 117299,
+    "fdcan1": 117298,
+    "fdcan23": 117298,
+    "uart123": 117298,
+    "uart6910": 117298,
+    "nvic": 117299,
+    "dji": 117298,
+    "dm": 117298,
+    "imu": 117298
+  },
+  "raw_line_bytes_min": 470,
+  "raw_line_bytes_max": 488,
+  "raw_line_bytes_mean": 482.806596515039,
+  "raw_bytes_per_second": 48274.73325564922,
+  "timestamped_bytes_per_second": 49674.561407247464,
+  "final_partial_bytes": 420,
+  "final_partial_text": "1014-19:31:27 INFO: [dji] tick=11731280 seq=1173127 ch=7 n=48 w=00000000/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00B30147/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00B30147/00000000/00000000/00000000/00000000/00000000/00000000/00000000/00B30147/00000000/00400000/00000000/00000000/00000000/00000000/08000000/FA050300/00040",
+  "task_diagnostics": {
+    "first_sample": {
+      "file": "Rb91.txt",
+      "body_line": 2,
+      "stamp": "1014-16:15:57",
+      "tag": "task",
+      "tick": 20,
+      "seq": 1,
+      "ch": 1
+    },
+    "last_sample": {
+      "file": "Rb160.txt",
+      "body_line": 2130,
+      "stamp": "1014-19:31:27",
+      "tag": "task",
+      "tick": 11731220,
+      "seq": 1173121,
+      "ch": 1
+    },
+    "sample_count": 117299,
+    "min": {
+      "debug_stack_words": 555,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 1,
+      "queue_overflow_count": 0,
+      "queue_high_water": 1,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 471
+    },
+    "max": {
+      "debug_stack_words": 592,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 2,
+      "queue_overflow_count": 144,
+      "queue_high_water": 32,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 488
+    },
+    "last": {
+      "debug_stack_words": 555,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 2,
+      "queue_overflow_count": 144,
+      "queue_high_water": 32,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 488
+    },
+    "task_stack_min_nonzero_words": {
+      "comm": 212,
+      "mode": 92,
+      "status": 90,
+      "chassis": null,
+      "gimbal": 185,
+      "shoot": 59,
+      "ui": null,
+      "debug": 555,
+      "board": 187
+    }
+  },
+  "continuous_after_startup": {
+    "first_seq": 176,
+    "records": 1172951,
+    "tick_span_seconds": 11729.5,
+    "missing_rate_pct": 0.0
+  }
+}

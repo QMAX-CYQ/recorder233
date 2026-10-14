@@ -20,6 +20,13 @@ typedef struct {
 } usb_rx_diag_t;
 extern volatile usb_rx_diag_t g_usb_rx_diag;
 
+/* 接收模块的启动握手统计。 */
+typedef struct {
+    uint32_t session, ready_attempts, ready_started, ready_completed, ack_received, tx_failed;
+    uint32_t discarded_before_ready;
+} log_host_link_diag_t;
+extern volatile log_host_link_diag_t g_log_host_link_diag;
+extern volatile uint8_t g_log_host_ack_received;
 void usb_task(void const *argument);
 
 #endif

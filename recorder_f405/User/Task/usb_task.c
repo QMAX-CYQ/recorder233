@@ -8,6 +8,36 @@
 #include "usb_task.h"
 #include <stdio.h>
 #include <string.h>
+#include "log_link_protocol.h"
+
+extern USBH_HandleTypeDef hUsbHostHS;
+volatile log_host_link_diag_t g_log_host_link_diag;
+volatile uint8_t g_log_host_ack_received;
+static volatile uint8_t log_host_tx_pending;
+static uint8_t log_host_rx_armed;
+static volatile uint8_t log_host_session_active;
+static uint32_t log_host_last_ready_tick;
+static uint32_t log_host_session_counter;
+static uint8_t log_host_ready_frame[16];
+static log_link_parser_t log_host_parser;
+static uint8_t log_host_filtered[512U+16U];
+
+static void log_host_on_frame(uint8_t type, uint32_t session)
+{
+    if (type == LOG_LINK_ACK && log_host_session_active &&
+        session == g_log_host_link_diag.session) {
+        if (!g_log_host_ack_received) g_log_host_link_diag.ack_received++;
+        g_log_host_ack_received = 1U;
+    }
+}
+
+void USBH_CDC_TransmitCallback(USBH_HandleTypeDef *phost)
+{
+    if (phost == &hUsbHostHS) {
+        log_host_tx_pending = 0U;
+        g_log_host_link_diag.ready_completed++;
+    }
+}
 
 uint8_t usb_buffer[512] __attribute__((aligned(4)));
 #define USB_RX_TIMESTAMP_BUFFER_SIZE (sizeof(usb_buffer) * 10U)
@@ -191,6 +221,19 @@ void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef *phost)
 
     usb_rx_callback_count++;
     rx_len = USBH_CDC_GetLastReceivedDataSize(phost);
+    {
+        size_t filtered;
+        uint32_t discarded_before = log_host_parser.discarded;
+        uint16_t input_len = rx_len > sizeof(usb_buffer) ? sizeof(usb_buffer) : rx_len;
+        filtered = LogLinkFilter(&log_host_parser, usb_buffer, input_len,
+            log_host_filtered, &g_log_host_ack_received, log_host_on_frame);
+        g_log_host_link_diag.discarded_before_ready += log_host_parser.discarded - discarded_before;
+        /* 当前接收请求为 64 字节，暂存前缀最多追加 15 字节，512 字节足够。 */
+        if (filtered <= sizeof(usb_buffer)) {
+            memcpy(usb_buffer, log_host_filtered, filtered);
+            rx_len = (uint16_t)filtered;
+        } else rx_len = 0U;
+    }
     usb_rx_last_packet_len = rx_len;
     if (rx_len > 0U)
     {
@@ -273,6 +316,15 @@ void usb_task(void const *argument)
         }
         if (Appli_state == APPLICATION_READY)
         {
+            if (!log_host_session_active) {
+                log_host_session_counter++;
+                g_log_host_link_diag.session = HAL_GetTick() ^ (log_host_session_counter * 2654435761UL);
+                log_host_session_active = 1U;
+                g_log_host_ack_received = 0U;
+                log_host_rx_armed = 0U;
+                log_host_parser.used = 0U;
+                log_host_last_ready_tick = HAL_GetTick() - 200U;
+            }
             ring_ready = RecorderDataGetBufferStatus(&ring_free);
             usb_rx_ring_ready = ring_ready;
             usb_rx_ring_free = (uint32_t)ring_free;
@@ -355,6 +407,7 @@ void usb_task(void const *argument)
                     usb_rx_pending = 1U;
                     receive_status = USBH_CDC_Receive(&hUsbHostHS, usb_buffer, rx_request_len);
                     usb_rx_last_receive_status = (uint32_t)receive_status;
+                    if (receive_status == USBH_OK) log_host_rx_armed = 1U;
                     if (receive_status != USBH_OK)
                     {
                         /* 提交失败，没有等待中的接收请求。 */
@@ -363,9 +416,31 @@ void usb_task(void const *argument)
                     }
                 }
             }
+            /* 接收请求已提交且日志文件可写，再发送 READY。
+             * 提交前置 pending，防止快速完成回调清零后被覆盖。 */
+            if (log_host_rx_armed && RecorderLogIsReady() && !g_log_host_ack_received &&
+                !log_host_tx_pending && cdc_handle != NULL && cdc_handle->data_tx_state == CDC_IDLE &&
+                (HAL_GetTick() - log_host_last_ready_tick >= 200U)) {
+                USBH_StatusTypeDef tx_status;
+                LogLinkBuild(log_host_ready_frame, LOG_LINK_READY, g_log_host_link_diag.session);
+                log_host_tx_pending = 1U;
+                log_host_last_ready_tick = HAL_GetTick();
+                g_log_host_link_diag.ready_attempts++;
+                tx_status = USBH_CDC_Transmit(&hUsbHostHS, log_host_ready_frame, sizeof(log_host_ready_frame));
+                if (tx_status == USBH_OK) g_log_host_link_diag.ready_started++;
+                else {
+                    log_host_tx_pending = 0U;
+                    g_log_host_link_diag.tx_failed++;
+                }
+            }
         }
         else
         {
+            log_host_session_active = 0U;
+            log_host_rx_armed = 0U;
+            log_host_tx_pending = 0U;
+            g_log_host_ack_received = 0U;
+            log_host_parser.used = 0U;
             usb_rx_pending = 0U;
             usb_rx_ready = 0U;
             usb_rx_formatted_ready = 0U;

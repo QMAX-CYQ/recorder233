@@ -1,0 +1,143 @@
+{
+  "file_bytes": 1720672,
+  "body_bytes": 1720320,
+  "blocks16k": 105.0,
+  "complete_rows": 3496,
+  "first": {
+    "line": 9,
+    "stamp": "1014-21:57:53",
+    "tag": "sys",
+    "tick": 230,
+    "seq": 0,
+    "ch": 0
+  },
+  "last": {
+    "line": 3504,
+    "stamp": "1014-21:58:28",
+    "tag": "uart6910",
+    "tick": 35170,
+    "seq": 3495,
+    "ch": 5
+  },
+  "tick_span_seconds": 34.94,
+  "expected_records": 3496,
+  "missing_records": 0,
+  "missing_rate_pct": 0.0,
+  "complete_rate_pct": 100.0,
+  "seq_gaps": [],
+  "tick_gaps": [
+    {
+      "before": {
+        "line": 9,
+        "stamp": "1014-21:57:53",
+        "tag": "sys",
+        "tick": 230,
+        "seq": 0,
+        "ch": 0
+      },
+      "after": {
+        "line": 10,
+        "stamp": "1014-21:57:53",
+        "tag": "task",
+        "tick": 231,
+        "seq": 1,
+        "ch": 1
+      },
+      "delta_ms": 1
+    },
+    {
+      "before": {
+        "line": 10,
+        "stamp": "1014-21:57:53",
+        "tag": "task",
+        "tick": 231,
+        "seq": 1,
+        "ch": 1
+      },
+      "after": {
+        "line": 11,
+        "stamp": "1014-21:57:53",
+        "tag": "fdcan1",
+        "tick": 240,
+        "seq": 2,
+        "ch": 2
+      },
+      "delta_ms": 9
+    }
+  ],
+  "rtc_events": [],
+  "channel_errors": [],
+  "channel_period_errors": [
+    {
+      "before": {
+        "line": 9,
+        "stamp": "1014-21:57:53",
+        "tag": "sys",
+        "tick": 230,
+        "seq": 0,
+        "ch": 0
+      },
+      "after": {
+        "line": 19,
+        "stamp": "1014-21:57:53",
+        "tag": "sys",
+        "tick": 320,
+        "seq": 10,
+        "ch": 0
+      }
+    },
+    {
+      "before": {
+        "line": 10,
+        "stamp": "1014-21:57:53",
+        "tag": "task",
+        "tick": 231,
+        "seq": 1,
+        "ch": 1
+      },
+      "after": {
+        "line": 20,
+        "stamp": "1014-21:57:53",
+        "tag": "task",
+        "tick": 330,
+        "seq": 11,
+        "ch": 1
+      }
+    }
+  ],
+  "format_errors": [],
+  "channel_counts": {
+    "sys": 350,
+    "task": 350,
+    "fdcan1": 350,
+    "fdcan23": 350,
+    "uart123": 350,
+    "uart6910": 350,
+    "nvic": 349,
+    "dji": 349,
+    "dm": 349,
+    "imu": 349
+  },
+  "raw_line_bytes_min": 471,
+  "raw_line_bytes_max": 482,
+  "raw_line_bytes_mean": 478.08237986270024,
+  "raw_bytes_per_second": 47808.23798627002,
+  "timestamped_bytes_per_second": 49208.23798627002,
+  "partial_bytes": 0,
+  "partial_text": "",
+  "observed_task_diagnostics": {
+    "debug_stack_min_words": 555,
+    "last_debug_stack_words": 555,
+    "max_gap_ms": 10,
+    "late_count": 0,
+    "catchup_count": 2,
+    "max_run_ms": 2,
+    "queue_overflow_count": 0,
+    "queue_high_water": 4,
+    "start_failed": 0,
+    "format_truncated": 0,
+    "format_error": 0,
+    "last_line_bytes": 477,
+    "max_line_bytes": 482
+  }
+}

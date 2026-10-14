@@ -8,6 +8,12 @@
 #include "sdio.h"
 
 volatile recorder_diag_t g_recorder_diag;
+static volatile uint8_t recorder_log_ready;
+
+uint8_t RecorderLogIsReady(void)
+{
+    return recorder_log_ready;
+}
 
 #if USE_RECORDER
 
@@ -59,6 +65,7 @@ static uint8_t IsSdCardExist(void)
     g_recorder_diag.card_not_ready++;
     if (++sd_not_ready_count >= 3)
     {
+        recorder_log_ready = 0U;
         f_close(&pcfile_now);
         memset(&pcfile_now, 0, sizeof(pcfile_now));
     }
@@ -605,6 +612,8 @@ static void CreateNewFile(void)
         }
     }
 
+    /* 创建完成前不发布写卡就绪。 */
+    recorder_log_ready = 0U;
     // 新建当前文件
     res = f_open(&pcfile_now, (const TCHAR *)file_name, FA_CREATE_ALWAYS | FA_WRITE | FA_READ);
     if (res != FR_OK)
@@ -618,6 +627,12 @@ static void CreateNewFile(void)
         return;
     }
 
+    /* 文件头落盘成功后才允许主板开始生成日志。 */
+    if (f_sync(&pcfile_now) != FR_OK) {
+        f_close(&pcfile_now);
+        return;
+    }
+    recorder_log_ready = 1U;
     pcfile_status.current_index = next_index;
     strcpy((char *)current_filepath, (char *)file_name);
     log_printf("new file created:%s\r\n", file_name);
@@ -823,7 +838,7 @@ static void RecorderStateUpdate(void)
     case RS_INIT:
     {
         RecorderCreateFileOnBoot();
-        pcfile_status.state = RS_READY;
+        pcfile_status.state = recorder_log_ready ? RS_READY : RS_INIT;
         break;
     }
 
@@ -895,6 +910,7 @@ uint8_t RecorderDataGetBufferStatus(size_t *free_size)
 
 void RecorderInit(void)
 {
+    recorder_log_ready = 0U;
     lwrb_init(&pcfile_buffer_lwrb, pcfile_buffer, PCFILE_BUFFER_SIZE);
     SdCardInit();
     pcfile_status.state = RS_INIT;

@@ -1,0 +1,319 @@
+{
+  "files": [
+    {
+      "file": "Rb81.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 64862,
+      "first": {
+        "file": "Rb81.txt",
+        "body_line": 1,
+        "stamp": "1014-13:18:15",
+        "tag": "sys",
+        "tick": 10
+      },
+      "last": {
+        "file": "Rb81.txt",
+        "body_line": 64862,
+        "stamp": "1014-13:29:04",
+        "tag": "uart123",
+        "tick": 648760
+      },
+      "leading_continuation_bytes": 0,
+      "trailing_partial_bytes": 66,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    },
+    {
+      "file": "Rb82.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 64675,
+      "first": {
+        "file": "Rb81.txt",
+        "body_line": 64863,
+        "stamp": "1014-13:29:04",
+        "tag": "uart610",
+        "tick": 648770
+      },
+      "last": {
+        "file": "Rb82.txt",
+        "body_line": 64675,
+        "stamp": "1014-13:39:51",
+        "tag": "motor",
+        "tick": 1295510
+      },
+      "leading_continuation_bytes": 66,
+      "trailing_partial_bytes": 73,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    },
+    {
+      "file": "Rb83.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 64406,
+      "first": {
+        "file": "Rb82.txt",
+        "body_line": 64676,
+        "stamp": "1014-13:39:51",
+        "tag": "motor",
+        "tick": 1295520
+      },
+      "last": {
+        "file": "Rb83.txt",
+        "body_line": 64406,
+        "stamp": "1014-13:50:35",
+        "tag": "uart610",
+        "tick": 1939570
+      },
+      "leading_continuation_bytes": 73,
+      "trailing_partial_bytes": 141,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    },
+    {
+      "file": "Rb84.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 64281,
+      "first": {
+        "file": "Rb83.txt",
+        "body_line": 64407,
+        "stamp": "1014-13:50:35",
+        "tag": "nvic",
+        "tick": 1939580
+      },
+      "last": {
+        "file": "Rb84.txt",
+        "body_line": 64281,
+        "stamp": "1014-14:01:18",
+        "tag": "nvic",
+        "tick": 2582380
+      },
+      "leading_continuation_bytes": 141,
+      "trailing_partial_bytes": 16,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    },
+    {
+      "file": "Rb85.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 64280,
+      "first": {
+        "file": "Rb84.txt",
+        "body_line": 64282,
+        "stamp": "1014-14:01:18",
+        "tag": "motor",
+        "tick": 2582390
+      },
+      "last": {
+        "file": "Rb85.txt",
+        "body_line": 64280,
+        "stamp": "1014-14:12:01",
+        "tag": "nvic",
+        "tick": 3225180
+      },
+      "leading_continuation_bytes": 16,
+      "trailing_partial_bytes": 84,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    },
+    {
+      "file": "Rb86.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 64281,
+      "first": {
+        "file": "Rb85.txt",
+        "body_line": 64281,
+        "stamp": "1014-14:12:01",
+        "tag": "motor",
+        "tick": 3225190
+      },
+      "last": {
+        "file": "Rb86.txt",
+        "body_line": 64281,
+        "stamp": "1014-14:22:43",
+        "tag": "motor",
+        "tick": 3867990
+      },
+      "leading_continuation_bytes": 84,
+      "trailing_partial_bytes": 25,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    },
+    {
+      "file": "Rb87.txt",
+      "bytes": 8388960,
+      "body_bytes": 8388608,
+      "blocks16k": 512.0,
+      "header_valid": true,
+      "rows_completed": 64280,
+      "first": {
+        "file": "Rb86.txt",
+        "body_line": 64282,
+        "stamp": "1014-14:22:43",
+        "tag": "motor",
+        "tick": 3868000
+      },
+      "last": {
+        "file": "Rb87.txt",
+        "body_line": 64280,
+        "stamp": "1014-14:33:26",
+        "tag": "motor",
+        "tick": 4510790
+      },
+      "leading_continuation_bytes": 25,
+      "trailing_partial_bytes": 93,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    },
+    {
+      "file": "Rb88.txt",
+      "bytes": 4030816,
+      "body_bytes": 4030464,
+      "blocks16k": 246.0,
+      "header_valid": true,
+      "rows_completed": 30885,
+      "first": {
+        "file": "Rb87.txt",
+        "body_line": 64281,
+        "stamp": "1014-14:33:26",
+        "tag": "motor",
+        "tick": 4510800
+      },
+      "last": {
+        "file": "Rb88.txt",
+        "body_line": 30885,
+        "stamp": "1014-14:38:35",
+        "tag": "uart123",
+        "tick": 4819640
+      },
+      "leading_continuation_bytes": 93,
+      "trailing_partial_bytes": 85,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    }
+  ],
+  "complete_rows": 481950,
+  "first": {
+    "file": "Rb81.txt",
+    "body_line": 1,
+    "stamp": "1014-13:18:15",
+    "tag": "sys",
+    "tick": 10
+  },
+  "last": {
+    "file": "Rb88.txt",
+    "body_line": 30885,
+    "stamp": "1014-14:38:35",
+    "tag": "uart123",
+    "tick": 4819640
+  },
+  "missing": 14,
+  "gap_count": 1,
+  "gaps": [
+    {
+      "before": {
+        "file": "Rb81.txt",
+        "body_line": 8,
+        "stamp": "1014-13:18:15",
+        "tag": "motor",
+        "tick": 80
+      },
+      "after": {
+        "file": "Rb81.txt",
+        "body_line": 9,
+        "stamp": "1014-13:18:15",
+        "tag": "motor",
+        "tick": 230
+      },
+      "delta_ms": 150,
+      "missing": 14,
+      "rtc_seconds": 0.0
+    }
+  ],
+  "resets": [],
+  "duplicates": [],
+  "rtc_events": [],
+  "malformed_frames_count": 0,
+  "malformed_frames": [],
+  "shape_errors_count": 0,
+  "shape_errors": [],
+  "phase_errors_count": 0,
+  "phase_errors": [],
+  "boundaries": [
+    {
+      "from": "Rb81.txt",
+      "to": "Rb82.txt",
+      "valid_stitched_frame": true,
+      "tick": 648770
+    },
+    {
+      "from": "Rb82.txt",
+      "to": "Rb83.txt",
+      "valid_stitched_frame": true,
+      "tick": 1295520
+    },
+    {
+      "from": "Rb83.txt",
+      "to": "Rb84.txt",
+      "valid_stitched_frame": true,
+      "tick": 1939580
+    },
+    {
+      "from": "Rb84.txt",
+      "to": "Rb85.txt",
+      "valid_stitched_frame": true,
+      "tick": 2582390
+    },
+    {
+      "from": "Rb85.txt",
+      "to": "Rb86.txt",
+      "valid_stitched_frame": true,
+      "tick": 3225190
+    },
+    {
+      "from": "Rb86.txt",
+      "to": "Rb87.txt",
+      "valid_stitched_frame": true,
+      "tick": 3868000
+    },
+    {
+      "from": "Rb87.txt",
+      "to": "Rb88.txt",
+      "valid_stitched_frame": true,
+      "tick": 4510800
+    }
+  ],
+  "final_partial_bytes": 85,
+  "final_partial_text": "1014-14:38:35 INFO: [uart610] t=4819650 u6 ISR/CR3=006200C0/00000041 u10=006200E2/000",
+  "rtc_minus_tick_drift_ms_range": [
+    -250.0,
+    1070.0
+  ],
+  "tick_span_seconds": 4819.63,
+  "total_body_bytes": 62783488,
+  "percentage_metrics": {
+    "expected_records": 481964,
+    "record_missing_rate_pct": 0.002904781269970371,
+    "complete_record_rate_pct": 99.99709521873002,
+    "missing_per_10000_expected": 0.2904781269970371,
+    "continuous_seconds_after_last_gap": 4819.41,
+    "continuous_records_after_last_gap": 481942
+  }
+}

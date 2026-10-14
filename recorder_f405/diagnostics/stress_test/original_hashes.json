@@ -1,0 +1,7 @@
+{
+  "User/Task/debug_task.c": "a596d612953ba27b995154507a18ec7bb67c7e15466a021c9003e1587d5d3623",
+  "User/Task/debug_task.h": "0d72bcbf0bab498d601cd29fe64823895940a9ed0db37fc904bd846d210a0a26",
+  "User/Support/log.h": "4d13befa7fa6d2e1935c7b1b0685c4fef4f199dfb7e5a56125b842f543a4c635",
+  "User/Support/log.c": "8ac9fdd8b878aca1145f59c0cdc372780b23609515e75435c8536192f6876153",
+  "Core/Src/freertos.c": "803a5c51b4ea39e4112a01a6307f6b0de716266d63be32eacaf5ebc4081a0ec1"
+}

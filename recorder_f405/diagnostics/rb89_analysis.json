@@ -1,0 +1,71 @@
+{
+  "files": [
+    {
+      "file": "Rb89.txt",
+      "bytes": 278880,
+      "body_bytes": 278528,
+      "blocks16k": 17.0,
+      "header_valid": true,
+      "rows_completed": 2176,
+      "first": {
+        "file": "Rb89.txt",
+        "body_line": 1,
+        "stamp": "1014-14:46:53",
+        "tag": "sys",
+        "tick": 10
+      },
+      "last": {
+        "file": "Rb89.txt",
+        "body_line": 2176,
+        "stamp": "1014-14:47:14",
+        "tag": "motor",
+        "tick": 21760
+      },
+      "leading_continuation_bytes": 0,
+      "trailing_partial_bytes": 19,
+      "nul_bytes": 0,
+      "non_ascii_bytes": 0
+    }
+  ],
+  "complete_rows": 2176,
+  "first": {
+    "file": "Rb89.txt",
+    "body_line": 1,
+    "stamp": "1014-14:46:53",
+    "tag": "sys",
+    "tick": 10
+  },
+  "last": {
+    "file": "Rb89.txt",
+    "body_line": 2176,
+    "stamp": "1014-14:47:14",
+    "tag": "motor",
+    "tick": 21760
+  },
+  "missing": 0,
+  "gap_count": 0,
+  "gaps": [],
+  "resets": [],
+  "duplicates": [],
+  "rtc_events": [],
+  "malformed_frames_count": 0,
+  "malformed_frames": [],
+  "shape_errors_count": 0,
+  "shape_errors": [],
+  "phase_errors_count": 0,
+  "phase_errors": [],
+  "boundaries": [],
+  "final_partial_bytes": 19,
+  "final_partial_text": "1014-14:47:14 INFO:",
+  "rtc_minus_tick_drift_ms_range": [
+    -1180.0,
+    0
+  ],
+  "tick_span_seconds": 21.75,
+  "total_body_bytes": 278528,
+  "percentage_metrics": {
+    "expected_records": 2176,
+    "record_missing_rate_pct": 0.0,
+    "complete_record_rate_pct": 100.0
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "file_count": 4,
+  "total_file_bytes": 27608448,
+  "total_body_bytes": 27607040,
+  "files": [
+    {
+      "file": "Rb164.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 17034,
+      "first": {
+        "file": "Rb164.txt",
+        "body_line": 1,
+        "stamp": "1014-22:40:02",
+        "tag": "sys",
+        "tick": 220,
+        "seq": 0,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb164.txt",
+        "body_line": 17034,
+        "stamp": "1014-22:42:52",
+        "tag": "fdcan23",
+        "tick": 170550,
+        "seq": 17033,
+        "ch": 3
+      },
+      "incoming_partial_bytes": 0,
+      "outgoing_partial_bytes": 415,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb165.txt",
+      "bytes": 8405344,
+      "body_bytes": 8404992,
+      "blocks16k": 513.0,
+      "header_valid": true,
+      "rows_completed": 16990,
+      "first": {
+        "file": "Rb164.txt",
+        "body_line": 17035,
+        "stamp": "1014-22:42:52",
+        "tag": "uart123",
+        "tick": 170560,
+        "seq": 17034,
+        "ch": 4
+      },
+      "last": {
+        "file": "Rb165.txt",
+        "body_line": 16990,
+        "stamp": "1014-22:45:42",
+        "tag": "fdcan23",
+        "tick": 340450,
+        "seq": 34023,
+        "ch": 3
+      },
+      "incoming_partial_bytes": 415,
+      "outgoing_partial_bytes": 454,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb166.txt",
+      "bytes": 8421728,
+      "body_bytes": 8421376,
+      "blocks16k": 514.0,
+      "header_valid": true,
+      "rows_completed": 17024,
+      "first": {
+        "file": "Rb165.txt",
+        "body_line": 16991,
+        "stamp": "1014-22:45:42",
+        "tag": "uart123",
+        "tick": 340460,
+        "seq": 34024,
+        "ch": 4
+      },
+      "last": {
+        "file": "Rb166.txt",
+        "body_line": 17024,
+        "stamp": "1014-22:48:32",
+        "tag": "dji",
+        "tick": 510690,
+        "seq": 51047,
+        "ch": 7
+      },
+      "incoming_partial_bytes": 454,
+      "outgoing_partial_bytes": 54,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb167.txt",
+      "bytes": 2376032,
+      "body_bytes": 2375680,
+      "blocks16k": 145.0,
+      "header_valid": true,
+      "rows_completed": 4802,
+      "first": {
+        "file": "Rb166.txt",
+        "body_line": 17025,
+        "stamp": "1014-22:48:32",
+        "tag": "dm",
+        "tick": 510700,
+        "seq": 51048,
+        "ch": 8
+      },
+      "last": {
+        "file": "Rb167.txt",
+        "body_line": 4802,
+        "stamp": "1014-22:49:20",
+        "tag": "imu",
+        "tick": 558710,
+        "seq": 55849,
+        "ch": 9
+      },
+      "incoming_partial_bytes": 54,
+      "outgoing_partial_bytes": 189,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    }
+  ],
+  "first": {
+    "file": "Rb164.txt",
+    "body_line": 1,
+    "stamp": "1014-22:40:02",
+    "tag": "sys",
+    "tick": 220,
+    "seq": 0,
+    "ch": 0
+  },
+  "last": {
+    "file": "Rb167.txt",
+    "body_line": 4802,
+    "stamp": "1014-22:49:20",
+    "tag": "imu",
+    "tick": 558710,
+    "seq": 55849,
+    "ch": 9
+  },
+  "tick_span_seconds": 558.49,
+  "complete_rows": 55850,
+  "expected_records": 55850,
+  "missing_records": 0,
+  "missing_rate_pct": 0.0,
+  "complete_rate_pct": 100.0,
+  "seq_gaps": [],
+  "seq_reset_count": 0,
+  "duplicate_seq_count": 0,
+  "tick_error_count": 0,
+  "tick_errors_first100": [],
+  "channel_error_count": 0,
+  "channel_errors_first30": [],
+  "channel_period_error_count": 0,
+  "channel_period_errors_first30": [],
+  "rtc_events": [],
+  "rtc_minus_tick_drift_ms_range": [
+    -520.0,
+    520.0
+  ],
+  "malformed_complete_lines": 0,
+  "malformed_samples": [],
+  "boundaries": [
+    {
+      "from": "Rb164.txt",
+      "to": "Rb165.txt",
+      "valid": true,
+      "tick": 170560,
+      "seq": 17034
+    },
+    {
+      "from": "Rb165.txt",
+      "to": "Rb166.txt",
+      "valid": true,
+      "tick": 340460,
+      "seq": 34024
+    },
+    {
+      "from": "Rb166.txt",
+      "to": "Rb167.txt",
+      "valid": true,
+      "tick": 510700,
+      "seq": 51048
+    }
+  ],
+  "channel_counts": {
+    "sys": 5585,
+    "task": 5585,
+    "fdcan1": 5585,
+    "fdcan23": 5585,
+    "uart123": 5585,
+    "uart6910": 5585,
+    "nvic": 5585,
+    "dji": 5585,
+    "dm": 5585,
+    "imu": 5585
+  },
+  "raw_line_bytes_min": 471,
+  "raw_line_bytes_max": 484,
+  "raw_line_bytes_mean": 480.30350940017905,
+  "raw_bytes_per_second": 48030.3509400179,
+  "timestamped_bytes_per_second": 49430.3509400179,
+  "final_partial_bytes": 189,
+  "final_partial_text": "1014-22:49:21 INFO: [sys] tick=558720 seq=55850 ch=0 n=48 w=0F0BF025/0000001B/00000048/00000440/00000040/02001012/01FF00DD/00360021/00006000/0101020B/00000000/01010280/00000000/00000000/200",
+  "task_diagnostics": {
+    "first_sample": {
+      "file": "Rb164.txt",
+      "body_line": 2,
+      "stamp": "1014-22:40:02",
+      "tag": "task",
+      "tick": 230,
+      "seq": 1,
+      "ch": 1
+    },
+    "last_sample": {
+      "file": "Rb167.txt",
+      "body_line": 4794,
+      "stamp": "1014-22:49:20",
+      "tag": "task",
+      "tick": 558630,
+      "seq": 55841,
+      "ch": 1
+    },
+    "sample_count": 5585,
+    "min": {
+      "debug_stack_words": 555,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 1,
+      "queue_overflow_count": 0,
+      "queue_high_water": 1,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 472
+    },
+    "max": {
+      "debug_stack_words": 555,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 2,
+      "queue_overflow_count": 0,
+      "queue_high_water": 8,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 484
+    },
+    "last": {
+      "debug_stack_words": 555,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 2,
+      "queue_overflow_count": 0,
+      "queue_high_water": 8,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 484
+    },
+    "task_stack_min_nonzero_words": {
+      "comm": 212,
+      "mode": 101,
+      "status": 90,
+      "chassis": null,
+      "gimbal": 185,
+      "shoot": 59,
+      "ui": null,
+      "debug": 555,
+      "board": 187
+    }
+  }
+}

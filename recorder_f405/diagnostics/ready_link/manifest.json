@@ -1,0 +1,54 @@
+[
+  {
+    "side": "sender",
+    "name": "USB_DEVICE/App/log_link_protocol.h",
+    "exists": false
+  },
+  {
+    "side": "receiver",
+    "name": "User/Task/log_link_protocol.h",
+    "exists": false
+  },
+  {
+    "side": "sender",
+    "name": "USB_DEVICE/App/usbd_cdc_if.h",
+    "sha256": "8fbe819326302e188bffd0122b042271572f22b6c84eb215f09127dc08a29ddf",
+    "exists": true
+  },
+  {
+    "side": "sender",
+    "name": "USB_DEVICE/App/usbd_cdc_if.c",
+    "sha256": "837a0d81aad5787abc838afdb508a3156ce8d8487f82f1954d298413e3d0087d",
+    "exists": true
+  },
+  {
+    "side": "sender",
+    "name": "User/Task/debug_task.c",
+    "sha256": "03e02a6dc36a28dfe0953952e57e103e91930d450bd6626e0b14318c93c58746",
+    "exists": true
+  },
+  {
+    "side": "receiver",
+    "name": "User/Recorder/recorder.h",
+    "sha256": "c65b303aa038d8cdf5c1af982f8b0cf1a3926762e55caccce807ac028069c219",
+    "exists": true
+  },
+  {
+    "side": "receiver",
+    "name": "User/Recorder/recorder.c",
+    "sha256": "3c4e94e2ad83deb39a6218263e801ffaa50892f313c2365499ff80e80e080259",
+    "exists": true
+  },
+  {
+    "side": "receiver",
+    "name": "User/Task/usb_task.h",
+    "sha256": "c6d4569194514c158fe625b660042ba7bbc5b29cb7c63a336d57d341d7c5b24b",
+    "exists": true
+  },
+  {
+    "side": "receiver",
+    "name": "User/Task/usb_task.c",
+    "sha256": "0c3bf84f9258f5eeef3e077bcf6b95d7f1821420857f2a4ff519661b6e2c2aed",
+    "exists": true
+  }
+]
