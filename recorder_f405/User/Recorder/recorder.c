@@ -222,59 +222,75 @@ static uint8_t FileNameToIndex(BYTE *file_name, uint32_t *index)
     return 0;
 }
 
+/* 每次重建短文本文件，避免新内容较短时留下旧尾巴。
+ * 不写字符串末尾的 NUL，检查短写和关闭同步的返回值。 */
+static FRESULT WriteMetadataText(const char *path, const char *text)
+{
+    FIL fp;
+    UINT written = 0U;
+    UINT length;
+    FRESULT result, close_result;
+    if (path == NULL || text == NULL) return FR_INVALID_PARAMETER;
+    length = (UINT)strlen(text);
+    result = f_open(&fp, (const TCHAR *)path, FA_CREATE_ALWAYS | FA_WRITE);
+    if (result != FR_OK) return result;
+    result = f_write(&fp, text, length, &written);
+    if (result == FR_OK && written != length) result = FR_DISK_ERR;
+    close_result = f_close(&fp);
+    return result == FR_OK ? close_result : result;
+}
+
+/* 为结束符保留一字节，并兼容旧版 NUL 结尾及新版 CRLF 文本。 */
+static uint8_t ReadMetadataText(const char *path, char *text, UINT capacity)
+{
+    FIL fp;
+    UINT read_bytes = 0U;
+    size_t length;
+    FRESULT result, close_result;
+    if (path == NULL || text == NULL || capacity < 2U) return 0U;
+    result = f_open(&fp, (const TCHAR *)path, FA_OPEN_EXISTING | FA_READ);
+    if (result != FR_OK) return 0U;
+    result = f_read(&fp, text, capacity - 1U, &read_bytes);
+    close_result = f_close(&fp);
+    if (result != FR_OK || close_result != FR_OK || read_bytes == 0U) return 0U;
+    text[read_bytes] = '\0';
+    length = strlen(text);
+    while (length != 0U && (text[length - 1U] == '\r' || text[length - 1U] == '\n' ||
+                           text[length - 1U] == ' ' || text[length - 1U] == '\t'))
+        text[--length] = '\0';
+    return length != 0U;
+}
+
 static uint8_t LoadCreateSeq(uint32_t *seq)
 {
-    FRESULT res;
-    FIL fp;
-    UINT br;
-    BYTE buf[32] = {0};
+    char buf[32] = {0};
+    uint32_t value = 0U;
+    size_t i;
 
     if (seq == NULL)
     {
         return 0;
     }
 
-    res = f_open(&fp, (const TCHAR *)CREATE_SEQ_FILE_NAME, FA_OPEN_EXISTING | FA_READ);
-    if (res != FR_OK)
-    {
-        return 0;
+    if (!ReadMetadataText(CREATE_SEQ_FILE_NAME, buf, sizeof(buf))) return 0U;
+    /* 只接受十进制数字，拒绝负数、尾部垃圾和 uint32 溢出。 */
+    for (i = 0U; buf[i] != '\0'; i++) {
+        uint32_t digit;
+        if (buf[i] < '0' || buf[i] > '9') return 0U;
+        digit = (uint32_t)(buf[i] - '0');
+        if (value > (UINT32_MAX - digit) / 10U) return 0U;
+        value = value * 10U + digit;
     }
-
-    res = f_read(&fp, buf, sizeof(buf) - 1, &br);
-    f_close(&fp);
-    if ((res != FR_OK) || (br == 0))
-    {
-        return 0;
-    }
-
-    buf[br] = '\0';
-    if (sscanf((char *)buf, "%u", seq) != 1)
-    {
-        return 0;
-    }
-
+    *seq = value;
     return 1;
 }
 
 static uint8_t SaveCreateSeq(uint32_t seq)
 {
-    FRESULT res;
-    FIL fp;
-    UINT bw;
-    BYTE buf[32] = {0};
-
-    snprintf((char *)buf, sizeof(buf), "%u", seq);
-
-    res = f_open(&fp, (const TCHAR *)CREATE_SEQ_FILE_NAME, FA_OPEN_ALWAYS | FA_WRITE);
-    if (res != FR_OK)
-    {
-        return 0;
-    }
-
-    res = f_write(&fp, buf, strlen((char *)buf) + 1, &bw);
-    f_close(&fp);
-
-    return ((res == FR_OK) && (bw == (strlen((char *)buf) + 1))) ? 1 : 0;
+    char text[32];
+    int length = snprintf(text, sizeof(text), "%lu\r\n", (unsigned long)seq);
+    if (length < 0 || length >= (int)sizeof(text)) return 0U;
+    return WriteMetadataText(CREATE_SEQ_FILE_NAME, text) == FR_OK;
 }
 
 static uint8_t ReadRecorderFileHeader(const char *file_name, recorder_file_header_t *header)
@@ -482,10 +498,6 @@ static uint8_t IsFileExist(uint32_t index)
 
 static uint8_t ReadIndexFromFile(const char *meta_file, uint32_t *index)
 {
-
-    FIL fp;
-    UINT br;
-    FRESULT res;
     BYTE file_name[FILE_NAME_MAX_LEN] = {0};
 
     if ((meta_file == NULL) || (index == NULL))
@@ -493,17 +505,7 @@ static uint8_t ReadIndexFromFile(const char *meta_file, uint32_t *index)
         return 0;
     }
 
-    res = f_open(&fp, (const TCHAR *)meta_file, FA_OPEN_EXISTING | FA_READ);
-    if (res != FR_OK)
-    {
-        return 0;
-    }
-
-    res = f_read(&fp, file_name, FILE_NAME_MAX_LEN, &br);
-    f_close(&fp);
-    log_printf("%s\r\n", file_name);
-
-    file_name[br] = '\0';
+    if (!ReadMetadataText(meta_file, (char *)file_name, sizeof(file_name))) return 0U;
     return FileNameToIndex(file_name, index);
 }
 
@@ -553,43 +555,23 @@ static uint8_t DeleteFile(uint32_t index)
 // 保存最早的索引
 static FRESULT SaveOldestIndex(void)
 {
-    FRESULT res;
-    UINT bw;
-    BYTE file_name[FILE_NAME_MAX_LEN] = {0};
-
-    IndexToFileName(pcfile_status.oldest_index, file_name);
-
-    res = f_open(&pcfile_oldest, (const TCHAR *)OLDEST_FILE_NAME, FA_OPEN_ALWAYS | FA_WRITE);
-    if (res != FR_OK)
-    {
-        return res;
-    }
-
-    res = f_write(&pcfile_oldest, file_name, strlen((char *)file_name) + 1, &bw);
-    f_close(&pcfile_oldest);
-
-    return res;
+    char text[FILE_NAME_MAX_LEN];
+    int length;
+    if (pcfile_status.oldest_index >= FILE_MAX_NUM) return FR_INVALID_PARAMETER;
+    length = snprintf(text, sizeof(text), "Rb%lu.txt\r\n", (unsigned long)pcfile_status.oldest_index);
+    if (length < 0 || length >= (int)sizeof(text)) return FR_INVALID_PARAMETER;
+    return WriteMetadataText(OLDEST_FILE_NAME, text);
 }
 
 // 保存最新的索引
 static FRESULT SaveLastestIndex(void)
 {
-    FRESULT res;
-    UINT bw;
-    BYTE file_name[FILE_NAME_MAX_LEN] = {0};
-
-    IndexToFileName(pcfile_status.current_index, file_name);
-
-    res = f_open(&pcfile_lastest, (const TCHAR *)LASTEST_FILE_NAME, FA_OPEN_ALWAYS | FA_WRITE);
-    if (res != FR_OK)
-    {
-        return res;
-    }
-
-    res = f_write(&pcfile_lastest, file_name, strlen((char *)file_name) + 1, &bw);
-    f_close(&pcfile_lastest);
-
-    return res;
+    char text[FILE_NAME_MAX_LEN];
+    int length;
+    if (pcfile_status.current_index >= FILE_MAX_NUM) return FR_INVALID_PARAMETER;
+    length = snprintf(text, sizeof(text), "Rb%lu.txt\r\n", (unsigned long)pcfile_status.current_index);
+    if (length < 0 || length >= (int)sizeof(text)) return FR_INVALID_PARAMETER;
+    return WriteMetadataText(LASTEST_FILE_NAME, text);
 }
 
 // 创建新文件

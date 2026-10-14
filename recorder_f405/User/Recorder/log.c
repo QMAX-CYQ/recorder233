@@ -3,7 +3,6 @@
 #include "calendar.h"
 #include "FreeRTOS.h"
 #include "recorder_inter.h"
-extern time_t time;
 extern void RecorderData(const char *buf,size_t len);
 
 void sys_printf(uint8_t level, const char *tag, const char *fmt, ...)
@@ -17,9 +16,11 @@ void sys_printf(uint8_t level, const char *tag, const char *fmt, ...)
 
     
     #if USE_RTC
-    GetTime();
+    time_t snapshot;
+    /* 格式化只读取本次局部日历。 */
+    (void)Calendar_ReadTime(&snapshot);
     off = snprintf(buf, sizeof(buf), "%02d%02d-%02d:%02d:%02d %s",
-                   time.month, time.day, time.hour, time.min, time.second, log_tag);
+                   snapshot.month, snapshot.day, snapshot.hour, snapshot.min, snapshot.second, log_tag);
     if (off < 0 || off >= (int)sizeof(buf))
         return;
 	#else

@@ -1,0 +1,222 @@
+{
+  "file_count": 2,
+  "total_file_bytes": 11076288,
+  "total_body_bytes": 11075584,
+  "files": [
+    {
+      "file": "Rb0.txt",
+      "bytes": 8438112,
+      "body_bytes": 8437760,
+      "blocks16k": 515.0,
+      "header_valid": true,
+      "rows_completed": 17101,
+      "first": {
+        "file": "Rb0.txt",
+        "body_line": 1,
+        "stamp": "1015-01:15:55",
+        "tag": "sys",
+        "tick": 240,
+        "seq": 0,
+        "ch": 0
+      },
+      "last": {
+        "file": "Rb0.txt",
+        "body_line": 17101,
+        "stamp": "1015-01:18:46",
+        "tag": "sys",
+        "tick": 171240,
+        "seq": 17100,
+        "ch": 0
+      },
+      "incoming_partial_bytes": 0,
+      "outgoing_partial_bytes": 35,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    },
+    {
+      "file": "Rb1.txt",
+      "bytes": 2638176,
+      "body_bytes": 2637824,
+      "blocks16k": 161.0,
+      "header_valid": true,
+      "rows_completed": 5332,
+      "first": {
+        "file": "Rb0.txt",
+        "body_line": 17102,
+        "stamp": "1015-01:18:46",
+        "tag": "task",
+        "tick": 171250,
+        "seq": 17101,
+        "ch": 1
+      },
+      "last": {
+        "file": "Rb1.txt",
+        "body_line": 5332,
+        "stamp": "1015-01:19:39",
+        "tag": "fdcan1",
+        "tick": 224560,
+        "seq": 22432,
+        "ch": 2
+      },
+      "incoming_partial_bytes": 35,
+      "outgoing_partial_bytes": 118,
+      "seq_missing": 0,
+      "tick_error_count": 0
+    }
+  ],
+  "first": {
+    "file": "Rb0.txt",
+    "body_line": 1,
+    "stamp": "1015-01:15:55",
+    "tag": "sys",
+    "tick": 240,
+    "seq": 0,
+    "ch": 0
+  },
+  "last": {
+    "file": "Rb1.txt",
+    "body_line": 5332,
+    "stamp": "1015-01:19:39",
+    "tag": "fdcan1",
+    "tick": 224560,
+    "seq": 22432,
+    "ch": 2
+  },
+  "tick_span_seconds": 224.32,
+  "complete_rows": 22433,
+  "expected_records": 22433,
+  "missing_records": 0,
+  "missing_rate_pct": 0.0,
+  "complete_rate_pct": 100.0,
+  "seq_gaps": [],
+  "seq_reset_count": 0,
+  "duplicate_seq_count": 0,
+  "tick_error_count": 0,
+  "tick_errors_first100": [],
+  "channel_error_count": 0,
+  "channel_errors_first30": [],
+  "channel_period_error_count": 0,
+  "channel_period_errors_first30": [],
+  "rtc_events": [],
+  "rtc_minus_tick_drift_ms_range": [
+    -740.0,
+    290.0
+  ],
+  "malformed_complete_lines": 0,
+  "malformed_samples": [],
+  "boundaries": [
+    {
+      "from": "Rb0.txt",
+      "to": "Rb1.txt",
+      "valid": true,
+      "tick": 171250,
+      "seq": 17101
+    }
+  ],
+  "channel_counts": {
+    "sys": 2244,
+    "task": 2244,
+    "fdcan1": 2244,
+    "fdcan23": 2243,
+    "uart123": 2243,
+    "uart6910": 2243,
+    "nvic": 2243,
+    "dji": 2243,
+    "dm": 2243,
+    "imu": 2243
+  },
+  "raw_line_bytes_min": 471,
+  "raw_line_bytes_max": 484,
+  "raw_line_bytes_mean": 479.71310123478804,
+  "raw_bytes_per_second": 47971.3101234788,
+  "timestamped_bytes_per_second": 49371.3101234788,
+  "final_partial_bytes": 118,
+  "final_partial_text": "1015-01:19:39 INFO: [fdcan23] tick=224570 seq=22433 ch=3 n=48 w=00000000/00070702/00000A33/09800000/00000011/00000000/",
+  "task_diagnostics": {
+    "first_sample": {
+      "file": "Rb0.txt",
+      "body_line": 2,
+      "stamp": "1015-01:15:55",
+      "tag": "task",
+      "tick": 250,
+      "seq": 1,
+      "ch": 1
+    },
+    "last_sample": {
+      "file": "Rb1.txt",
+      "body_line": 5331,
+      "stamp": "1015-01:19:39",
+      "tag": "task",
+      "tick": 224550,
+      "seq": 22431,
+      "ch": 1
+    },
+    "sample_count": 2244,
+    "min": {
+      "debug_stack_words": 555,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 1,
+      "queue_overflow_count": 0,
+      "queue_high_water": 1,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 472
+    },
+    "max": {
+      "debug_stack_words": 555,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 2,
+      "queue_overflow_count": 0,
+      "queue_high_water": 5,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 484
+    },
+    "last": {
+      "debug_stack_words": 555,
+      "free_heap_bytes": 5296,
+      "minimum_ever_free_heap_bytes": 5296,
+      "max_gap_ms": 10,
+      "late_count": 0,
+      "catchup_count": 0,
+      "max_run_ms": 2,
+      "queue_overflow_count": 0,
+      "queue_high_water": 5,
+      "start_failed": 0,
+      "format_truncated": 0,
+      "format_error": 0,
+      "max_line_bytes": 484
+    },
+    "task_stack_min_nonzero_words": {
+      "comm": 212,
+      "mode": 92,
+      "status": 90,
+      "chassis": null,
+      "gimbal": 185,
+      "shoot": 59,
+      "ui": null,
+      "debug": 555,
+      "board": 187
+    }
+  },
+  "file_modification_times": [
+    {
+      "name": "Rb0.txt",
+      "last_write_time": "2026-10-15 01:18:46"
+    },
+    {
+      "name": "Rb1.txt",
+      "last_write_time": "2026-10-15 01:19:38"
+    }
+  ]
+}

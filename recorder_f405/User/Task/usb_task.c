@@ -44,9 +44,6 @@ uint8_t usb_buffer[512] __attribute__((aligned(4)));
 static uint8_t usb_rx_timestamp_buffer[USB_RX_TIMESTAMP_BUFFER_SIZE];
 extern USBH_HandleTypeDef hUsbHostHS;
 extern ApplicationTypeDef Appli_state;
-#if USE_RTC
-extern time_t time;
-#endif
 
 volatile uint32_t usb_rx_callback_count;
 volatile uint32_t usb_rx_zero_length_count;
@@ -171,13 +168,15 @@ static uint8_t usb_format_packet_with_timestamp(uint16_t input_len, size_t *outp
         if (at_line_start && (data != '\r') && (data != '\n'))
         {
 #if USE_RTC
-            GetTime();
+            time_t snapshot;
+            /* 格式化只读取本次局部快照，避免全局日历被其他任务更新。 */
+            (void)Calendar_ReadTime(&snapshot);
             timestamp_len = snprintf(timestamp, sizeof(timestamp), "%02u%02u-%02u:%02u:%02u ",
-                                     (unsigned int)time.month,
-                                     (unsigned int)time.day,
-                                     (unsigned int)time.hour,
-                                     (unsigned int)time.min,
-                                     (unsigned int)time.second);
+                                     (unsigned int)snapshot.month,
+                                     (unsigned int)snapshot.day,
+                                     (unsigned int)snapshot.hour,
+                                     (unsigned int)snapshot.min,
+                                     (unsigned int)snapshot.second);
 #else
             timestamp_len = snprintf(timestamp, sizeof(timestamp), "%lu ",
                                      (unsigned long)HAL_GetTick());
