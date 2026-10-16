@@ -1,0 +1,14 @@
+[
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\User\\Task\\usb_task.c",
+    "Hash": "FCB66581F43766A46BECCD752E238CF51D0BFB11D768EBD2FB3DBFD74761526E"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\User\\Task\\usb_task.h",
+    "Hash": "F1E6AB63CBAA9ABEE2057490BB6276379A75CA8F28809796423FD6D3321B46AD"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\usb_rx_timeout\\firmware\\recorder_f405.axf",
+    "Hash": "74E88750663B32D77A8B4E2B832D0400646F5FA391AEE0A2BBDB6D8558129516"
+  }
+]

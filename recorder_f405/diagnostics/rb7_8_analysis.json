@@ -1,0 +1,63 @@
+{
+  "sessions": [
+    {
+      "first": {
+        "rtc": "1015-18:21:56",
+        "tick": 216,
+        "seq": 0,
+        "ch": 0
+      },
+      "last": {
+        "rtc": "1015-18:21:56",
+        "tick": 716,
+        "seq": 50,
+        "ch": 0
+      },
+      "rows": 51
+    },
+    {
+      "first": {
+        "rtc": "1015-18:22:50",
+        "tick": 436,
+        "seq": 0,
+        "ch": 0
+      },
+      "last": {
+        "rtc": "1015-18:23:00",
+        "tick": 9996,
+        "seq": 956,
+        "ch": 6
+      },
+      "rows": 957
+    },
+    {
+      "first": {
+        "rtc": "1015-18:23:02",
+        "tick": 467,
+        "seq": 0,
+        "ch": 0
+      },
+      "last": {
+        "rtc": "1015-18:26:37",
+        "tick": 214327,
+        "seq": 21386,
+        "ch": 6
+      },
+      "rows": 21387
+    }
+  ],
+  "gaps": [],
+  "complete_bad_lines": [],
+  "error_count": 3,
+  "errors": [
+    "1015-18:23:02 ERROR: [hardfault] id=1 part=1/3 exception=3 fault_tick=10006 tick_valid=1 send_tick=436 reset_before=00000000 reset_after=04420000 stack_valid=1 msp=2401BD78 psp=24016BA0 exc_return=FFFFFFED pc=0800CD30 lr=0800CCEF xpsr=81000000",
+    "1015-18:23:02 ERROR: [hardfault] id=1 part=2/3 r0=00000000 r1=E000ED24 r2=46544F4E r3=24011970 r4=A5A5A5A5 r5=A5A5A5A5 r6=A5A5A5A5 r7=A5A5A5A5 r8=A5A5A5A5 r9=A5A5A5A5 r10=A5A5A5A5 r11=A5A5A5A5 r12=00070524 control=00000000 primask=00000000 basepri=00000000 faultmask=00000000",
+    "1015-18:23:02 ERROR: [hardfault] id=1 part=3/3 cfsr=00010000 hfsr=40000000 dfsr=00000000 afsr=00000000 bfar=00000000 mmfar=00000000 shcsr=00000000 icsr=00400803 vtor=08000000 abfsr=00000000 fpccr=C0000019 checksum=E830E633"
+  ],
+  "WARN_count": 1720,
+  "boundary_valid": true,
+  "boundary_tick": 159417,
+  "boundary_seq": 15895,
+  "tail_bytes": 51,
+  "tail_complete": false
+}

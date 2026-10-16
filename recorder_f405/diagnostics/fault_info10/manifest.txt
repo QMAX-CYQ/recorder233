@@ -1,0 +1,9 @@
+
+Algorithm : SHA256
+Hash      : C183CA8489900322AAD3AB96A7BE8899B652A520515F22B95515F2B9FBC20126
+Path      : D:\RM\recorder233\recorder_f405\diagnostics\fault_info10\staged\debug_task.c
+
+Algorithm : SHA256
+Hash      : 7E327ED7C010E4E156B1029B711285D59A7D0A01E9207156839D8BD4001EFA66
+Path      : D:\RM\recorder233\recorder_f405\diagnostics\fault_info10\firmware\rm_main.axf
+

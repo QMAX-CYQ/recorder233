@@ -1,0 +1,8 @@
+timeout_test.c
+PASS: threshold, frozen snapshot, one event per request, passive capture, callback end
+PASS: first preserved, recent four snapshots wrap correctly
+PASS: HAL tick wrap and disconnect end
+PASS: callback racing timeout capture does not produce a stale snapshot
+PASS: invalid pipe cannot access a channel outside the array
+PASS: IRQ mask preserved and missing class safely skipped
+PASS: completion and re-submit between polls starts an independent timeout

@@ -1,0 +1,115 @@
+{
+  "bytes": 2179424,
+  "complete_info": 4362,
+  "sessions": [
+    {
+      "first": {
+        "line": 9,
+        "rtc": "1015-18:15:22",
+        "tag": "sys",
+        "tick": 1766,
+        "seq": 0,
+        "ch": 0
+      },
+      "rows": 824,
+      "last": {
+        "line": 872,
+        "rtc": "1015-18:15:30",
+        "tag": "fdcan23",
+        "tick": 9996,
+        "seq": 823,
+        "ch": 3
+      },
+      "diag_first": {
+        "tick": 1776,
+        "max_gap": 10,
+        "late": 0,
+        "catchup": 0,
+        "max_run": 1,
+        "overflow": 0,
+        "high_water": 1,
+        "start_failed": 0,
+        "truncated": 0,
+        "format_error": 0
+      },
+      "diag_last": {
+        "tick": 9976,
+        "max_gap": 10,
+        "late": 0,
+        "catchup": 0,
+        "max_run": 2,
+        "overflow": 0,
+        "high_water": 4,
+        "start_failed": 0,
+        "truncated": 0,
+        "format_error": 0
+      }
+    },
+    {
+      "first": {
+        "line": 873,
+        "rtc": "1015-18:15:32",
+        "tag": "sys",
+        "tick": 446,
+        "seq": 0,
+        "ch": 0
+      },
+      "rows": 3538,
+      "last": {
+        "line": 4658,
+        "rtc": "1015-18:16:08",
+        "tag": "dji",
+        "tick": 35816,
+        "seq": 3537,
+        "ch": 7
+      },
+      "diag_first": {
+        "tick": 456,
+        "max_gap": 10,
+        "late": 0,
+        "catchup": 0,
+        "max_run": 1,
+        "overflow": 0,
+        "high_water": 1,
+        "start_failed": 0,
+        "truncated": 0,
+        "format_error": 0
+      },
+      "diag_last": {
+        "tick": 35756,
+        "max_gap": 10,
+        "late": 0,
+        "catchup": 0,
+        "max_run": 2,
+        "overflow": 0,
+        "high_water": 4,
+        "start_failed": 0,
+        "truncated": 0,
+        "format_error": 0
+      }
+    }
+  ],
+  "bad": [],
+  "gaps": [],
+  "warn_count": 288,
+  "error_count": 0,
+  "warn_first": [
+    "1015-18:15:25 WARN: [offline] module=vision send_tick=5036 last_rx_tick=0 offline_ms=0 can_index=0 can_id=0x0"
+  ],
+  "warn_last": [
+    "1015-18:16:08 WARN: [offline] module=pit send_tick=35796 last_rx_tick=0 offline_ms=30690 can_index=2 can_id=0x5"
+  ],
+  "all_info_max_tick": 35826,
+  "backtracks": 1,
+  "warn_modules": {
+    "vision": 36,
+    "vtm": 36,
+    "gimbal_imu": 36,
+    "board": 36,
+    "fric_right": 36,
+    "fric_left": 36,
+    "yaw": 36,
+    "pit": 36
+  },
+  "partial_tail_bytes": 377
+}

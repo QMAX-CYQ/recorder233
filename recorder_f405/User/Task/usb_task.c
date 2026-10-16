@@ -76,6 +76,151 @@ static uint8_t diagnostic_have_tick;
 static uint32_t diagnostic_request_tick;
 static volatile uint32_t diagnostic_ready_tick;
 
+extern HCD_HandleTypeDef hhcd_USB_OTG_HS;
+volatile usb_rx_timeout_diag_t g_usb_rx_timeout_diag = {
+    .threshold_ms = USB_RX_TIMEOUT_MS
+};
+static uint32_t diagnostic_timeout_request_id;
+
+volatile usb_host_recovery_diag_t g_usb_host_recovery_diag;
+
+/* 仅在超时首次出现时读取寄存器；不清中断、不停止通道、不改变接收状态。 */
+static void diagnostic_capture_timeout(uint32_t request_id)
+{
+    usb_rx_timeout_snapshot_t snapshot = {0};
+    CDC_HandleTypeDef *cdc;
+    USB_OTG_GlobalTypeDef *usb = hhcd_USB_OTG_HS.Instance;
+    USB_OTG_HostTypeDef *host;
+    USB_OTG_HostChannelTypeDef *channel;
+    USB_OTG_HCTypeDef *hc;
+    uint32_t primask, slot, pipe;
+
+    primask = __get_PRIMASK();
+    __disable_irq();
+    /* 回调可能在判断超时后到达，锁内重新确认，避免记录已完成的旧请求。 */
+    if (!usb_rx_pending || Appli_state != APPLICATION_READY ||
+        request_id != g_usb_rx_timeout_diag.request_count ||
+        hUsbHostHS.pActiveClass == NULL || usb == NULL) {
+        __set_PRIMASK(primask);
+        return;
+    }
+    cdc = (CDC_HandleTypeDef *)hUsbHostHS.pActiveClass->pData;
+    snapshot.event_id = g_usb_rx_timeout_diag.timeout_count + 1U;
+    snapshot.capture_tick = HAL_GetTick();
+    snapshot.request_id = request_id;
+    snapshot.request_tick = diagnostic_request_tick;
+    snapshot.pending_ms = snapshot.capture_tick - snapshot.request_tick;
+    snapshot.callback_count = usb_rx_callback_count;
+    snapshot.last_callback_tick = g_usb_rx_timeout_diag.last_callback_tick;
+    snapshot.raw_bytes = g_usb_rx_diag.raw_bytes;
+    snapshot.application_state = (uint32_t)Appli_state;
+    snapshot.host_state = (uint32_t)hUsbHostHS.gState;
+    snapshot.host_timer = hUsbHostHS.Timer;
+    snapshot.pending = usb_rx_pending;
+    snapshot.ready = usb_rx_ready;
+    snapshot.waiting_for_ring = usb_rx_waiting_for_ring;
+    snapshot.ring_ready = usb_rx_ring_ready;
+    snapshot.ring_free = usb_rx_ring_free;
+    snapshot.ack_received = g_log_host_ack_received;
+    snapshot.session = g_log_host_link_diag.session;
+    snapshot.ready_started = g_log_host_link_diag.ready_started;
+    snapshot.ready_completed = g_log_host_link_diag.ready_completed;
+    host = (USB_OTG_HostTypeDef *)((uintptr_t)usb + USB_OTG_HOST_BASE);
+    snapshot.gahbcfg = usb->GAHBCFG;
+    snapshot.grstctl = usb->GRSTCTL;
+    snapshot.gintsts = usb->GINTSTS;
+    snapshot.gintmsk = usb->GINTMSK;
+    snapshot.hnptxsts = usb->HNPTXSTS;
+    snapshot.hprt = *(volatile uint32_t *)((uintptr_t)usb + USB_OTG_HOST_PORT_BASE);
+    snapshot.hfnum = host->HFNUM;
+    snapshot.haint = host->HAINT;
+    snapshot.haintmsk = host->HAINTMSK;
+    if (cdc != NULL) {
+        snapshot.cdc_valid = 1U;
+        snapshot.cdc_state = (uint32_t)cdc->state;
+        snapshot.data_rx_state = (uint32_t)cdc->data_rx_state;
+        snapshot.data_tx_state = (uint32_t)cdc->data_tx_state;
+        snapshot.in_pipe = cdc->DataItf.InPipe;
+        snapshot.in_ep = cdc->DataItf.InEp;
+        snapshot.in_ep_size = cdc->DataItf.InEpSize;
+        snapshot.rx_data = (uint32_t)(uintptr_t)cdc->pRxData;
+        snapshot.rx_length = cdc->RxDataLength;
+        pipe = cdc->DataItf.InPipe;
+        if (pipe < hhcd_USB_OTG_HS.Init.Host_channels &&
+            pipe < sizeof(hhcd_USB_OTG_HS.hc) / sizeof(hhcd_USB_OTG_HS.hc[0])) {
+            hc = &hhcd_USB_OTG_HS.hc[pipe];
+            channel = (USB_OTG_HostChannelTypeDef *)((uintptr_t)usb +
+                USB_OTG_HOST_CHANNEL_BASE + pipe * USB_OTG_HOST_CHANNEL_SIZE);
+            snapshot.hc_valid = 1U;
+            snapshot.hc_state = (uint32_t)hc->state;
+            snapshot.urb_state = (uint32_t)hc->urb_state;
+            snapshot.error_count = hc->ErrCnt;
+            snapshot.xfer_buff = (uint32_t)(uintptr_t)hc->xfer_buff;
+            snapshot.xfer_len = hc->xfer_len;
+            snapshot.xfer_count = hc->xfer_count;
+            snapshot.toggle_in = hc->toggle_in;
+            snapshot.data_pid = hc->data_pid;
+            snapshot.hcchar = channel->HCCHAR;
+            snapshot.hcint = channel->HCINT;
+            snapshot.hcintmsk = channel->HCINTMSK;
+            snapshot.hctsiz = channel->HCTSIZ;
+            snapshot.hcdma = channel->HCDMA;
+        }
+    }
+    /* 主环冻结后，独立生命周期环继续保留断开、StopHost 和重新初始化。 */
+
+    /* CPU 状态在短临界区内采样；USB 硬件仍运行，寄存器并非同时锁存。 */
+    __set_PRIMASK(primask);
+
+    slot = g_usb_rx_timeout_diag.history_next % USB_RX_TIMEOUT_HISTORY_SIZE;
+    g_usb_rx_timeout_diag.history[slot].valid = 0U;
+    g_usb_rx_timeout_diag.history[slot] = snapshot;
+    __DMB();
+    g_usb_rx_timeout_diag.history[slot].valid = 1U;
+    if (!g_usb_rx_timeout_diag.first.valid) {
+        g_usb_rx_timeout_diag.first = snapshot;
+        __DMB();
+        g_usb_rx_timeout_diag.first.valid = 1U;
+    }
+    diagnostic_timeout_request_id = request_id;
+    g_usb_rx_timeout_diag.latest_index = slot;
+    g_usb_rx_timeout_diag.history_next++;
+    g_usb_rx_timeout_diag.timeout_count++;
+    g_usb_rx_timeout_diag.active = 1U;
+}
+
+static void diagnostic_poll_timeout(void)
+{
+    uint32_t elapsed, request_id = g_usb_rx_timeout_diag.request_count;
+    uint32_t callback_count = usb_rx_callback_count;
+    uint32_t request_tick = diagnostic_request_tick;
+    uint32_t now = HAL_GetTick();
+
+    if (g_usb_rx_timeout_diag.active &&
+        (!usb_rx_pending || Appli_state != APPLICATION_READY ||
+         request_id != diagnostic_timeout_request_id)) {
+        const volatile usb_rx_timeout_snapshot_t *last =
+            &g_usb_rx_timeout_diag.history[g_usb_rx_timeout_diag.latest_index];
+        g_usb_rx_timeout_diag.active = 0U;
+        g_usb_rx_timeout_diag.ended_count++;
+        g_usb_rx_timeout_diag.last_end_tick = now;
+        /* 1：回调后结束；2：离开就绪态；3：请求被清除或替换。 */
+        g_usb_rx_timeout_diag.last_end_reason = Appli_state != APPLICATION_READY ? 2U :
+            (callback_count != last->callback_count ? 1U : 3U);
+        /* 正常静默也可能超时，观察到请求结束后继续记录下一次故障。 */
+
+    }
+    g_usb_rx_timeout_diag.current_pending_ms = 0U;
+    if (usb_rx_pending && Appli_state == APPLICATION_READY) {
+        elapsed = now - request_tick;
+        g_usb_rx_timeout_diag.current_pending_ms = elapsed;
+        if (elapsed > g_usb_rx_timeout_diag.max_observed_pending_ms)
+            g_usb_rx_timeout_diag.max_observed_pending_ms = elapsed;
+        if (!g_usb_rx_timeout_diag.active && elapsed >= USB_RX_TIMEOUT_MS)
+            diagnostic_capture_timeout(request_id);
+    }
+}
+
 /* Observe raw CDC bytes once in the callback, before timestamps are inserted.
  * Keep a short prefix across USB packets; never change or consume input data. */
 static void diagnostic_observe_rx(const uint8_t *data, uint16_t len)
@@ -219,6 +364,9 @@ void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef *phost)
     }
 
     usb_rx_callback_count++;
+    /* 包括握手控制帧和零长度包，记录所有接收完成回调。 */
+    g_usb_rx_timeout_diag.callback_count++;
+    g_usb_rx_timeout_diag.last_callback_tick = HAL_GetTick();
     rx_len = USBH_CDC_GetLastReceivedDataSize(phost);
     {
         size_t filtered;
@@ -257,6 +405,200 @@ void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef *phost)
     usb_rx_pending = 0U;
 }
 
+/* 只清理本次连接的暂存状态，已进入记录环形缓存的数据继续由写卡任务处理。 */
+static void usb_recovery_reset_session(void)
+{
+    if (usb_rx_ready) {
+        g_usb_host_recovery_diag.discarded_ready_packets++;
+        g_usb_host_recovery_diag.discarded_ready_bytes += usb_rx_len;
+    }
+    g_usb_rx_diag.discarded_partial_line_bytes += diagnostic_line_bytes;
+    log_host_session_active = 0U;
+    log_host_rx_armed = 0U;
+    log_host_tx_pending = 0U;
+    g_log_host_ack_received = 0U;
+    log_host_parser.used = 0U;
+    usb_rx_pending = 0U;
+    usb_rx_ready = 0U;
+    usb_rx_len = 0U;
+    usb_rx_formatted_ready = 0U;
+    usb_rx_timestamp_len = 0U;
+    usb_rx_line_start = 1U;
+    usb_rx_waiting_for_ring = 0U;
+    diagnostic_prefix_len = 0U;
+    diagnostic_line_bytes = 0U;
+    diagnostic_previous_byte = 0U;
+    diagnostic_have_tick = 0U;
+    g_usb_rx_diag.line_bytes_pending = 0U;
+    Appli_state = APPLICATION_START;
+}
+
+/* 本函数由 USBH_Process_OS 在自身线程调用；应用任务发请求后暂停访问 Host。 */
+uint8_t USBH_UserRecoveryService(USBH_HandleTypeDef *phost)
+{
+    HCD_InitTypeDef saved_init;
+    HAL_StatusTypeDef hal_status;
+    USBH_StatusTypeDef status;
+    uint32_t start, failure = 0U;
+
+    if (phost != &hUsbHostHS || __get_IPSR() != 0U) return 0U;
+    if (g_usb_host_recovery_diag.state == USB_HOST_RECOVERY_FAILED) return 1U;
+    if (g_usb_host_recovery_diag.state != USB_HOST_RECOVERY_REQUESTED) return 0U;
+    g_usb_host_recovery_diag.state = USB_HOST_RECOVERY_RUNNING;
+    start = HAL_GetTick();
+    g_usb_host_recovery_diag.start_tick = start;
+    g_usb_host_recovery_diag.attempts++;
+    g_usb_host_recovery_diag.callback_baseline = usb_rx_callback_count;
+    saved_init = hhcd_USB_OTG_HS.Init;
+
+
+    /* 先阻断 USB 中断并通过 RCC 复位终止旧 DMA，再释放旧 CDC 类。
+     * 其他中断和任务仍运行，不在全局关中断期间延时或操作堆。 */
+    HAL_NVIC_DisableIRQ(OTG_HS_IRQn);
+    HAL_NVIC_DisableIRQ(OTG_HS_EP1_IN_IRQn);
+    HAL_NVIC_DisableIRQ(OTG_HS_EP1_OUT_IRQn);
+    __HAL_RCC_USB_OTG_HS_CLK_ENABLE();
+    __HAL_RCC_USB_OTG_HS_FORCE_RESET();
+    __DSB();
+    status = USBH_ResetStateForRecovery(phost);
+    if (status != USBH_OK) failure = 0x10000U | (uint32_t)status;
+    /* 当前 ClosePipe 是无硬件操作；类 DeInit 释放 CDC 的单次堆分配。
+     * 不调用 USBH_DeInit/Init，不销毁当前线程，也不增加消息队列。 */
+    hal_status = HAL_HCD_DeInit(&hhcd_USB_OTG_HS);
+    if (hal_status != HAL_OK && failure == 0U) failure = 0x20000U | (uint32_t)hal_status;
+    memset(&hhcd_USB_OTG_HS, 0, sizeof(hhcd_USB_OTG_HS));
+    hhcd_USB_OTG_HS.Instance = USB_OTG_HS;
+    hhcd_USB_OTG_HS.Init = saved_init;
+    hhcd_USB_OTG_HS.pData = phost;
+    phost->pData = &hhcd_USB_OTG_HS;
+    usb_recovery_reset_session();
+    __HAL_RCC_USB_OTG_HS_CLK_ENABLE();
+    __HAL_RCC_USB_OTG_HS_RELEASE_RESET();
+    __DSB();
+    __ISB();
+    HAL_NVIC_ClearPendingIRQ(OTG_HS_IRQn);
+    HAL_NVIC_ClearPendingIRQ(OTG_HS_EP1_IN_IRQn);
+    HAL_NVIC_ClearPendingIRQ(OTG_HS_EP1_OUT_IRQn);
+    osDelay(20U);
+    if (failure != 0U) goto recovery_failed;
+
+    /* 单独检查 HAL 返回值，避免进入原 LL_Init 的 Error_Handler。 */
+    hal_status = HAL_HCD_Init(&hhcd_USB_OTG_HS);
+    if (hal_status != HAL_OK) {
+        failure = 0x30000U | (uint32_t)hal_status;
+        goto recovery_failed;
+    }
+    USBH_LL_SetTimer(phost, HAL_HCD_GetCurrentFrame(&hhcd_USB_OTG_HS));
+    hal_status = HAL_HCD_Start(&hhcd_USB_OTG_HS);
+    if (hal_status != HAL_OK) {
+        failure = 0x40000U | (uint32_t)hal_status;
+        goto recovery_failed;
+    }
+    status = USBH_LL_DriverVBUS(phost, 1U);
+    if (status != USBH_OK) {
+        failure = 0x50000U | (uint32_t)status;
+        goto recovery_failed;
+    }
+    g_usb_host_recovery_diag.core_restarted++;
+    g_usb_host_recovery_diag.restart_tick = HAL_GetTick();
+    g_usb_host_recovery_diag.last_duration_ms = HAL_GetTick() - start;
+    g_usb_host_recovery_diag.last_status = 0U;
+
+    __DMB();
+    g_usb_host_recovery_diag.state = USB_HOST_RECOVERY_WAIT_LINK;
+    USBH_OS_PutMessage(phost, USBH_PORT_EVENT, 0U, 0U);
+    return 1U;
+
+recovery_failed:
+    HAL_NVIC_DisableIRQ(OTG_HS_IRQn);
+    HAL_NVIC_DisableIRQ(OTG_HS_EP1_IN_IRQn);
+    HAL_NVIC_DisableIRQ(OTG_HS_EP1_OUT_IRQn);
+    g_usb_host_recovery_diag.failed++;
+    g_usb_host_recovery_diag.last_status = failure;
+    g_usb_host_recovery_diag.last_duration_ms = HAL_GetTick() - start;
+
+    __DMB();
+    g_usb_host_recovery_diag.state = USB_HOST_RECOVERY_FAILED;
+    return 1U;
+}
+
+static void usb_recovery_request(uint32_t reason, uint32_t hcchar, uint32_t urb_state)
+{
+    g_usb_host_recovery_diag.reason = reason;
+    g_usb_host_recovery_diag.last_hcchar = hcchar;
+    g_usb_host_recovery_diag.last_urb_state = urb_state;
+    g_usb_host_recovery_diag.request_tick = HAL_GetTick();
+    g_usb_host_recovery_diag.requests++;
+    __DMB();
+    g_usb_host_recovery_diag.state = USB_HOST_RECOVERY_REQUESTED;
+    /* 队列满时已有消息可唤醒 Host；任一消息都会先检查恢复请求。 */
+    USBH_OS_PutMessage(&hUsbHostHS, USBH_PORT_EVENT, 0U, 0U);
+}
+
+/* 返回 1 时本轮应用不得再提交接收/READY 或访问 CDC 对象。 */
+static uint8_t usb_recovery_poll(void)
+{
+    CDC_HandleTypeDef *cdc;
+    const USB_OTG_HostChannelTypeDef *regs;
+    uint32_t now = HAL_GetTick(), primask, pipe, hcchar, urb_state;
+    uint32_t state = g_usb_host_recovery_diag.state;
+
+    if (state == USB_HOST_RECOVERY_REQUESTED || state == USB_HOST_RECOVERY_RUNNING) return 1U;
+    if (state == USB_HOST_RECOVERY_FAILED) {
+        if (now - g_usb_host_recovery_diag.start_tick >= USB_HOST_RECOVERY_COOLDOWN_MS)
+            usb_recovery_request(4U, 0U, 0U);
+        return 1U;
+    }
+    if (hhcd_USB_OTG_HS.Instance == NULL) return 0U;
+    if (state == USB_HOST_RECOVERY_WAIT_LINK) {
+        if (Appli_state == APPLICATION_READY && g_log_host_ack_received &&
+            usb_rx_callback_count != g_usb_host_recovery_diag.callback_baseline) {
+            g_usb_host_recovery_diag.restored++;
+            g_usb_host_recovery_diag.restored_tick = now;
+            g_usb_host_recovery_diag.state = USB_HOST_RECOVERY_IDLE;
+        } else if (now - g_usb_host_recovery_diag.restart_tick >= USB_HOST_RECOVERY_ENUM_TIMEOUT_MS &&
+                   (*(volatile uint32_t *)((uintptr_t)hhcd_USB_OTG_HS.Instance + USB_OTG_HOST_PORT_BASE) &
+                    USB_OTG_HPRT_PCSTS) != 0U) {
+            usb_recovery_request(3U, 0U, 0U);
+            return 1U;
+        }
+    }
+    if (g_usb_host_recovery_diag.attempts != 0U &&
+        now - g_usb_host_recovery_diag.start_tick < USB_HOST_RECOVERY_COOLDOWN_MS) return 0U;
+    if (Appli_state != APPLICATION_READY || !usb_rx_pending || usb_rx_ready ||
+        usb_rx_waiting_for_ring || now - diagnostic_request_tick < USB_HOST_RECOVERY_TIMEOUT_MS) return 0U;
+
+    primask = __get_PRIMASK();
+    __disable_irq();
+    /* 临界区仅取指针和状态，不调用 RTOS 或阻塞函数。 */
+    if (!usb_rx_pending || hUsbHostHS.pActiveClass == NULL || hUsbHostHS.pActiveClass->pData == NULL) {
+        __set_PRIMASK(primask);
+        return 0U;
+    }
+    cdc = (CDC_HandleTypeDef *)hUsbHostHS.pActiveClass->pData;
+    pipe = cdc->DataItf.InPipe;
+    if (pipe >= hhcd_USB_OTG_HS.Init.Host_channels ||
+        pipe >= sizeof(hhcd_USB_OTG_HS.hc) / sizeof(hhcd_USB_OTG_HS.hc[0])) {
+        __set_PRIMASK(primask);
+        return 0U;
+    }
+    regs = (const USB_OTG_HostChannelTypeDef *)((uintptr_t)hhcd_USB_OTG_HS.Instance +
+        USB_OTG_HOST_CHANNEL_BASE + pipe * USB_OTG_HOST_CHANNEL_SIZE);
+    hcchar = regs->HCCHAR;
+    urb_state = (uint32_t)hhcd_USB_OTG_HS.hc[pipe].urb_state;
+    __set_PRIMASK(primask);
+    if ((hcchar & (USB_OTG_HCCHAR_CHENA | USB_OTG_HCCHAR_CHDIS)) ==
+        (USB_OTG_HCCHAR_CHENA | USB_OTG_HCCHAR_CHDIS)) {
+        usb_recovery_request(1U, hcchar, urb_state);
+        return 1U;
+    }
+    if (urb_state == (uint32_t)URB_ERROR || urb_state == (uint32_t)URB_STALL) {
+        usb_recovery_request(2U, hcchar, urb_state);
+        return 1U;
+    }
+    return 0U;
+}
+
 void usb_task(void const *argument)
 {
     uint32_t thread_wake_time = osKernelSysTick();
@@ -274,6 +616,11 @@ void usb_task(void const *argument)
     for (;;)
     {
         thread_wake_time = osKernelSysTick();
+        if (usb_recovery_poll()) {
+            osDelay(1U);
+            continue;
+        }
+        diagnostic_poll_timeout();
         {
             uint32_t now = HAL_GetTick();
             uint32_t elapsed = now - diagnostic_last_task_tick;
@@ -402,9 +749,12 @@ void usb_task(void const *argument)
                 {
                     usb_rx_waiting_for_ring = 0U;
                     diagnostic_request_tick = HAL_GetTick();
+                    g_usb_rx_timeout_diag.request_count++;
+
                     /* 提交前先标记，避免完成回调清零后又被覆盖。 */
                     usb_rx_pending = 1U;
                     receive_status = USBH_CDC_Receive(&hUsbHostHS, usb_buffer, rx_request_len);
+
                     usb_rx_last_receive_status = (uint32_t)receive_status;
                     if (receive_status == USBH_OK) log_host_rx_armed = 1U;
                     if (receive_status != USBH_OK)

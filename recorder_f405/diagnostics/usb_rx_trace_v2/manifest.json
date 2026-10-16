@@ -1,0 +1,30 @@
+[
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\User\\Task\\usb_task.c",
+    "Hash": "7166B74A7521E8565A68D2C6094B38F1490BE4BA56AD1B361D0DA59AE7617DB7"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\User\\Task\\usb_rx_trace.h",
+    "Hash": "D5C77DA0D71673B9016644AE1FA519BA222DDE8A85C93676205B84F48E199D63"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_hcd.c",
+    "Hash": "E7FCEE5FA62EA11A576DB6AD162AAFDDD042BFF071CEE1BFF18E996244CF1444"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_usb.c",
+    "Hash": "4448AEEF56339338F0D71019F35AF379D29CF5AA5738BBEE62EA80D60E141BA8"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\usb_rx_trace_v2\\firmware\\recorder_f405.axf",
+    "Hash": "64D049F7131FA25DAD5FE3954E8D45B55DD97954C535D1DFBFA716D5FC4EF989"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\usb_rx_trace\\instrument_driver.py",
+    "Hash": "AFE8174F087FBE185EB941890222BE3AF4C5748D7B489C60BDEE6D2EC2383E7B"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\usb_rx_trace\\test_trace.py",
+    "Hash": "8C4E52A20E5FAB1353F40235B164562373B13AC96C8B61DD4F796A8F972ED27F"
+  }
+]

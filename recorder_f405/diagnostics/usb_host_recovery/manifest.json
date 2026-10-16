@@ -1,0 +1,30 @@
+[
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\User\\Task\\usb_task.c",
+    "Hash": "ABD2BD6FDD7B5975C419603AF4946E665B6084FF4A5B6150138CD4BB43C55467"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\User\\Task\\usb_task.h",
+    "Hash": "F79982BDE84A24103066A89C3E66A9866D75FAA7A15727104517883D4EC0A1B8"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\User\\Task\\usb_rx_trace.h",
+    "Hash": "7BBD69BFC5BEBF438E1D748FCF435BAF893FB884F19660276DB962F4685A599E"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\Middlewares\\ST\\STM32_USB_Host_Library\\Core\\Src\\usbh_core.c",
+    "Hash": "DB820E98797621DD9C3BDEBF89D78229E14E903B134D81EBEC5654C510BEDE8F"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\Middlewares\\ST\\STM32_USB_Host_Library\\Core\\Inc\\usbh_core.h",
+    "Hash": "89A575BF2A3847D0E2F40822D1E0111AA12A7984AD2A886A113E538FA150D0D0"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_usb.c",
+    "Hash": "7D78E3F6E5063D973E1DABF38F540730E639720593918ED678A4F6C63A971610"
+  },
+  {
+    "Path": "D:\\RM\\recorder233\\recorder_f405\\diagnostics\\usb_host_recovery\\firmware\\recorder_f405.axf",
+    "Hash": "D05FC0F0ABB082B5C11E35DB85D65AFC42584A6FB6335A3567349F0F95C8F83E"
+  }
+]

@@ -88,6 +88,9 @@ USBH_StatusTypeDef USBH_Init(USBH_HandleTypeDef *phost,
                              void (*pUsrFunc)(USBH_HandleTypeDef *phost, uint8_t id), uint8_t id);
 
 USBH_StatusTypeDef USBH_DeInit(USBH_HandleTypeDef *phost);
+/* 受控恢复专用：在 Host 线程内清理类和状态，保留原线程、消息队列和注册类。 */
+USBH_StatusTypeDef USBH_ResetStateForRecovery(USBH_HandleTypeDef *phost);
+uint8_t USBH_UserRecoveryService(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_Start(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_Stop(USBH_HandleTypeDef *phost);
 USBH_StatusTypeDef USBH_Process(USBH_HandleTypeDef *phost);

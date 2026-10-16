@@ -1,0 +1,82 @@
+{
+  "bytes": 2769248,
+  "body_blocks16k": 169.0,
+  "complete_info": 5491,
+  "first": {
+    "line": 10,
+    "rtc": "1015-18:25:41",
+    "tag": "nvic",
+    "tick": 159427,
+    "seq": 15896,
+    "ch": 6
+  },
+  "last": {
+    "line": 5940,
+    "rtc": "1015-18:26:37",
+    "tag": "nvic",
+    "tick": 214327,
+    "seq": 21386,
+    "ch": 6
+  },
+  "span_seconds": 54.9,
+  "expected_info": 5491,
+  "missing_info": 0,
+  "missing_rate_pct": 0.0,
+  "gaps": [],
+  "channel_errors": [],
+  "channel_period_errors": [],
+  "channel_counts": {
+    "nvic": 550,
+    "dji": 549,
+    "dm": 549,
+    "imu": 549,
+    "sys": 549,
+    "task": 549,
+    "fdcan1": 549,
+    "fdcan23": 549,
+    "uart123": 549,
+    "uart6910": 549
+  },
+  "WARN_count": 440,
+  "WARN_modules": {
+    "vision": 55,
+    "vtm": 55,
+    "gimbal_imu": 55,
+    "board": 55,
+    "fric_right": 55,
+    "fric_left": 55,
+    "yaw": 55,
+    "pit": 55
+  },
+  "ERROR_count": 0,
+  "unknown_lines": [
+    {
+      "line": 9,
+      "bytes": 143,
+      "newline": true,
+      "text": "400000/00000000/00000000/00000000/00000000/08000000/FA050300/00040200/00F00000/01000000/40000001/0EE5EE2D/00000000/00000000/00000000/00000000\r\n"
+    },
+    {
+      "line": 5941,
+      "bytes": 51,
+      "newline": false,
+      "text": "1015-18:26:37 INFO: [dji] tick=214337 seq=21387 ch="
+    }
+  ],
+  "diagnostics_last": {
+    "max_gap_ms": 10,
+    "late_count": 0,
+    "catchup_count": 0,
+    "max_run_ms": 2,
+    "queue_overflow": 0,
+    "queue_high_water": 5,
+    "start_failed": 0,
+    "truncated": 0,
+    "format_error": 0
+  },
+  "stack_min_words": {
+    "status": 172,
+    "debug": 555
+  },
+  "heap_min_bytes": 4792
+}

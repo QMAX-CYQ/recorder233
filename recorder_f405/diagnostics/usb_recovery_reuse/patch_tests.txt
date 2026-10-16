@@ -1,0 +1,4 @@
+PASS: root project: missing detection, clean apply, repeated apply and read-only check
+PASS: nested project: missing detection, clean apply, repeated apply and read-only check
+PASS: partial patch rejected without changing either file
+PASS: incompatible source context rejected without changing either file

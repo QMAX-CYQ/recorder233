@@ -1,0 +1,8 @@
+recovery_test.c
+PASS: normal idle ignored, exact trigger, Host-thread recovery, DMA reset before free, resource identity retained, handshake confirms restoration
+PASS: completion race, buffered data and ring backpressure cannot trigger recovery
+PASS: init failure safely gates IRQs and retries after cooldown without leaking class data
+PASS: class cleanup failure retains ownership for a later successful retry
+PASS: enumeration timeout retries only when a device is physically connected
+PASS: trigger tick wrap, HCD start and VBUS failure paths remain quiesced and keep the failure state
+PASS: 100 recovery/enumeration cycles retain original queue/thread and balance every CDC allocation

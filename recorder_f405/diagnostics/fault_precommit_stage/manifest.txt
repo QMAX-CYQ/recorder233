@@ -1,0 +1,13 @@
+
+Algorithm : SHA256
+Hash      : 4D1EAB9027FD86B12DF88601044DF00522818924FBA759CF348BB5722D89D958
+Path      : D:\RM\recorder233\recorder_f405\diagnostics\fault_precommit_stage\staged\fault_log.c
+
+Algorithm : SHA256
+Hash      : A2F42FC9D5DACD20AE69F2321874FF64BA9BC13F3ACC349F9FC70A7727791E4A
+Path      : D:\RM\recorder233\recorder_f405\diagnostics\fault_precommit_stage\staged\fault_log.h
+
+Algorithm : SHA256
+Hash      : 8BFEA2661C6C5824CF68230EF44D6E5E8C55D5F008C433F6168D346C5C2F949A
+Path      : D:\RM\recorder233\recorder_f405\diagnostics\fault_precommit_stage\firmware\rm_main.axf
+

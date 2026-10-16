@@ -1,0 +1,220 @@
+{
+  "file_bytes": 7717216,
+  "body_bytes": 7716864,
+  "body_blocks16k": 471.0,
+  "header": "+----------------------------------------------+\r\n| MAGIC   : 0x52454344                         |\r\n| VERSION : 0000000001                         |\r\n| INDEX   : 0000000003                         |\r\n| SEQ     : 0000000004                         |\r\n| AUTHOR  : CYQ,LJY                            |\r\n+----------------------------------------------+\r\n\r\n",
+  "complete_info": 15641,
+  "first": {
+    "line": 9,
+    "stamp": "1015-15:59:52",
+    "tag": "sys",
+    "tick": 220,
+    "seq": 0,
+    "ch": 0
+  },
+  "last": {
+    "line": 15657,
+    "stamp": "1015-16:02:29",
+    "tag": "sys",
+    "tick": 156620,
+    "seq": 15640,
+    "ch": 0
+  },
+  "span_seconds": 156.4,
+  "expected_info": 15641,
+  "missing_info": 0,
+  "missing_rate_pct": 0.0,
+  "seq_errors": [],
+  "tick_errors": [],
+  "channel_errors": [],
+  "channel_period_errors": [],
+  "rtc_errors": [],
+  "channel_counts": {
+    "sys": 1565,
+    "task": 1564,
+    "fdcan1": 1564,
+    "fdcan23": 1564,
+    "uart123": 1564,
+    "uart6910": 1564,
+    "nvic": 1564,
+    "dji": 1564,
+    "dm": 1564,
+    "imu": 1564
+  },
+  "warnings": [
+    {
+      "line": 490,
+      "stamp": "1015-15:59:57",
+      "module": "vision",
+      "source_tick": 5934,
+      "send_tick": 5030,
+      "last_rx_tick": 0,
+      "can_index": 0,
+      "can_id": "0x0",
+      "mixed_clock_difference_ms": -904
+    },
+    {
+      "line": 492,
+      "stamp": "1015-15:59:57",
+      "module": "vtm",
+      "source_tick": 5934,
+      "send_tick": 5040,
+      "last_rx_tick": 0,
+      "can_index": 0,
+      "can_id": "0x0",
+      "mixed_clock_difference_ms": -894
+    },
+    {
+      "line": 494,
+      "stamp": "1015-15:59:57",
+      "module": "gimbal_imu",
+      "source_tick": 5934,
+      "send_tick": 5050,
+      "last_rx_tick": 0,
+      "can_index": 0,
+      "can_id": "0x0",
+      "mixed_clock_difference_ms": -884
+    },
+    {
+      "line": 496,
+      "stamp": "1015-15:59:57",
+      "module": "board",
+      "source_tick": 5934,
+      "send_tick": 5060,
+      "last_rx_tick": 0,
+      "can_index": 0,
+      "can_id": "0x0",
+      "mixed_clock_difference_ms": -874
+    },
+    {
+      "line": 498,
+      "stamp": "1015-15:59:57",
+      "module": "fric_right",
+      "source_tick": 5934,
+      "send_tick": 5070,
+      "last_rx_tick": 0,
+      "can_index": 1,
+      "can_id": "0x203",
+      "mixed_clock_difference_ms": -864
+    },
+    {
+      "line": 500,
+      "stamp": "1015-15:59:57",
+      "module": "fric_left",
+      "source_tick": 5934,
+      "send_tick": 5080,
+      "last_rx_tick": 0,
+      "can_index": 1,
+      "can_id": "0x201",
+      "mixed_clock_difference_ms": -854
+    },
+    {
+      "line": 502,
+      "stamp": "1015-15:59:57",
+      "module": "yaw",
+      "source_tick": 5934,
+      "send_tick": 5090,
+      "last_rx_tick": 0,
+      "can_index": 0,
+      "can_id": "0x205",
+      "mixed_clock_difference_ms": -844
+    },
+    {
+      "line": 504,
+      "stamp": "1015-15:59:57",
+      "module": "pit",
+      "source_tick": 5934,
+      "send_tick": 5100,
+      "last_rx_tick": 0,
+      "can_index": 2,
+      "can_id": "0x5",
+      "mixed_clock_difference_ms": -834
+    }
+  ],
+  "warning_count": 8,
+  "malformed": [],
+  "partial_bytes": 480,
+  "partial_text": "1015-16:02:29 INFO: [task] tick=156630 seq=15641 ch=1 n=48 w=000000D4/00000065/000000AA/00000000/000000B9/0000003B/00000000/0000022B/000000BB/0000000A/000012B8/000012B8/00003D19/0000000A/00000000/00000000/00000001/00000000/00000000/00000000/00003D22/00003D22/00003D22/00726662/00726662/00000594/00000005/00000000/00000000/00000000/000001DF/000001E4/00400000/00000000/00000000/00000000/00000000/08000000/FA050300/00040200/00F00000/00000000/00000000/00000000/00000000/00000000/00000",
+  "zero_bytes": 0,
+  "diagnostics": {
+    "max_gap_ms": {
+      "first": 10,
+      "last": 10,
+      "minimum": 10,
+      "maximum": 10
+    },
+    "late_count": {
+      "first": 0,
+      "last": 0,
+      "minimum": 0,
+      "maximum": 0
+    },
+    "catchup_count": {
+      "first": 0,
+      "last": 0,
+      "minimum": 0,
+      "maximum": 0
+    },
+    "max_run_ms": {
+      "first": 1,
+      "last": 1,
+      "minimum": 1,
+      "maximum": 1
+    },
+    "usb_pending_count": {
+      "first": 0,
+      "last": 0,
+      "minimum": 0,
+      "maximum": 4
+    },
+    "queue_overflow_count": {
+      "first": 0,
+      "last": 0,
+      "minimum": 0,
+      "maximum": 0
+    },
+    "queue_high_water": {
+      "first": 1,
+      "last": 5,
+      "minimum": 1,
+      "maximum": 5
+    },
+    "start_failed": {
+      "first": 0,
+      "last": 0,
+      "minimum": 0,
+      "maximum": 0
+    },
+    "format_truncated": {
+      "first": 0,
+      "last": 0,
+      "minimum": 0,
+      "maximum": 0
+    },
+    "format_error": {
+      "first": 0,
+      "last": 0,
+      "minimum": 0,
+      "maximum": 0
+    },
+    "max_line_bytes": {
+      "first": 472,
+      "last": 484,
+      "minimum": 472,
+      "maximum": 484
+    },
+    "stack_min_words": {
+      "comm": 212,
+      "mode": 101,
+      "status": 170,
+      "chassis": 0,
+      "gimbal": 185,
+      "shoot": 59,
+      "ui": 0,
+      "debug": 555,
+      "board": 187
+    },
+    "heap_free_min_bytes": 4792,
+    "heap_ever_min_bytes": 4792
+  }
+}

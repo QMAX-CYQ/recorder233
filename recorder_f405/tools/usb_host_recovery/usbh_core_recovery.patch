@@ -1,0 +1,66 @@
+--- a/Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
++++ b/Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h
+@@ -88,6 +88,9 @@
+                              void (*pUsrFunc)(USBH_HandleTypeDef *phost, uint8_t id), uint8_t id);
+ 
+ USBH_StatusTypeDef USBH_DeInit(USBH_HandleTypeDef *phost);
++/* 受控恢复专用：在 Host 线程内清理类和状态，保留原线程、消息队列和注册类。 */
++USBH_StatusTypeDef USBH_ResetStateForRecovery(USBH_HandleTypeDef *phost);
++uint8_t USBH_UserRecoveryService(USBH_HandleTypeDef *phost);
+ USBH_StatusTypeDef USBH_Start(USBH_HandleTypeDef *phost);
+ USBH_StatusTypeDef USBH_Stop(USBH_HandleTypeDef *phost);
+ USBH_StatusTypeDef USBH_Process(USBH_HandleTypeDef *phost);
+--- a/Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.c
++++ b/Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.c
+@@ -217,6 +217,30 @@
+   * @param  phost: Host Handle
+   * @retval USBH Status
+   */
++USBH_StatusTypeDef USBH_ResetStateForRecovery(USBH_HandleTypeDef *phost)
++{
++  USBH_StatusTypeDef status;
++  if (phost == NULL) return USBH_FAIL;
++  /* 调用者已停止应用提交并复位硬件，旧 DMA 不会再访问缓冲区。
++   * 不调用 USBH_DeInit/Init，避免销毁自身线程或重复创建队列。 */
++  if (phost->pActiveClass != NULL && phost->pActiveClass->pData != NULL)
++  {
++    if (phost->pActiveClass->DeInit == NULL) return USBH_FAIL;
++    status = phost->pActiveClass->DeInit(phost);
++    if (status != USBH_OK) return status;
++  }
++  phost->pActiveClass = NULL;
++  USBH_memset(&phost->device, 0, sizeof(phost->device));
++  USBH_memset(&phost->Control, 0, sizeof(phost->Control));
++  return DeInitStateMachine(phost);
++}
++
++__weak uint8_t USBH_UserRecoveryService(USBH_HandleTypeDef *phost)
++{
++  (void)phost;
++  return 0U;
++}
++
+ static USBH_StatusTypeDef DeInitStateMachine(USBH_HandleTypeDef *phost)
+ {
+   uint32_t i;
+@@ -1284,7 +1308,9 @@
+     event = osMessageGet(((USBH_HandleTypeDef *)argument)->os_event, osWaitForever);
+     if (event.status == osEventMessage)
+     {
+-      USBH_Process((USBH_HandleTypeDef *)argument);
++      /* 在 Host 自身线程执行恢复，避免与类处理或枚举并发。 */
++      if (USBH_UserRecoveryService((USBH_HandleTypeDef *)argument) == 0U)
++        USBH_Process((USBH_HandleTypeDef *)argument);
+     }
+   }
+ }
+@@ -1299,7 +1325,8 @@
+                                &((USBH_HandleTypeDef *)argument)->os_msg, NULL, osWaitForever);
+     if (status == osOK)
+     {
+-      USBH_Process((USBH_HandleTypeDef *)argument);
++      if (USBH_UserRecoveryService((USBH_HandleTypeDef *)argument) == 0U)
++        USBH_Process((USBH_HandleTypeDef *)argument);
+     }
+   }
+ }

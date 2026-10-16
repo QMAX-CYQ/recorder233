@@ -1,0 +1,13 @@
+
+Algorithm : SHA256
+Hash      : BB873D2147EC9C2C5BA518400563958BE956122D33C8FEDC9317A7ADF279B8D7
+Path      : D:\RM\recorder233\recorder_f405\diagnostics\fault_boot_log\firmware\rm_main.axf
+
+Algorithm : SHA256
+Hash      : 7145F75EA8EB5B1403EFFCC85100B5F97DBCED53C41EF35DDE720BD0EF0E1565
+Path      : D:\RM\recorder233\recorder_f405\diagnostics\fault_boot_log\staged\fault_log.c
+
+Algorithm : SHA256
+Hash      : FCD9173E209DFAB4800D0F5A629405A4229FFD0D0771CF40AE1F0700BDB6AFC2
+Path      : D:\RM\recorder233\recorder_f405\diagnostics\fault_boot_log\staged\fault_log.h
+

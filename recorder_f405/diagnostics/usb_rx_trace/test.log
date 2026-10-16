@@ -1,0 +1,13 @@
+trace_test.c
+PASS: IRQ raw flags, read-only capture, ordered ring and overwrite count
+PASS: freeze keeps fault evidence, repeated freeze idempotent, resume continues history
+PASS: instance/channel/type filters, invalid events, global disconnect event
+PASS: nested IRQ mask preserved, sequence wrap keeps valid marker
+PASS: actual timeout integration freezes once and resumes on completion
+PASS: callback race cannot spuriously freeze events
+PASS: frozen main retained while disconnect/stop/init events continue; EPDIR clearing cannot hide channel
+PASS: lifecycle ring wraps independently, shared sequence orders rings, reassigned OUT channel untracked
+PASS: actual StopHost preserves shared counter/return behavior and records all-channel wait exhaustion while frozen
+PASS: first real receive-channel failure keeps seven stages and per-channel counts across later StopHost/reconnect calls
+PASS: successful candidate reusable, CYCCNT not reset, tick/cycle wrap measured, valid then complete publication
+PASS: unsupported cycle counter flagged, unused channel cannot claim first-failure latch
