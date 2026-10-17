@@ -318,9 +318,12 @@ static int8_t CDC_Control_HS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_HS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 11 */
-  (void)LogLinkFilter(&log_link_parser, Buf,
+  size_t payload_len;
+  payload_len = LogLinkFilter(&log_link_parser, Buf,
       (*Len > APP_RX_DATA_SIZE) ? APP_RX_DATA_SIZE : *Len,
       log_link_filtered, NULL, LogLinkOnFrame);
+  /* READY 不交给视觉解析器，其他数据保持原顺序。 */
+  if (payload_len != 0U) LogLinkPayloadReceived(log_link_filtered, (uint16_t)payload_len);
   USBD_CDC_SetRxBuffer(&hUsbDeviceHS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceHS);
   return (USBD_OK);
@@ -409,6 +412,14 @@ static int8_t CDC_TransmitCplt_HS(uint8_t *Buf, uint32_t *Len, uint8_t epnum)
 }
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
+/* Override in a user file to consume non-control USB payload. */
+__attribute__((weak)) void LogLinkPayloadReceived(const uint8_t *data, uint16_t length)
+{
+    (void)data;
+    (void)length;
+}
+
+
 static void LogLinkOnFrame(uint8_t type, uint32_t session)
 {
   if (type != LOG_LINK_READY) return;

@@ -130,6 +130,8 @@ extern volatile cdc_tx_diag_t g_cdc_tx_diag;
 uint8_t CDC_Transmit_HS(uint8_t* Buf, uint16_t Len);
 
 /* USER CODE BEGIN EXPORTED_FUNCTIONS */
+/* Optional payload hook; data is valid only for the duration of the call. */
+void LogLinkPayloadReceived(const uint8_t *data, uint16_t length);
 void LogLinkService_HS(void);
 /* CDC_Transmit_HS：OK 表示入队成功，BUSY 表示队列满，FAIL 表示参数错误。
  * 枚举前可以入队，断开时保留尚未启动的数据。 */

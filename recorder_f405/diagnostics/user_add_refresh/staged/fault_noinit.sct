@@ -1,0 +1,25 @@
+#! armclang -E --target=arm-arm-none-eabi -mcpu=cortex-m7 -xc
+#include "fault_log_config.h"
+; Select the fault UNINIT region with the same configuration used by C.
+; Keep the original ordinary IRAM1 limit to avoid moving unrelated data.
+LR_IROM1 0x08000000 0x00100000 {
+  ER_IROM1 0x08000000 0x00100000 {
+    *.o (RESET, +First)
+    *(InRoot$$Sections)
+    .ANY (+RO)
+    .ANY (+XO)
+  }
+  RW_IRAM1 0x20000000 0x0001F000 {
+    .ANY (+RW +ZI)
+  }
+#if FAULT_LOG_TEST_IRAM1
+  RW_FAULT_NOINIT 0x2001F000 UNINIT 0x00001000 {
+#else
+  RW_FAULT_NOINIT 0x2404F000 UNINIT 0x00001000 {
+#endif
+    * (.bss.noinit.fault_*)
+  }
+  RW_IRAM2 0x24000000 0x0004F000 {
+    .ANY (+RW +ZI)
+  }
+}

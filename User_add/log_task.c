@@ -5,6 +5,7 @@
 #include "fdcan.h"
 #include "usart.h"
 #include "log.h"
+#include "fault_log.h"
 #include "drv_dji_motor.h"
 #include "drv_dm_motor.h"
 #include "gimbal_task.h"
@@ -465,7 +466,7 @@ static void log_send_snapshot(uint8_t channel, uint32_t tick, uint32_t sequence)
     static const char *const tags[LOG_CHANNEL_COUNT] = {
         "sys", "task", "fdcan1", "fdcan23", "uart123", "uart6910", "nvic", "dji", "dm", "imu"
     };
-    uint32_t words[48];
+    uint32_t words[48] = {0};//此处初始化，防止用户用不到48个字时操作未定义地址
     log_snapshot(channel, words);
     DEBUG_INFO("[%s] tick=%lu seq=%lu ch=%u n=48 w=%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX/%08lX\r\n",
         tags[channel], (unsigned long)tick, (unsigned long)sequence, (unsigned int)channel,
@@ -492,11 +493,23 @@ void log_task(void const *argument)
 
     for (;;) {
         uint32_t tick;
+        /* 异常中只读取此心跳，不调用 RTOS 获取时间。 */
+        FaultLog_Heartbeat(osKernelSysTick());
         LogLinkService_HS();
         CDC_TxService_HS();
+        /* 测试请求必须在握手/补报等待分支前处理，USB 卡住时仍可手动复现。 */
+        FaultLog_TestService(osKernelSysTick());
         if (!g_log_link_ready) {
             /* 等待期间不生成日志、不推进 seq/通道，也不补跑等待时间。 */
             g_log_link_diag.waiting_loops++;
+            wake_time = osKernelSysTick();
+            g_log_task_diag.last_tick = 0U;
+            align_wake_time = 1U;
+            osDelay(LOG_PERIOD_MS);
+            continue;
+        }
+        if (FaultLog_Service()) {
+            /* 故障补报优先于 INFO/WARN；结束后重新对齐周期，不补跑等待时间。 */
             wake_time = osKernelSysTick();
             g_log_task_diag.last_tick = 0U;
             align_wake_time = 1U;
@@ -520,6 +533,8 @@ void log_task(void const *argument)
         }
         g_log_task_diag.last_tick = tick;
         g_log_task_diag.group_count[channel]++;
+        /* 告警统一在此格式化发送，不占用轮转通道和 INFO 序号。 */
+        LogEvent_Service();
         log_send_snapshot(channel, tick, g_log_task_diag.loops);
         g_log_task_diag.loops++;
         run_ms = HAL_GetTick() - start_ms;

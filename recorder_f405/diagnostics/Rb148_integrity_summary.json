@@ -1,0 +1,122 @@
+{
+  "epochs": [
+    {
+      "lines": 6621,
+      "time": [
+        "1018-03:31:12",
+        "1018-03:32:22"
+      ],
+      "seq": [
+        0,
+        6620
+      ],
+      "tick": [
+        30,
+        66230
+      ],
+      "seq_gaps": [],
+      "tick_deltas": [
+        10
+      ],
+      "overflow": [
+        0
+      ],
+      "qhigh": 2,
+      "heap": [
+        10528
+      ]
+    },
+    {
+      "lines": 1346,
+      "time": [
+        "1018-03:32:49",
+        "1018-03:33:03"
+      ],
+      "seq": [
+        43,
+        1388
+      ],
+      "tick": [
+        1050,
+        14500
+      ],
+      "seq_gaps": [],
+      "tick_deltas": [
+        10
+      ],
+      "overflow": [
+        13
+      ],
+      "qhigh": 32,
+      "heap": [
+        10528
+      ]
+    },
+    {
+      "lines": 1,
+      "time": [
+        "1018-03:35:00",
+        "1018-03:35:00"
+      ],
+      "seq": [
+        0,
+        0
+      ],
+      "tick": [
+        442,
+        442
+      ],
+      "seq_gaps": [],
+      "tick_deltas": [],
+      "overflow": [],
+      "qhigh": null,
+      "heap": []
+    },
+    {
+      "lines": 1983,
+      "time": [
+        "1018-04:04:50",
+        "1018-04:05:11"
+      ],
+      "seq": [
+        0,
+        1982
+      ],
+      "tick": [
+        10253,
+        30073
+      ],
+      "seq_gaps": [],
+      "tick_deltas": [
+        10
+      ],
+      "overflow": [
+        0
+      ],
+      "qhigh": 2,
+      "heap": [
+        12992
+      ]
+    }
+  ],
+  "faults": [
+    {
+      "id": 1,
+      "parts": [
+        1
+      ],
+      "checksum": "unavailable"
+    },
+    {
+      "id": 2,
+      "parts": [
+        1,
+        2,
+        3
+      ],
+      "checksum_match": true,
+      "computed": "1793C981",
+      "logged": "1793C981"
+    }
+  ]
+}

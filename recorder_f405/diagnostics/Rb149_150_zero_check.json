@@ -1,0 +1,91 @@
+[
+  {
+    "dji": {
+      "rows": 83,
+      "rows_with_nonzero_unused": 83,
+      "examples": [
+        [
+          7,
+          [
+            24,
+            28,
+            29,
+            30,
+            31
+          ]
+        ],
+        [
+          17,
+          [
+            28
+          ]
+        ]
+      ]
+    },
+    "dm": {
+      "rows": 83,
+      "rows_with_nonzero_unused": 83,
+      "examples": [
+        [
+          8,
+          [
+            14,
+            22,
+            24
+          ]
+        ],
+        [
+          18,
+          [
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21
+          ]
+        ]
+      ]
+    },
+    "imu": {
+      "rows": 83,
+      "rows_with_nonzero_unused": 83,
+      "examples": [
+        [
+          9,
+          [
+            19,
+            21
+          ]
+        ],
+        [
+          19,
+          [
+            19,
+            21
+          ]
+        ]
+      ]
+    }
+  },
+  {
+    "dji": {
+      "rows": 1975,
+      "rows_with_nonzero_unused": 0,
+      "examples": []
+    },
+    "dm": {
+      "rows": 1975,
+      "rows_with_nonzero_unused": 0,
+      "examples": []
+    },
+    "imu": {
+      "rows": 1975,
+      "rows_with_nonzero_unused": 0,
+      "examples": []
+    }
+  }
+]
