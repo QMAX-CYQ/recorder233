@@ -1,0 +1,38 @@
+{
+  "hpcd_USB_OTG_HS": {
+    "address": "0x24049820",
+    "size": 1252
+  },
+  "hUsbDeviceHS": {
+    "address": "0x24049540",
+    "size": 732
+  },
+  "UserRxBufferHS": {
+    "address": "0x24048540",
+    "size": 2048
+  },
+  "UserTxBufferHS": {
+    "address": "0x24048d40",
+    "size": 2048
+  },
+  "USBD_static_malloc.mem": {
+    "address": "0x24048300",
+    "size": 544
+  },
+  "USBD_HS_DeviceDesc": {
+    "address": "0x240480b8",
+    "size": 18
+  },
+  "USBD_CDC_CfgDesc": {
+    "address": "0x2404805c",
+    "size": 67
+  },
+  "USBD_StrDesc": {
+    "address": "0x24048100",
+    "size": 512
+  },
+  "cdc_tx_queue": {
+    "address": "0x240000dc",
+    "size": 65600
+  }
+}

@@ -1,3 +1,32 @@
+# 2026-10-18 D-Cache / USB DMA 增量验证
+
+- 本次只更新缓存适配、CDC 受保护对齐声明、内存模板和文档；未替换业务
+  log_snapshot、事件队列、协议、fault 核心或 F405 接收固件。
+- 新增 usb_dma_memory.h / usb_dma_port.h，后者提取自主板已有 USER CODE
+  实现，通过现有 MSP 初始化钩子接入；USB DMA 始终启用，缓存关闭时跳过 MPU。
+- 隔离 H723 完整验证工程使用本次 staged 包和接入示例，ArmClang 6.24 编译
+  链接通过，0 错误、0 警告。实际主板工程文件未被这次库构建修改或烧录。
+- MAP 验证 PCD/Setup、device/control、描述符、字符串、CDC 类静态分配和
+  RX/TX 均位于 0x24048000..0x2404BFFF；PCD/RX/TX 为 32 字节对齐。
+  大日志队列不在非缓存区；存在两个 USB 区链接符号依赖。
+- 本机模拟使用实际 dcache_handle.c，覆盖关闭缓存、空地址、零长度、整数
+  范围溢出和 TX/RX 行范围对齐。USB port 模拟只替换 CPU/HAL 和链接符号，
+  覆盖缓存开/关、重复初始化、保留 MPU/中断状态、已占用 Region 7 拒绝、
+  收发屏障及原 HAL 返回值传递。四种场景均通过。MSVC 测试桩有常量条件及
+  有符号比较警告；目标 ArmClang 构建无警告。
+- 迁移来源的轮腿主板 Rb11 上电日志：15246 条完整记录，seq 0..15245 连续，
+  152.45 秒内相邻 tick 均为 10ms，溢出/启动失败/格式错误为 0，
+  CFSR/HFSR/DFSR 均为 0。文件末尾一条不完整。此为来源工程的上板证据，
+  不是本次打包后的新硬件测试，也不证明其他 DMA 或传感器接收已正常。
+- 新包仍需用户按 DCACHE_PORTING.md 接入。未自动运行 CubeMX 重新生成；
+  关闭缓存并开启 DMA 的完整硬件回归仍需补测。AXI fault 保留区缓存策略
+  不由 USB MPU 区自动覆盖，默认 DTCM 配置保持不变。
+
+本次构建、MAP 和测试文件位于 F405 工作区
+`diagnostics/user_add_dcache_refresh`。下面保留上一版日志/fault 回归记录。
+
+---
+
 # 整合包验证记录
 
 日期：2026-10-17。

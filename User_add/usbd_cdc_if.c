@@ -31,6 +31,9 @@
 /* Private macro -------------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+/* Applies to CubeMX-generated definitions below; do not duplicate them. */
+extern uint8_t UserRxBufferHS[APP_RX_DATA_SIZE] __attribute__((aligned(32)));
+extern uint8_t UserTxBufferHS[APP_TX_DATA_SIZE] __attribute__((aligned(32)));
 volatile uint8_t g_log_link_ready;
 volatile log_link_diag_t g_log_link_diag;
 static volatile uint8_t log_link_ack_needed;
@@ -161,7 +164,6 @@ static int8_t CDC_TransmitCplt_HS(uint8_t *pbuf, uint32_t *Len, uint8_t epnum);
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_DECLARATION */
 static void LogLinkOnFrame(uint8_t type, uint32_t session);
 static void CDC_TxServiceLocked(void);
-static void CDC_CleanDCache(uint8_t *buf, uint32_t len);
 
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
 
@@ -495,13 +497,6 @@ void CDC_TxService_HS(void)
 }
 
 
-static void CDC_CleanDCache(uint8_t *buf, uint32_t len)
-{
-  uint32_t start_addr = (uint32_t)buf & ~31U;
-  uint32_t end_addr = ((uint32_t)buf + len + 31U) & ~31U;
-
-  SCB_CleanDCache_by_Addr((uint32_t *)start_addr, (int32_t)(end_addr - start_addr));
-}
 
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 

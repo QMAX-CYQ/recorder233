@@ -8,6 +8,9 @@
 /* Distribution default: real faults only. Set to 1 for repeated injection. */
 #ifndef FAULT_LOG_ENABLE_TEST
 #define FAULT_LOG_ENABLE_TEST 0
+    #if FAULT_LOG_ENABLE_TEST == 1
+    #warning "FAULT_LOG_ENABLE_TEST is enabled. This is for testing only."
+    #endif
 #endif
 
 #if FAULT_LOG_TEST_IRAM1 != 0 && FAULT_LOG_TEST_IRAM1 != 1

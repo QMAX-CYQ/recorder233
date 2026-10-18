@@ -1,0 +1,47 @@
+[
+  {
+    "file": "README.md",
+    "before_sha256": "7c179ed65e7efc35641d9120fcf8ef2c94d1e7a483aa607c317638ea78b5037a",
+    "after_sha256": "036ce869d2221a5cfcabf9b9eef6e1a026b50ab42958d565aa8471bb2470e688"
+  },
+  {
+    "file": "VALIDATION.md",
+    "before_sha256": "69bf55f352cb6056490a24c66b42fc7abd8d1d5a0ebe5d785721945cae6d0318",
+    "after_sha256": "5e33be8a46e5e145e5ad9ed103c4be78162eac90a16034e17236b65748a2c250"
+  },
+  {
+    "file": "usbd_cdc_if.c",
+    "before_sha256": "48eda069b661af6073c67ce247a5abb41cc1096ebda2554f8fd663befd2c4039",
+    "after_sha256": "190466e2373868c2e724f060bb295c6a3daa19ae1d9e6a0ad4acc6193e42d624"
+  },
+  {
+    "file": "fault_noinit.sct",
+    "before_sha256": "f7cea26e7d3b48d3388150cf22c7f8bfd529a407a75f4b086401ca2a59147192",
+    "after_sha256": "a963a08fc2962fffd1133550e54afaa3f28b24a27d1cb5a54242b876a628d6d1"
+  },
+  {
+    "file": "usb_dma_memory.h",
+    "before_sha256": null,
+    "after_sha256": "3a517c1ad00441d1a4e074d5522c191c2a2ee79ccf16e06008b77636c41c8b11"
+  },
+  {
+    "file": "usb_dma_port.h",
+    "before_sha256": null,
+    "after_sha256": "0e20403d817016fe6f614272d37b498507a8a32010f698497b7ee5338c86b895"
+  },
+  {
+    "file": "dcache_handle.c",
+    "before_sha256": null,
+    "after_sha256": "0db2cbad88924f55ac74cbe72ddc10ffa7609050e9f48f22152330461d9d1bca"
+  },
+  {
+    "file": "dcache_handle.h",
+    "before_sha256": null,
+    "after_sha256": "0fc3237e73f33bc78db4325cb7412cb7f21a3b130b5a796c83a25293ed06d4d1"
+  },
+  {
+    "file": "DCACHE_PORTING.md",
+    "before_sha256": null,
+    "after_sha256": "ead0f19373c3c83ec0f46b9f74af88a1b7af22832a5e3d61acc3a96a571f77b7"
+  }
+]

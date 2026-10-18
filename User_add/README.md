@@ -1,6 +1,6 @@
 # 主板日志发送与故障补报支持包
 
-更新日期：2026-10-17。基于当前 `D:/RM/rm_main_gimbal` 主板实现整合，包含轮转日志、USB CDC 发送队列、READY/ACK、业务告警队列和 fault 捕获/复位后补报。
+更新日期：2026-10-18。日志与 fault 支持沿用 H723 主板实现；本次提取轮腿主板已验证的 D-Cache / USB DMA 适配，加入非缓存内存区、CubeMX USER CODE 接入与可选缓存辅助函数。
 
 本目录位于 F405 记录器仓库中，但这些文件供 **H723 发送主板** 使用，不加入 F405 接收工程编译。适用基线为 STM32H723、Cortex-M7、Keil ARM Compiler 6、CMSIS-RTOS v1/FreeRTOS，毫秒 tick。用户工程提供 HAL、CMSIS、FreeRTOS、USB Device、中断与外设初始化；本目录不是独立可烧录固件。
 
@@ -15,7 +15,10 @@
 | `fault_log.c/h` | 异常入口、应急栈、现场校验及三段 ERROR 补报 |
 | `fault_log_port.c/h` | 将 fault 服务连接到本包日志/USB/RTOS 接口 |
 | `fault_log_config.h` | 内存选择与故障测试开关，C 和链接脚本共用 |
-| `fault_noinit.sct` | H723 Flash/RAM 布局及 UNINIT 保留区模板 |
+| `fault_noinit.sct` | H723 Flash/RAM、USB DMA 非缓存区及 UNINIT 保留区模板 |
+| `usb_dma_memory.h` / `usb_dma_port.h` | 共享内存常量、MPU 配置及 USB HAL 收发屏障 |
+| `dcache_handle.c/h` | 可选 UART/SPI DMA 缓存辅助函数，D-Cache 关闭时跳过维护 |
+| `DCACHE_PORTING.md` | 必须阅读的 USB DMA / D-Cache / CubeMX 接入说明 |
 
 默认 `FAULT_LOG_TEST_IRAM1=1`，使用 DTCM 写后读回；`FAULT_LOG_ENABLE_TEST=0`，只捕获真实异常，不自动注入。临时 fault_boot、阶段标记和调试器 PC 采样不在此包中。
 
@@ -24,9 +27,9 @@
 ## 接入步骤
 
 1. 配置 USB Device CDC HS、CMSIS-RTOS v1、FreeRTOS 和 IWDG。添加 `log_task.c`、`log.c`、`fault_log.c`、`fault_log_port.c`，并将本目录加入 Include Path。不要同时编译两套同名文件。
-2. 把附带 `usbd_cdc_if.c/h` 的发送队列、完成回调和协议处理合入目标 CDC 接口，或在 USB 配置一致时替换现有接口。USB 初始化、描述符及底层配置仍由用户工程提供。随包 CDC 的修改位于原 USER CODE 区；重新生成后仍应检查发送完成回调是否接入。
+2. 把附带 `usbd_cdc_if.c/h` 的发送队列、完成回调和协议处理合入目标 CDC 接口，或在 USB 配置一致时替换现有接口。USB 初始化、描述符及底层配置仍由用户工程生成，但必须按 [DCACHE_PORTING.md](DCACHE_PORTING.md) 将 `usb_dma_port.h` 和初始化调用接入现有 `usbd_conf.c` USER CODE 钩子。随包 CDC 的对齐声明、发送队列、回调和协议修改均位于原 USER CODE 区；重新生成后仍应检查回调、Include Path 和 scatter 引用。
 3. 修改 `log_snapshot()` 以匹配业务。当前示例依赖 `fdcan.h`、`usart.h`、`drv_dji_motor.h`、`drv_dm_motor.h`、`gimbal_task.h`、`prot_imu.h` 等当前主板对象。不存在的采样/extern/头文件需替换，不能仅靠复制这些文件编译；无需移植整套机器人业务代码。UART/FDCAN 的 Instance 应先初始化。
-4. Keil Linker 关闭自动内存布局，选用本目录 `fault_noinit.sct`。模板按 1MB Flash、128KB DTCM、320KB AXI SRAM 配置；其他型号或 Bootloader 工程须调整。使用本目录的配置头文件，修改内存宏后 Rebuild。
+4. Keil Linker 关闭自动内存布局，选用本目录 `fault_noinit.sct`。模板按 1MB Flash、128KB DTCM、320KB AXI SRAM 配置，固定预留 16KB USB DMA 区；其他型号或 Bootloader 工程须调整。USB DMA 始终开启，D-Cache 开启时自动配置该区为非缓存，关闭时跳过 MPU 设置。保留 MPU Region 7。使用本目录的配置头文件，修改内存宏后 Rebuild。
 5. 在 `main.c` 的 `USER CODE BEGIN Includes` 包含 `fault_log.h`，在 `main()` 的 `USER CODE BEGIN 1` 最早调用：
 
 ```c
@@ -62,6 +65,21 @@ LogTaskHandle = osThreadCreate(osThread(LogTask), NULL);
 task 通道还读取其他业务任务句柄；无对应任务时删除采样，或提供 NULL 句柄，`log_stack_words(NULL)` 返回 0。保留一个日志任务，避免旧 DebugTask 和新 LogTask 同时发送。
 
 8. F405 使用配套 READY/ACK 接收固件。IWDG 正常运行，故障发生后停止喂狗等待暖复位；不要让其他异常处理继续喂狗。随后检查 MAP、故障补报及普通日志连续性。
+
+## D-Cache 适配新增要求
+
+详见 [DCACHE_PORTING.md](DCACHE_PORTING.md)。不能只把 CDC 的 TX 缓冲区 Clean
+后就认为完成适配；枚举 SETUP、EP0 描述符、动态字符串、类控制缓冲和 RX
+也必须覆盖。本版本使用专用非缓存 MPU 区，USB DMA 不再依赖逐包维护缓存。
+
+- `usb_dma_port.h` 只包含在 `usbd_conf.c` 的 `USER CODE BEGIN 0`，不作为 C
+  文件编译，不包含在公共头文件。初始化调用放在 `USB_OTG_HS_MspInit 0`。
+- 两个 CDC 缓冲区和 PCD 句柄使用 protected extern 声明约束对齐，实际定义
+  保持生成器原样。不要在 USER CODE 区再定义一份同名数组。
+- `dcache_handle.c/h` 用于其他 DMA 的可选辅助处理；已有同名函数时合并替换，
+  不重复编译。RX 缓存行隔离、循环 DMA 所有权和缓冲复用仍由业务模块负责。
+- USB 专用区不包含 AXI fault 保留区。默认 DTCM 故障配置不变；选用 AXI
+  保留区仍需额外解决其缓存策略，不应将 USB 适配视为整个主板的缓存适配。
 
 ## 任务执行顺序与补报优先级
 
@@ -204,7 +222,7 @@ static const char *const tags[LOG_CHANNEL_COUNT] = {
 
 ## 保留内存和复位
 
-- 两个普通 RAM 区分别限制到 `0x2001F000`、`0x2404F000`，顶端 4KB 中选一个作为 `.bss.noinit.fault_*` 的 UNINIT 区。记录和应急栈一起迁移。
+- 普通 DTCM 截止 `0x2001F000`，普通 AXI SRAM 截止 `0x24048000`；`0x24048000..0x2404BFFF` 专用于 USB DMA。故障保留区仍在 DTCM 的 `0x2001F000` 或 AXI 的 `0x2404F000`，记录和应急栈一起迁移。
 - IRAM1：记录 `0x2001F000`，应急栈 `0x2001F0B8`。提交 checksum/magic 后，以 volatile 逐字读回全部 180 字节记录，再执行 DSB，满足 DTCM/ITCM 编程后读回要求。
 - IRAM2：记录 `0x2404F000`，应急栈 `0x2404F0B8`。头部两个对齐 64 位单元完整读回并原值写回，再执行 DSB。
 - 宏同时决定链接布局和读回策略，修改后 Rebuild，不能只在 C 编译选项中另行定义内存选择。检查 MAP 中的 UNINIT 区、记录和应急栈地址，以及普通数据/栈无重叠。
@@ -247,4 +265,4 @@ LogTaskHandle
 
 旧 log_task 已增加 fault 心跳、测试服务及三段补报优先级；log.c/h 的 sys_printf 返回值及事件队列同步到当前主板；CDC 保留发送队列/握手逻辑，并提供独立业务接收钩子。业务采样、任务及诊断命名继续采用旧包的 log_* 名称。
 
-旧 readme1 的业务移植示例与 fault README 的链接/异常接入说明已合并到本文。此版本的构建和回归结果见随包 VALIDATION.md。目标固件仍需按实际外设、业务数据、内存布局和任务栈进行上板验证；本次未执行烧录。
+旧 readme1 的业务移植示例与 fault README 的链接/异常接入说明已合并到本文。本次没有替换业务采样和轮转逻辑，也没有修改 fault 核心。D-Cache 增量内容及验证边界见 DCACHE_PORTING.md 和随包 VALIDATION.md。目标固件仍需按实际外设、业务数据、内存布局和任务栈进行上板验证；本次未执行烧录。
