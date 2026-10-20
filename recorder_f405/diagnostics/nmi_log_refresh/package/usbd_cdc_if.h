@@ -1,0 +1,160 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : usbd_cdc_if.h
+  * @version        : v1.0_Cube
+  * @brief          : Header for usbd_cdc_if.c file.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __USBD_CDC_IF_H__
+#define __USBD_CDC_IF_H__
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include "usbd_cdc.h"
+#include <stdint.h>
+
+/* USER CODE BEGIN INCLUDE */
+
+/* USER CODE END INCLUDE */
+
+/** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
+  * @brief For Usb device.
+  * @{
+  */
+
+/** @defgroup USBD_CDC_IF USBD_CDC_IF
+  * @brief Usb VCP device module
+  * @{
+  */
+
+/** @defgroup USBD_CDC_IF_Exported_Defines USBD_CDC_IF_Exported_Defines
+  * @brief Defines.
+  * @{
+  */
+/* Define size for the receive and transmit buffer over CDC */
+#define APP_RX_DATA_SIZE  2048
+#define APP_TX_DATA_SIZE  2048
+/* USER CODE BEGIN EXPORTED_DEFINES */
+
+/* USER CODE END EXPORTED_DEFINES */
+
+/**
+  * @}
+  */
+
+/** @defgroup USBD_CDC_IF_Exported_Types USBD_CDC_IF_Exported_Types
+  * @brief Types.
+  * @{
+  */
+
+/* USER CODE BEGIN EXPORTED_TYPES */
+
+/* USER CODE END EXPORTED_TYPES */
+
+/**
+  * @}
+  */
+
+/** @defgroup USBD_CDC_IF_Exported_Macros USBD_CDC_IF_Exported_Macros
+  * @brief Aliases.
+  * @{
+  */
+
+/* USER CODE BEGIN EXPORTED_MACRO */
+
+/* USER CODE END EXPORTED_MACRO */
+
+/**
+  * @}
+  */
+
+/** @defgroup USBD_CDC_IF_Exported_Variables USBD_CDC_IF_Exported_Variables
+  * @brief Public variables.
+  * @{
+  */
+
+/** CDC Interface callback. */
+extern USBD_CDC_ItfTypeDef USBD_Interface_fops_HS;
+
+/* USER CODE BEGIN EXPORTED_VARIABLES */
+/* 日志握手独立于 USB 枚举，收到模块 READY 并成功排队 ACK 后才置位。 */
+extern volatile uint8_t g_log_link_ready;
+typedef struct { uint32_t ready_rx, ack_queued, ack_failed, session, waiting_loops; } log_link_diag_t;
+extern volatile log_link_diag_t g_log_link_diag;
+/* 发送队列运行统计，可在调试器中观察。 */
+extern volatile uint32_t cdc_tx_queued_count;
+extern volatile uint32_t cdc_tx_started_count;
+extern volatile uint32_t cdc_tx_complete_count;
+extern volatile uint32_t cdc_tx_pending_count;
+extern volatile uint32_t cdc_tx_inflight;
+extern volatile uint32_t cdc_tx_queue_overflow_count;
+extern volatile uint32_t cdc_tx_start_error_count;
+/* 统计所有 CDC 调用方，包括日志和视觉发送。 */
+typedef struct {
+    uint32_t attempts, accepted, busy, invalid, start_failed;
+    uint32_t accepted_bytes, completed, completed_bytes;
+    uint32_t init_count, deinit_count;
+    uint32_t buffered, queue_high_water, started, started_bytes;
+    uint32_t disconnect_lost, disconnect_lost_bytes;
+} cdc_tx_diag_t;
+extern volatile cdc_tx_diag_t g_cdc_tx_diag;
+
+/* USER CODE END EXPORTED_VARIABLES */
+
+/**
+  * @}
+  */
+
+/** @defgroup USBD_CDC_IF_Exported_FunctionsPrototype USBD_CDC_IF_Exported_FunctionsPrototype
+  * @brief Public functions declaration.
+  * @{
+  */
+
+uint8_t CDC_Transmit_HS(uint8_t* Buf, uint16_t Len);
+
+/* USER CODE BEGIN EXPORTED_FUNCTIONS */
+/* Optional payload hook; data is valid only for the duration of the call. */
+void LogLinkPayloadReceived(const uint8_t *data, uint16_t length);
+void LogLinkService_HS(void);
+/* CDC_Transmit_HS：OK 表示入队成功，BUSY 表示队列满，FAIL 表示参数错误。
+ * 枚举前可以入队，断开时保留尚未启动的数据。 */
+/* 定期尝试启动队首；完成回调也会继续发送。 */
+void CDC_TxService_HS(void);
+
+/* USER CODE END EXPORTED_FUNCTIONS */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __USBD_CDC_IF_H__ */
+

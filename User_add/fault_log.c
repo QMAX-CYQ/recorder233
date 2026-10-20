@@ -1,16 +1,17 @@
 #include "fault_log.h"
 #include "main.h"
 #include "fault_log_port.h"
+#include "nmi_log.h"
 #include <stddef.h>
 
-/* fault_noinit.sct selects the top 4KB of IRAM1/DTCM or IRAM2/AXI as UNINIT.
- * Current application does not enable D-cache; enabling it later requires
- * a non-cacheable MPU region or an explicit cache writeback strategy. */
+/* fault_noinit.sct reserves 4KB for both fault/NMI records and stacks.
+ * DTCM is non-cacheable. AXI retention still needs its own cache policy. */
 __attribute__((section(".bss.noinit.fault_record"), aligned(8), used))
 volatile fault_record_t g_fault_record;
 __attribute__((section(".bss.noinit.fault_stack"), aligned(8), used))
 uint8_t g_fault_emergency_stack[FAULT_LOG_STACK_BYTES];
 volatile fault_log_diag_t g_fault_log_diag;
+volatile uint32_t g_fault_capture_active;
 
 static fault_record_t replay_record;
 static uint32_t next_fault_count = 1U;
@@ -131,6 +132,8 @@ void FaultLog_BootInit(void)
     uint32_t i;
     volatile uint32_t *retained = (volatile uint32_t *)&g_fault_record;
     uint32_t *copy = (uint32_t *)&replay_record;
+    g_fault_capture_active = 0U;
+    NmiLog_BootInit(reset);
     g_fault_log_diag.reset_after = reset;
 #if FAULT_LOG_ENABLE_TEST
     fault_test_boot_init(reset);
@@ -179,55 +182,65 @@ static uint8_t fault_frame_address(uint32_t sp, uint32_t exc_return, uint32_t cf
         frame_bytes = 26U * sizeof(uint32_t); break;
     default: return 0U;
     }
-    if (!((sp >= 0x20000000UL && sp <= 0x2001F000UL - frame_bytes) ||
-          (sp >= 0x24000000UL && sp <= 0x2404F000UL - frame_bytes)))
+    if (!((sp >= 0x20000000UL && sp <= 0x20020000UL - frame_bytes) ||
+          (sp >= 0x24000000UL && sp <= 0x24050000UL - frame_bytes)))
         return 0U;
     *address = sp;
     return 1U;
 }
 
-/* 入口已切换应急 MSP；只做整数运算和直接寄存器访问，不调用系统服务。 */
+/* No static scratch state: NMI may interrupt a fault snapshot. */
+void FaultLog_SaveContext(volatile fault_record_t *record, uint32_t count,
+                         uint32_t msp, uint32_t psp, uint32_t exc_return,
+                         const uint32_t *entry_regs)
+{
+    uint32_t i, address;
+    volatile uint32_t *words = (volatile uint32_t *)record;
+    for (i = 0U; i < sizeof(*record) / sizeof(uint32_t); ++i)
+        words[i] = 0U;
+    record->version = FAULT_LOG_VERSION;
+    record->size = sizeof(*record);
+    record->pending = 1U;
+    record->count = count;
+    record->exception = __get_IPSR();
+    record->tick = g_fault_log_diag.last_tick;
+    record->tick_valid = g_fault_log_diag.tick_valid;
+    record->reset_before = RCC->RSR;
+    record->msp = msp;
+    record->psp = psp;
+    record->exc_return = exc_return;
+    for (i = 0U; i < 8U; ++i) record->callee[i] = entry_regs[i];
+    record->primask = entry_regs[8];
+    record->control = entry_regs[9];
+    record->basepri = entry_regs[10];
+    record->faultmask = entry_regs[11];
+    record->cfsr = SCB->CFSR;
+    record->hfsr = SCB->HFSR;
+    record->dfsr = SCB->DFSR;
+    record->afsr = SCB->AFSR;
+    record->bfar = SCB->BFAR;
+    record->mmfar = SCB->MMFAR;
+    record->shcsr = SCB->SHCSR;
+    record->icsr = SCB->ICSR;
+    record->vtor = SCB->VTOR;
+    record->abfsr = SCB->ABFSR;
+    record->fpccr = FPU->FPCCR;
+    if (fault_frame_address((exc_return & 4U) != 0U ? psp : msp,
+                             exc_return, record->cfsr, &address)) {
+        const volatile uint32_t *frame = (const volatile uint32_t *)(uintptr_t)address;
+        for (i = 0U; i < 8U; ++i) record->frame[i] = frame[i];
+        record->stack_valid = 1U;
+    }
+}
+
+/* Fault and NMI have separate records and separate emergency stacks. */
 __attribute__((noinline, noreturn))
 void FaultLog_Capture(uint32_t msp, uint32_t psp, uint32_t exc_return,
                       const uint32_t *entry_regs)
 {
-    uint32_t i, address;
-    volatile uint32_t *words = (volatile uint32_t *)&g_fault_record;
-    for (i = 0U; i < sizeof(g_fault_record) / sizeof(uint32_t); ++i)
-        words[i] = 0U;
-    g_fault_record.version = FAULT_LOG_VERSION;
-    g_fault_record.size = sizeof(g_fault_record);
-    g_fault_record.pending = 1U;
-    g_fault_record.count = next_fault_count;
-    g_fault_record.exception = __get_IPSR();
-    g_fault_record.tick = g_fault_log_diag.last_tick;
-    g_fault_record.tick_valid = g_fault_log_diag.tick_valid;
-    g_fault_record.reset_before = RCC->RSR;
-    g_fault_record.msp = msp;
-    g_fault_record.psp = psp;
-    g_fault_record.exc_return = exc_return;
-    for (i = 0U; i < 8U; ++i) g_fault_record.callee[i] = entry_regs[i];
-    g_fault_record.primask = entry_regs[8];
-    g_fault_record.control = entry_regs[9];
-    g_fault_record.basepri = entry_regs[10];
-    g_fault_record.faultmask = entry_regs[11];
-    g_fault_record.cfsr = SCB->CFSR;
-    g_fault_record.hfsr = SCB->HFSR;
-    g_fault_record.dfsr = SCB->DFSR;
-    g_fault_record.afsr = SCB->AFSR;
-    g_fault_record.bfar = SCB->BFAR;
-    g_fault_record.mmfar = SCB->MMFAR;
-    g_fault_record.shcsr = SCB->SHCSR;
-    g_fault_record.icsr = SCB->ICSR;
-    g_fault_record.vtor = SCB->VTOR;
-    g_fault_record.abfsr = SCB->ABFSR;
-    g_fault_record.fpccr = FPU->FPCCR;
-    if (fault_frame_address((exc_return & 4U) != 0U ? psp : msp,
-                             exc_return, g_fault_record.cfsr, &address)) {
-        const volatile uint32_t *frame = (const volatile uint32_t *)(uintptr_t)address;
-        for (i = 0U; i < 8U; ++i) g_fault_record.frame[i] = frame[i];
-        g_fault_record.stack_valid = 1U;
-    }
+    g_fault_capture_active = 1U;
+    FaultLog_SaveContext(&g_fault_record, next_fault_count, msp, psp,
+                         exc_return, entry_regs);
     fault_commit();
     /* Retained-memory readback is performed inside fault_commit(). */
     /* 现场已提交到保留区，停留在异常上下文且不喂狗，等待 IWDG 复位。
@@ -277,6 +290,7 @@ uint8_t FaultLog_Service(void)
     uint8_t result = FAULT_LOG_PORT_BUSY;
     uint32_t part;
     const fault_record_t *r = &replay_record;
+    if (NmiLog_Service()) return 1U;
     if (g_fault_log_diag.pending == 0U) return 0U;
     if (!FaultLog_PortLinkReady()) return 1U;
     if (!replay_started || replay_session != FaultLog_PortSession() ||
@@ -331,6 +345,7 @@ uint8_t FaultLog_Service(void)
 
 void FaultLog_TestService(uint32_t tick)
 {
+    NmiLog_TestService();
 #if FAULT_LOG_ENABLE_TEST
     uint32_t request = g_fault_test_request;
     if (request != 0U) {
@@ -360,7 +375,7 @@ void FaultLog_TestService(uint32_t tick)
     /* 周期自动测试：每次重启、链路就绪且补报完成后重新等待10秒。
      * 不覆盖仍待补报的现场；断链或重新进入补报时重置自动倒计时。 */
     if (g_fault_test_state == 2U) return;
-    if (!FaultLog_PortLinkReady() || g_fault_log_diag.pending != 0U) {
+    if (!FaultLog_PortLinkReady() || g_fault_log_diag.pending != 0U || g_nmi_log_diag.pending != 0U) {
         g_fault_test_state = 0U;
         g_fault_test_remaining_ms = 0U;
         return;

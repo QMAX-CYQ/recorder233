@@ -1,0 +1,23 @@
+{
+  "axf_sha256": "575aa323b9993acc94b788b54b10dfb531adc0d7a793af09af075868771cac63",
+  "log_sha256": "01bbda70f4b2e5a15b4f560544f5ff3c5975a6bf5dc2d52cf97501e057322d3b",
+  "complete_snapshots": 14287,
+  "seq_range": [
+    0,
+    14286
+  ],
+  "duration_ms": 142860,
+  "motor_state_samples": 1428,
+  "driver0_states": {
+    "0": 1428
+  },
+  "yaw_states": {
+    "0": 1428
+  },
+  "offline_counts": {
+    "remote": 136,
+    "supercap": 136,
+    "trigger": 136
+  },
+  "source_not_modified": true
+}

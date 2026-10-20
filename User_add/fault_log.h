@@ -29,6 +29,12 @@ typedef struct {
 extern volatile fault_record_t g_fault_record;
 extern volatile fault_log_diag_t g_fault_log_diag;
 
+/* Shared read-only CPU snapshot routine used by separate fault/NMI records. */
+void FaultLog_SaveContext(volatile fault_record_t *record, uint32_t count,
+                         uint32_t msp, uint32_t psp, uint32_t exc_return,
+                         const uint32_t *entry_regs);
+extern volatile uint32_t g_fault_capture_active;
+
 /* main 最早期调用；异常处理本身不依赖 HAL、RTOS 或 USB。 */
 void FaultLog_BootInit(void);
 void FaultLog_Heartbeat(uint32_t tick);

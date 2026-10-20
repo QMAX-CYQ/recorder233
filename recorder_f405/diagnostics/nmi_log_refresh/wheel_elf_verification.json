@@ -1,0 +1,30 @@
+{
+  "NMI_Handler": {
+    "address": "0x800fca1",
+    "size": 58
+  },
+  "NmiLog_Capture": {
+    "address": "0x800feb9",
+    "size": 406
+  },
+  "g_nmi_record": {
+    "address": "0x2001f000",
+    "size": 272
+  },
+  "g_nmi_emergency_stack": {
+    "address": "0x2001f110",
+    "size": 1024
+  },
+  "g_fault_record": {
+    "address": "0x2001f510",
+    "size": 180
+  },
+  "g_fault_emergency_stack": {
+    "address": "0x2001f5c8",
+    "size": 1024
+  },
+  "vector_nmi": "0x800fca1",
+  "nmi_entry_first_bytes": "eff30880eff3098172460c4b",
+  "axf_sha256": "9f541e8341856a34546f8183f95276d78bfe5533e20372ed25b9b338e7fcff5b",
+  "retained_used_bytes": 2504
+}

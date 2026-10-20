@@ -1,0 +1,32 @@
+[
+  {
+    "file": "README.md",
+    "before_sha256": "036ce869d2221a5cfcabf9b9eef6e1a026b50ab42958d565aa8471bb2470e688",
+    "after_sha256": "0e94c94838aa5b5792ee7979a61ac4e65ccd8d8668f989cdd90d85a97e350b09"
+  },
+  {
+    "file": "VALIDATION.md",
+    "before_sha256": "5e33be8a46e5e145e5ad9ed103c4be78162eac90a16034e17236b65748a2c250",
+    "after_sha256": "3039aa67d73574afd2b347901191973ceffe15b110124a91a6bc1cfc9c1758f1"
+  },
+  {
+    "file": "status_log.c",
+    "before_sha256": null,
+    "after_sha256": "44b9902a4195f6553b99f76538c57e75e0649577e85312e4947797355c00d405"
+  },
+  {
+    "file": "status_log.h",
+    "before_sha256": null,
+    "after_sha256": "fe6a29e6dca4b0e75dbff34ce7ec69e913288ab25244b25672488714c9c76ecd"
+  },
+  {
+    "file": "STATUS_ALERTS.md",
+    "before_sha256": null,
+    "after_sha256": "156a70f545703afbe265b2f1196a7b9bfa3acf817f1627fdf756c8ab9b01e452"
+  },
+  {
+    "file": "examples/status_log_gimbal.inc",
+    "before_sha256": null,
+    "after_sha256": "536f739990039cca480fcf9e9472f920d15a6cf1c5d3a6ddbcfbea5c080367a9"
+  }
+]

@@ -1,6 +1,6 @@
 # 主板日志发送与故障补报支持包
 
-更新日期：2026-10-18。日志与 fault 支持沿用 H723 主板实现；本次提取轮腿主板已验证的 D-Cache / USB DMA 适配，加入非缓存内存区、CubeMX USER CODE 接入与可选缓存辅助函数。
+更新日期：2026-10-19。新增独立 NMI 时钟现场捕获与四段回报，详见 [NMI_REPORTING.md](NMI_REPORTING.md)。日志与 fault 支持沿用 H723 主板实现；包含轮腿主板已验证的 D-Cache / USB DMA 适配；本次另从 rm_main_gimbal 提取 status 离线/恢复告警状态机，补齐宽限期、限频和恢复重试。
 
 本目录位于 F405 记录器仓库中，但这些文件供 **H723 发送主板** 使用，不加入 F405 接收工程编译。适用基线为 STM32H723、Cortex-M7、Keil ARM Compiler 6、CMSIS-RTOS v1/FreeRTOS，毫秒 tick。用户工程提供 HAL、CMSIS、FreeRTOS、USB Device、中断与外设初始化；本目录不是独立可烧录固件。
 
@@ -12,6 +12,7 @@
 | `log.c/h` | 返回发送状态的 sys_printf、DEBUG 宏、业务事件队列 |
 | `usbd_cdc_if.c/h` | CDC 发送队列、发送完成回调、会话握手及可选业务接收钩子 |
 | `log_link_protocol.h` | 16 字节控制帧构建、校验、跨包解析 |
+| `nmi_log.c/h` | NMI 独立应急栈、时钟/CPU 现场及四段补报 |
 | `fault_log.c/h` | 异常入口、应急栈、现场校验及三段 ERROR 补报 |
 | `fault_log_port.c/h` | 将 fault 服务连接到本包日志/USB/RTOS 接口 |
 | `fault_log_config.h` | 内存选择与故障测试开关，C 和链接脚本共用 |
@@ -19,6 +20,8 @@
 | `usb_dma_memory.h` / `usb_dma_port.h` | 共享内存常量、MPU 配置及 USB HAL 收发屏障 |
 | `dcache_handle.c/h` | 可选 UART/SPI DMA 缓存辅助函数，D-Cache 关闭时跳过维护 |
 | `DCACHE_PORTING.md` | 必须阅读的 USB DMA / D-Cache / CubeMX 接入说明 |
+| `status_log.c/h` | 可移植的 status 离线/恢复告警观察器，默认宽限 5 秒、每模块限频 1 秒 |
+| `STATUS_ALERTS.md` / `examples/status_log_gimbal.inc` | 告警接入说明及可选的云台 16 模块映射 |
 
 默认 `FAULT_LOG_TEST_IRAM1=1`，使用 DTCM 写后读回；`FAULT_LOG_ENABLE_TEST=0`，只捕获真实异常，不自动注入。临时 fault_boot、阶段标记和调试器 PC 采样不在此包中。
 
@@ -26,7 +29,7 @@
 
 ## 接入步骤
 
-1. 配置 USB Device CDC HS、CMSIS-RTOS v1、FreeRTOS 和 IWDG。添加 `log_task.c`、`log.c`、`fault_log.c`、`fault_log_port.c`，并将本目录加入 Include Path。不要同时编译两套同名文件。
+1. 配置 USB Device CDC HS、CMSIS-RTOS v1、FreeRTOS 和 IWDG。添加 `log_task.c`、`log.c`、`fault_log.c`、`nmi_log.c`、`fault_log_port.c`，并将本目录加入 Include Path。不要同时编译两套同名文件。
 2. 把附带 `usbd_cdc_if.c/h` 的发送队列、完成回调和协议处理合入目标 CDC 接口，或在 USB 配置一致时替换现有接口。USB 初始化、描述符及底层配置仍由用户工程生成，但必须按 [DCACHE_PORTING.md](DCACHE_PORTING.md) 将 `usb_dma_port.h` 和初始化调用接入现有 `usbd_conf.c` USER CODE 钩子。随包 CDC 的对齐声明、发送队列、回调和协议修改均位于原 USER CODE 区；重新生成后仍应检查回调、Include Path 和 scatter 引用。
 3. 修改 `log_snapshot()` 以匹配业务。当前示例依赖 `fdcan.h`、`usart.h`、`drv_dji_motor.h`、`drv_dm_motor.h`、`gimbal_task.h`、`prot_imu.h` 等当前主板对象。不存在的采样/extern/头文件需替换，不能仅靠复制这些文件编译；无需移植整套机器人业务代码。UART/FDCAN 的 Instance 应先初始化。
 4. Keil Linker 关闭自动内存布局，选用本目录 `fault_noinit.sct`。模板按 1MB Flash、128KB DTCM、320KB AXI SRAM 配置，固定预留 16KB USB DMA 区；其他型号或 Bootloader 工程须调整。USB DMA 始终开启，D-Cache 开启时自动配置该区为非缓存，关闭时跳过 MPU 设置。保留 MPU Region 7。使用本目录的配置头文件，修改内存宏后 Rebuild。
@@ -36,9 +39,10 @@
 FaultLog_BootInit(); /* 早于 HAL_Init、清复位标志和其他保留区访问 */
 ```
 
-6. 在 `stm32h7xx_it.c` 的 `USER CODE BEGIN Includes` 加入以下宏，给 CubeMX 的空处理函数改名，真实入口由 fault_log.c 提供：
+6. 在 `stm32h7xx_it.c` 的 `USER CODE BEGIN Includes` 加入以下宏，给 CubeMX 的空处理函数改名，真实入口由 fault_log.c / nmi_log.c 提供：
 
 ```c
+#define NMI_Handler FaultLog_GeneratedNMI_Handler
 #define HardFault_Handler FaultLog_GeneratedHardFault_Handler
 #define MemManage_Handler FaultLog_GeneratedMemManage_Handler
 #define BusFault_Handler FaultLog_GeneratedBusFault_Handler
@@ -95,7 +99,7 @@ task 通道还读取其他业务任务句柄；无对应任务时删除采样，
 → 轮转发送一条 INFO 快照
 ```
 
-`FaultLog_Service()` 返回 1 表示仍待补报。三段 ERROR 全部入队后，还要等待 FIFO 排空且无在途包，并确认会话和断链计数未变化，才清除 pending。断链或会话变化会从第一段重发。等待结束后普通日志重新对齐周期，不突发补发等待期间的快照。
+`FaultLog_Service()` 返回 1 表示仍待补报。NMI 四段或 HardFault 三段 ERROR 全部入队后，还要等待 FIFO 排空且无在途包，并确认会话和断链计数未变化，才清除 pending。断链或会话变化会从第一段重发。等待结束后普通日志重新对齐周期，不突发补发等待期间的快照。
 
 只有日志任务调用 `FaultLog_Service()` 和 `LogEvent_Service()`；其他任务通过事件队列或现有 DEBUG 宏提交。补报期间应避免其他任务持续灌满发送队列。
 
@@ -132,7 +136,24 @@ log_event_t event = {
 (void)LogEvent_Post(&event); /* 只允许任务上下文，返回 1 表示入队 */
 ```
 
-上电在调度器启动前调用 `LogEvent_Init()`；消费者已接入日志任务。静态队列容量为 32，复制事件值而不保存调用者指针，满时返回 0。业务模块名及离线判定由用户维护；本包没有自动读取机器人 status_task 的离线判定。恢复事件使用 LOG_EVENT_RECOVERED。事件 BUSY 时保留队头下次重试，不推进 INFO 的 seq 或通道。
+上电在调度器启动前调用 `LogEvent_Init()`；消费者已接入日志任务。静态队列容量为 32，复制事件值而不保存调用者指针，满时返回 0。业务模块名及离线判定由用户维护；本包不直接读取机器人全局状态。新增的 `status_log.c/h` 通过显式 `StatusLog_Observe()` 接收判定结果并产生告警，恢复事件使用 LOG_EVENT_RECOVERED。事件 BUSY 时保留队头下次重试，不推进 INFO 的 seq 或通道。
+
+## status 离线和恢复告警
+
+本次从云台工程提取的 `status_log.c/h` 使用已有事件队列，普通日志、fault
+补报和事件消费者保持原实现。完整步骤见 [STATUS_ALERTS.md](STATUS_ALERTS.md)。
+
+- 将 `status_log.c` 加入编译，状态任务启动时一次调用
+  `StatusLog_Init(osKernelSysTick())`。
+- 每轮完成原有 check_offline 判定后，调用 `StatusLog_Observe()`，传入模块、
+  是否启用、是否在线、最后 HAL 收包时间、CAN 信息和本轮 RTOS/HAL 时间。
+- 默认启动宽限 5 秒，持续离线每模块每秒警告，恢复时通知一次。恢复事件
+  遇队满时保存重试；长期反复重连只保留最新快照，合并有独立计数。
+- `examples/status_log_gimbal.inc` 映射源工程 16 个模块。它是可选业务示例，
+  不是独立 C 文件；其他主板按实际字段适配，核心不依赖电机或协议头文件。
+- 已有旧版 status 告警逻辑时替换原状态机，不要两套同时运行。只有一个状态
+  任务串行观察，一个日志任务消费；不从中断调用。
+- 这不会自动改变 status.all、原离线超时、看门狗或任何控制输出。
 
 ## 按实际业务修改 log_snapshot()
 
@@ -223,8 +244,8 @@ static const char *const tags[LOG_CHANNEL_COUNT] = {
 ## 保留内存和复位
 
 - 普通 DTCM 截止 `0x2001F000`，普通 AXI SRAM 截止 `0x24048000`；`0x24048000..0x2404BFFF` 专用于 USB DMA。故障保留区仍在 DTCM 的 `0x2001F000` 或 AXI 的 `0x2404F000`，记录和应急栈一起迁移。
-- IRAM1：记录 `0x2001F000`，应急栈 `0x2001F0B8`。提交 checksum/magic 后，以 volatile 逐字读回全部 180 字节记录，再执行 DSB，满足 DTCM/ITCM 编程后读回要求。
-- IRAM2：记录 `0x2404F000`，应急栈 `0x2404F0B8`。头部两个对齐 64 位单元完整读回并原值写回，再执行 DSB。
+- IRAM1：保留区从 `0x2001F000` 开始，两份记录和两份应急栈的地址以新 MAP 为准。提交 checksum/magic 后，以 volatile 逐字读回全部 180 字节记录，再执行 DSB，满足 DTCM/ITCM 编程后读回要求。
+- IRAM2：保留区从 `0x2404F000` 开始，两份记录和两份应急栈的地址以新 MAP 为准。头部两个对齐 64 位单元完整读回并原值写回，再执行 DSB。
 - 宏同时决定链接布局和读回策略，修改后 Rebuild，不能只在 C 编译选项中另行定义内存选择。检查 MAP 中的 UNINIT 区、记录和应急栈地址，以及普通数据/栈无重叠。
 - 冷启动跳过未初始化 ECC RAM 的有效性读取，先初始化记录；暖复位校验旧记录。UNINIT 不表示掉电保存，程序下载、调试器 RAM 初始化或启动代码清 RAM 也可能清除数据。
 - 必须启用 IWDG。捕获后只做整数/寄存器访问，最后停在异常中不喂狗，等待 IWDG；不依赖 USB、RTOS 或软件复位。必须确保其他高优先级异常也不会继续喂狗。
@@ -248,9 +269,13 @@ g_log_task_diag
 g_log_tx_diag
 g_cdc_tx_diag
 g_log_event_diag
+g_status_log_recovery_coalesced
+g_status_log_invalid_module
 g_log_link_diag
 g_log_link_ready
 g_fault_record
+g_nmi_record
+g_nmi_log_diag
 g_fault_log_diag
 cdc_tx_pending_count
 cdc_tx_queue_overflow_count
@@ -265,4 +290,4 @@ LogTaskHandle
 
 旧 log_task 已增加 fault 心跳、测试服务及三段补报优先级；log.c/h 的 sys_printf 返回值及事件队列同步到当前主板；CDC 保留发送队列/握手逻辑，并提供独立业务接收钩子。业务采样、任务及诊断命名继续采用旧包的 log_* 名称。
 
-旧 readme1 的业务移植示例与 fault README 的链接/异常接入说明已合并到本文。本次没有替换业务采样和轮转逻辑，也没有修改 fault 核心。D-Cache 增量内容及验证边界见 DCACHE_PORTING.md 和随包 VALIDATION.md。目标固件仍需按实际外设、业务数据、内存布局和任务栈进行上板验证；本次未执行烧录。
+旧 readme1 的业务移植示例与 fault README 的链接/异常接入说明已合并到本文。本次没有替换业务采样和轮转逻辑，本次 NMI 增量调整了 fault 核心的上下文保存与调度，保留旧 HardFault 记录和回报格式。D-Cache 增量内容及验证边界见 DCACHE_PORTING.md 和随包 VALIDATION.md。目标固件仍需按实际外设、业务数据、内存布局和任务栈进行上板验证；本次未执行烧录。
