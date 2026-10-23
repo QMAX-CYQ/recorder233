@@ -598,9 +598,9 @@
               <FilePath>..\User\Task\debug_task.c</FilePath>
             </File>
             <File>
-              <FileName>usb_task.c</FileName>
+              <FileName>comm_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\Task\usb_task.c</FilePath>
+              <FilePath>..\User\Task\comm_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -611,6 +611,16 @@
               <FileName>usart_comm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Comm\usart_comm.c</FilePath>
+            </File>
+            <File>
+              <FileName>comm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Comm\comm.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_comm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Comm\usb_comm.c</FilePath>
             </File>
           </Files>
         </Group>

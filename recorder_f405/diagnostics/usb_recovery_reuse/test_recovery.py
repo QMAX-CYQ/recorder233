@@ -4,7 +4,7 @@ import subprocess
 
 here = Path(__file__).resolve().parent
 root = here.parents[1]
-app = (root / 'User/Task/usb_task.c').read_text(encoding='utf-8')
+app = (root / 'User/Comm/usb_comm.c').read_text(encoding='utf-8')
 core = (root / 'Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.c').read_text(encoding='utf-8')
 
 def function(text, signature):
@@ -22,7 +22,7 @@ prelude = r'''
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
-#include "usb_task.h"
+#include "usb_comm.h"
 #define USBH_OK 0U
 #define USBH_FAIL 2U
 #define USBH_BUSY 1U
@@ -259,11 +259,11 @@ int main(void) {
 (here / 'recovery_test.c').write_text(prelude + functions + tests, encoding='utf-8')
 ll = root / 'Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c'
 assert 'UsbRxTrace' not in ll.read_text()
-assert app.index('if (usb_recovery_poll())') < app.index('        diagnostic_poll_timeout();')
+assert app.index('if (usb_recovery_poll())') < app.index('    diagnostic_poll_timeout();')
 assert core.count('if (USBH_UserRecoveryService((USBH_HandleTypeDef *)argument) == 0U)') == 2
 print('PASS: HAL StopHost/LL trace hooks removed; recovery guard precedes diagnostic access; OS branches invoke serialized hook')
 cmd = ('@echo off\ncall "D:\\Application\\Visual Studio 2022\\VC\\Auxiliary\\Build\\vcvars64.bat" >nul\n'
-       f'cl /nologo /utf-8 /W4 /I "{root / "User/Task"}" recovery_test.c /Fe:recovery_test.exe\n'
+       f'cl /nologo /utf-8 /W4 /I "{root / "User/Comm"}" recovery_test.c /Fe:recovery_test.exe\n'
        'if errorlevel 1 exit /b 1\nrecovery_test.exe\n')
 (here / 'run_test.cmd').write_text(cmd, encoding='utf-8')
 result = subprocess.run(['cmd', '/c', str(here / 'run_test.cmd')], cwd=here,

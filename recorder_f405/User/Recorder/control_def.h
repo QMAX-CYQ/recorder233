@@ -1,13 +1,31 @@
-/*¿ØÖÆ¿ª¹Ø*/
+/*æŽ§åˆ¶å¼€å…³*/
 #ifndef __CONTROL_DEF_H
 #define __CONTROL_DEF_H
 
 #define INFO_FROM_DEVICE
 
-#ifdef INFO_FROM_DEVICE
-	#define USB_COMM
+#define COMM_INTERFACE_NONE 0U
+#define COMM_INTERFACE_USB  1U
+#define COMM_INTERFACE_SPI  2U
+#define COMM_INTERFACE_UART 3U
 
+#ifndef COMM_INTERFACE
+#ifdef INFO_FROM_DEVICE
+#define COMM_INTERFACE COMM_INTERFACE_USB
 #else
+#define COMM_INTERFACE COMM_INTERFACE_NONE
+#endif
+#endif
+
+#if COMM_INTERFACE == COMM_INTERFACE_USB
+#define USB_COMM
+#elif COMM_INTERFACE == COMM_INTERFACE_SPI || COMM_INTERFACE == COMM_INTERFACE_UART
+#error "SPI/UART communication backends are reserved but not implemented. Select USB or NONE."
+#elif COMM_INTERFACE != COMM_INTERFACE_NONE
+#error "Invalid COMM_INTERFACE selection."
+#endif
+
+#ifndef INFO_FROM_DEVICE
 	#define DEBUG_USE
 
 #endif //#if INFO_FROM_DEVICE

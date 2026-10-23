@@ -5,7 +5,7 @@
 #include "recorder.h"
 #include "calendar.h"
 #include "recorder_inter.h"
-#include "usb_task.h"
+#include "usb_comm.h"
 #include <stdio.h>
 #include <string.h>
 #include "log_link_protocol.h"
@@ -18,7 +18,8 @@ static uint8_t log_host_rx_armed;
 static volatile uint8_t log_host_session_active;
 static uint32_t log_host_last_ready_tick;
 static uint32_t log_host_session_counter;
-static uint8_t log_host_ready_frame[16];
+/* USB Host DMA requires 32-bit alignment, independent of linker placement. */
+static uint8_t log_host_ready_frame[16] __attribute__((aligned(4)));
 static log_link_parser_t log_host_parser;
 static uint8_t log_host_filtered[512U+16U];
 
@@ -599,204 +600,212 @@ static uint8_t usb_recovery_poll(void)
     return 0U;
 }
 
-void usb_task(void const *argument)
+static uint32_t diagnostic_last_task_tick;
+static uint32_t diagnostic_ring_wait_tick;
+static uint8_t diagnostic_task_seen;
+static uint8_t diagnostic_ring_wait_seen;
+static ApplicationTypeDef diagnostic_last_state = APPLICATION_IDLE;
+
+void usb_comm_init(void)
 {
-    uint32_t thread_wake_time = osKernelSysTick();
+    diagnostic_last_task_tick = HAL_GetTick();
+    diagnostic_ring_wait_tick = 0U;
+    diagnostic_task_seen = 0U;
+    diagnostic_ring_wait_seen = 0U;
+    diagnostic_last_state = APPLICATION_IDLE;
+}
+
+void usb_comm_get_status(comm_status_t *status)
+{
+    status->ready = Appli_state == APPLICATION_READY && g_log_host_ack_received;
+    status->rx_count = g_usb_rx_diag.callbacks_with_data;
+}
+
+void usb_comm_process(void)
+{
     uint32_t rx_request_len;
     size_t ring_free;
     uint8_t ring_ready;
     CDC_HandleTypeDef *cdc_handle;
     USBH_StatusTypeDef receive_status;
-    uint32_t diagnostic_last_task_tick = 0U;
-    uint32_t diagnostic_ring_wait_tick = 0U;
-    uint8_t diagnostic_task_seen = 0U;
-    uint8_t diagnostic_ring_wait_seen = 0U;
-    ApplicationTypeDef diagnostic_last_state = APPLICATION_IDLE;
-
-    for (;;)
+    if (usb_recovery_poll()) {
+        return;
+    }
+    diagnostic_poll_timeout();
     {
-        thread_wake_time = osKernelSysTick();
-        if (usb_recovery_poll()) {
-            osDelay(1U);
-            continue;
+        uint32_t now = HAL_GetTick();
+        uint32_t elapsed = now - diagnostic_last_task_tick;
+        if (diagnostic_task_seen && (elapsed > g_usb_rx_diag.max_task_gap_ms))
+            g_usb_rx_diag.max_task_gap_ms = elapsed;
+        diagnostic_task_seen = 1U;
+        diagnostic_last_task_tick = now;
+        if (usb_rx_pending) {
+            elapsed = now - diagnostic_request_tick;
+            if (elapsed > g_usb_rx_diag.max_pending_ms) g_usb_rx_diag.max_pending_ms = elapsed;
         }
-        diagnostic_poll_timeout();
-        {
-            uint32_t now = HAL_GetTick();
-            uint32_t elapsed = now - diagnostic_last_task_tick;
-            if (diagnostic_task_seen && (elapsed > g_usb_rx_diag.max_task_gap_ms))
-                g_usb_rx_diag.max_task_gap_ms = elapsed;
-            diagnostic_task_seen = 1U;
-            diagnostic_last_task_tick = now;
-            if (usb_rx_pending) {
-                elapsed = now - diagnostic_request_tick;
-                if (elapsed > g_usb_rx_diag.max_pending_ms) g_usb_rx_diag.max_pending_ms = elapsed;
-            }
-            if (usb_rx_ready) {
-                /* Read the callback timestamp before sampling the current tick.
-                 * The loop's earlier 'now' may predate the receive callback. */
-                uint32_t ready_tick = diagnostic_ready_tick;
-                elapsed = HAL_GetTick() - ready_tick;
-                if (elapsed > g_usb_rx_diag.max_ready_hold_ms) g_usb_rx_diag.max_ready_hold_ms = elapsed;
-            }
-            if (usb_rx_waiting_for_ring) {
-                if (!diagnostic_ring_wait_seen) diagnostic_ring_wait_tick = now;
-                diagnostic_ring_wait_seen = 1U;
-                elapsed = now - diagnostic_ring_wait_tick;
-                if (elapsed > g_usb_rx_diag.max_ring_wait_ms) g_usb_rx_diag.max_ring_wait_ms = elapsed;
-            } else diagnostic_ring_wait_seen = 0U;
-            if (Appli_state != diagnostic_last_state) {
-                if (Appli_state == APPLICATION_READY) g_usb_rx_diag.ready_transitions++;
-                if (Appli_state == APPLICATION_DISCONNECT) {
-                    g_usb_rx_diag.disconnect_transitions++;
-                    if (usb_rx_ready) g_usb_rx_diag.discarded_ready_packets++;
-                    g_usb_rx_diag.discarded_partial_line_bytes += diagnostic_line_bytes;
-                    diagnostic_prefix_len = 0U;
-                    diagnostic_line_bytes = 0U;
-                    diagnostic_previous_byte = 0U;
-                    diagnostic_have_tick = 0U;
-                    g_usb_rx_diag.line_bytes_pending = 0U;
-                }
-                diagnostic_last_state = Appli_state;
-            }
+        if (usb_rx_ready) {
+            /* Read the callback timestamp before sampling the current tick.
+             * The loop's earlier 'now' may predate the receive callback. */
+            uint32_t ready_tick = diagnostic_ready_tick;
+            elapsed = HAL_GetTick() - ready_tick;
+            if (elapsed > g_usb_rx_diag.max_ready_hold_ms) g_usb_rx_diag.max_ready_hold_ms = elapsed;
         }
-        if (Appli_state == APPLICATION_READY)
-        {
-            if (!log_host_session_active) {
-                log_host_session_counter++;
-                g_log_host_link_diag.session = HAL_GetTick() ^ (log_host_session_counter * 2654435761UL);
-                log_host_session_active = 1U;
-                g_log_host_ack_received = 0U;
-                log_host_rx_armed = 0U;
-                log_host_parser.used = 0U;
-                log_host_last_ready_tick = HAL_GetTick() - 200U;
+        if (usb_rx_waiting_for_ring) {
+            if (!diagnostic_ring_wait_seen) diagnostic_ring_wait_tick = now;
+            diagnostic_ring_wait_seen = 1U;
+            elapsed = now - diagnostic_ring_wait_tick;
+            if (elapsed > g_usb_rx_diag.max_ring_wait_ms) g_usb_rx_diag.max_ring_wait_ms = elapsed;
+        } else diagnostic_ring_wait_seen = 0U;
+        if (Appli_state != diagnostic_last_state) {
+            if (Appli_state == APPLICATION_READY) g_usb_rx_diag.ready_transitions++;
+            if (Appli_state == APPLICATION_DISCONNECT) {
+                g_usb_rx_diag.disconnect_transitions++;
+                if (usb_rx_ready) g_usb_rx_diag.discarded_ready_packets++;
+                g_usb_rx_diag.discarded_partial_line_bytes += diagnostic_line_bytes;
+                diagnostic_prefix_len = 0U;
+                diagnostic_line_bytes = 0U;
+                diagnostic_previous_byte = 0U;
+                diagnostic_have_tick = 0U;
+                g_usb_rx_diag.line_bytes_pending = 0U;
             }
-            ring_ready = RecorderDataGetBufferStatus(&ring_free);
-            usb_rx_ring_ready = ring_ready;
-            usb_rx_ring_free = (uint32_t)ring_free;
-            if ((g_usb_rx_diag.ring_samples == 0U) || (ring_free < g_usb_rx_diag.min_ring_free))
-                g_usb_rx_diag.min_ring_free = (uint32_t)ring_free;
-            g_usb_rx_diag.ring_samples++;
-
-            if (usb_rx_ready)
-            {
-                if (!usb_rx_formatted_ready)
-                {
-                    if (usb_format_packet_with_timestamp(usb_rx_len, &usb_rx_timestamp_len,
-                                                          &usb_rx_formatted_line_start))
-                    {
-                        usb_rx_formatted_ready = 1U;
-                    }
-                    else g_usb_rx_diag.format_fail++;
-                }
-
-                if (usb_rx_formatted_ready &&
-                    (!ring_ready || (ring_free < usb_rx_timestamp_len)))
-                {
-                    if (!usb_rx_waiting_for_ring)
-                    {
-                        usb_rx_ring_blocked_count++;
-                    }
-                    usb_rx_waiting_for_ring = 1U;
-                }
-                else if (usb_rx_formatted_ready &&
-                         RecorderDataWrite((const char *)usb_rx_timestamp_buffer, usb_rx_timestamp_len))
-                {
-                    usb_rx_ready = 0U;
-                    usb_rx_formatted_ready = 0U;
-                    usb_rx_line_start = usb_rx_formatted_line_start;
-                    usb_rx_waiting_for_ring = 0U;
-                    usb_rx_written_packet_count++;
-                    usb_rx_written_byte_count += (uint32_t)usb_rx_timestamp_len;
-                }
-                else if (usb_rx_formatted_ready)
-                {
-                    usb_rx_write_fail_count++;
-                    if (!usb_rx_waiting_for_ring)
-                    {
-                        usb_rx_ring_blocked_count++;
-                    }
-                    usb_rx_waiting_for_ring = 1U;
-                }
-            }
-
-            cdc_handle = NULL;
-            rx_request_len = 0U;
-            if (hUsbHostHS.pActiveClass != NULL)
-            {
-                cdc_handle = (CDC_HandleTypeDef *)hUsbHostHS.pActiveClass->pData;
-                if (cdc_handle != NULL)
-                {
-                    rx_request_len = cdc_handle->DataItf.InEpSize;
-                }
-            }
-
-            if (rx_request_len > sizeof(usb_buffer))
-            {
-                usb_rx_request_size_invalid = 1U;
-            }
-            else if (!usb_rx_pending && !usb_rx_ready && (rx_request_len > 0U))
-            {
-                if (!ring_ready || (ring_free < rx_request_len))
-                {
-                    if (!usb_rx_waiting_for_ring)
-                    {
-                        usb_rx_ring_blocked_count++;
-                    }
-                    usb_rx_waiting_for_ring = 1U;
-                }
-                else
-                {
-                    usb_rx_waiting_for_ring = 0U;
-                    diagnostic_request_tick = HAL_GetTick();
-                    g_usb_rx_timeout_diag.request_count++;
-
-                    /* 提交前先标记，避免完成回调清零后又被覆盖。 */
-                    usb_rx_pending = 1U;
-                    receive_status = USBH_CDC_Receive(&hUsbHostHS, usb_buffer, rx_request_len);
-
-                    usb_rx_last_receive_status = (uint32_t)receive_status;
-                    if (receive_status == USBH_OK) log_host_rx_armed = 1U;
-                    if (receive_status != USBH_OK)
-                    {
-                        /* 提交失败，没有等待中的接收请求。 */
-	                    usb_rx_pending = 0U;
-                        usb_rx_receive_fail_count++;
-                    }
-                }
-            }
-            /* 接收请求已提交且日志文件可写，再发送 READY。
-             * 提交前置 pending，防止快速完成回调清零后被覆盖。 */
-            if (log_host_rx_armed && RecorderLogIsReady() && !g_log_host_ack_received &&
-                !log_host_tx_pending && cdc_handle != NULL && cdc_handle->data_tx_state == CDC_IDLE &&
-                (HAL_GetTick() - log_host_last_ready_tick >= 200U)) {
-                USBH_StatusTypeDef tx_status;
-                LogLinkBuild(log_host_ready_frame, LOG_LINK_READY, g_log_host_link_diag.session);
-                log_host_tx_pending = 1U;
-                log_host_last_ready_tick = HAL_GetTick();
-                g_log_host_link_diag.ready_attempts++;
-                tx_status = USBH_CDC_Transmit(&hUsbHostHS, log_host_ready_frame, sizeof(log_host_ready_frame));
-                if (tx_status == USBH_OK) g_log_host_link_diag.ready_started++;
-                else {
-                    log_host_tx_pending = 0U;
-                    g_log_host_link_diag.tx_failed++;
-                }
-            }
+            diagnostic_last_state = Appli_state;
         }
-        else
-        {
-            log_host_session_active = 0U;
-            log_host_rx_armed = 0U;
-            log_host_tx_pending = 0U;
+    }
+    if (Appli_state == APPLICATION_READY)
+    {
+        if (!log_host_session_active) {
+            log_host_session_counter++;
+            g_log_host_link_diag.session = HAL_GetTick() ^ (log_host_session_counter * 2654435761UL);
+            log_host_session_active = 1U;
             g_log_host_ack_received = 0U;
+            log_host_rx_armed = 0U;
             log_host_parser.used = 0U;
-            usb_rx_pending = 0U;
-            usb_rx_ready = 0U;
-            usb_rx_formatted_ready = 0U;
-            usb_rx_line_start = 1U;
-            usb_rx_waiting_for_ring = 0U;
+            log_host_last_ready_tick = HAL_GetTick() - 200U;
         }
-        osDelayUntil(&thread_wake_time, 1);
+        ring_ready = RecorderDataGetBufferStatus(&ring_free);
+        usb_rx_ring_ready = ring_ready;
+        usb_rx_ring_free = (uint32_t)ring_free;
+        if ((g_usb_rx_diag.ring_samples == 0U) || (ring_free < g_usb_rx_diag.min_ring_free))
+            g_usb_rx_diag.min_ring_free = (uint32_t)ring_free;
+        g_usb_rx_diag.ring_samples++;
+
+        if (usb_rx_ready)
+        {
+            if (!usb_rx_formatted_ready)
+            {
+                if (usb_format_packet_with_timestamp(usb_rx_len, &usb_rx_timestamp_len,
+                                                      &usb_rx_formatted_line_start))
+                {
+                    usb_rx_formatted_ready = 1U;
+                }
+                else g_usb_rx_diag.format_fail++;
+            }
+
+            if (usb_rx_formatted_ready &&
+                (!ring_ready || (ring_free < usb_rx_timestamp_len)))
+            {
+                if (!usb_rx_waiting_for_ring)
+                {
+                    usb_rx_ring_blocked_count++;
+                }
+                usb_rx_waiting_for_ring = 1U;
+            }
+            else if (usb_rx_formatted_ready &&
+                     RecorderDataWrite((const char *)usb_rx_timestamp_buffer, usb_rx_timestamp_len))
+            {
+                usb_rx_ready = 0U;
+                usb_rx_formatted_ready = 0U;
+                usb_rx_line_start = usb_rx_formatted_line_start;
+                usb_rx_waiting_for_ring = 0U;
+                usb_rx_written_packet_count++;
+                usb_rx_written_byte_count += (uint32_t)usb_rx_timestamp_len;
+            }
+            else if (usb_rx_formatted_ready)
+            {
+                usb_rx_write_fail_count++;
+                if (!usb_rx_waiting_for_ring)
+                {
+                    usb_rx_ring_blocked_count++;
+                }
+                usb_rx_waiting_for_ring = 1U;
+            }
+        }
+
+        cdc_handle = NULL;
+        rx_request_len = 0U;
+        if (hUsbHostHS.pActiveClass != NULL)
+        {
+            cdc_handle = (CDC_HandleTypeDef *)hUsbHostHS.pActiveClass->pData;
+            if (cdc_handle != NULL)
+            {
+                rx_request_len = cdc_handle->DataItf.InEpSize;
+            }
+        }
+
+        if (rx_request_len > sizeof(usb_buffer))
+        {
+            usb_rx_request_size_invalid = 1U;
+        }
+        else if (!usb_rx_pending && !usb_rx_ready && (rx_request_len > 0U))
+        {
+            if (!ring_ready || (ring_free < rx_request_len))
+            {
+                if (!usb_rx_waiting_for_ring)
+                {
+                    usb_rx_ring_blocked_count++;
+                }
+                usb_rx_waiting_for_ring = 1U;
+            }
+            else
+            {
+                usb_rx_waiting_for_ring = 0U;
+                diagnostic_request_tick = HAL_GetTick();
+                g_usb_rx_timeout_diag.request_count++;
+
+                /* 提交前先标记，避免完成回调清零后又被覆盖。 */
+                usb_rx_pending = 1U;
+                receive_status = USBH_CDC_Receive(&hUsbHostHS, usb_buffer, rx_request_len);
+
+                usb_rx_last_receive_status = (uint32_t)receive_status;
+                if (receive_status == USBH_OK) log_host_rx_armed = 1U;
+                if (receive_status != USBH_OK)
+                {
+                    /* 提交失败，没有等待中的接收请求。 */
+	                    usb_rx_pending = 0U;
+                    usb_rx_receive_fail_count++;
+                }
+            }
+        }
+        /* 接收请求已提交且日志文件可写，再发送 READY。
+         * 提交前置 pending，防止快速完成回调清零后被覆盖。 */
+        if (log_host_rx_armed && RecorderLogIsReady() && !g_log_host_ack_received &&
+            !log_host_tx_pending && cdc_handle != NULL && cdc_handle->data_tx_state == CDC_IDLE &&
+            (HAL_GetTick() - log_host_last_ready_tick >= 200U)) {
+            USBH_StatusTypeDef tx_status;
+            LogLinkBuild(log_host_ready_frame, LOG_LINK_READY, g_log_host_link_diag.session);
+            log_host_tx_pending = 1U;
+            log_host_last_ready_tick = HAL_GetTick();
+            g_log_host_link_diag.ready_attempts++;
+            tx_status = USBH_CDC_Transmit(&hUsbHostHS, log_host_ready_frame, sizeof(log_host_ready_frame));
+            if (tx_status == USBH_OK) g_log_host_link_diag.ready_started++;
+            else {
+                log_host_tx_pending = 0U;
+                g_log_host_link_diag.tx_failed++;
+            }
+        }
+    }
+    else
+    {
+        log_host_session_active = 0U;
+        log_host_rx_armed = 0U;
+        log_host_tx_pending = 0U;
+        g_log_host_ack_received = 0U;
+        log_host_parser.used = 0U;
+        usb_rx_pending = 0U;
+        usb_rx_ready = 0U;
+        usb_rx_formatted_ready = 0U;
+        usb_rx_line_start = 1U;
+        usb_rx_waiting_for_ring = 0U;
     }
 }
 

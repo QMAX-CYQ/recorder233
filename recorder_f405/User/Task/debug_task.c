@@ -57,7 +57,6 @@ uint8_t log_flag;
 
 
 
-/* 串口上位机数据发送任务 */
 void debug_task(void const *argument)
 {
     uint32_t thread_wake_time = osKernelSysTick();

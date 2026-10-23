@@ -1,6 +1,7 @@
-#ifndef __USB_TASK_H
-#define __USB_TASK_H
+#ifndef USB_COMM_H
+#define USB_COMM_H
 #include "stdint.h"
+#include "comm.h"
 
 typedef struct {
     uint32_t before_tick, after_tick, local_tick, estimated_missing;
@@ -80,6 +81,10 @@ typedef struct {
     uint32_t callback_baseline, discarded_ready_packets, discarded_ready_bytes;
 } usb_host_recovery_diag_t;
 extern volatile usb_host_recovery_diag_t g_usb_host_recovery_diag;
-void usb_task(void const *argument);
+/* CubeMX initializes USB Host before this receive backend is initialized. */
+void usb_comm_init(void);
+/* Execute one non-blocking receive/handshake/recovery service iteration. */
+void usb_comm_process(void);
+void usb_comm_get_status(comm_status_t *status);
 
 #endif

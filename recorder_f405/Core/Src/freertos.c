@@ -27,9 +27,9 @@
 /* USER CODE BEGIN Includes */
 #include  "recorder.h"
 #include  "debug_task.h"
-#include  "usb_task.h"
+#include  "comm_task.h"
+#include  "comm.h"
 #include  "led_control.h"
-#include  "usb_host.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,10 +49,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-extern ApplicationTypeDef Appli_state;
 osThreadId tskdTaskHandle;
 osThreadId DebugTaskHandle;
-osThreadId USBTaskHandle;
+osThreadId CommTaskHandle;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 
@@ -123,9 +122,9 @@ void MX_FREERTOS_Init(void) {
   DebugTaskHandle = osThreadCreate(osThread(DebugTask), NULL);
 #endif
 
-#ifdef USB_COMM
-  osThreadDef(USBTask, usb_task, osPriorityNormal, 0, 512);
-  USBTaskHandle = osThreadCreate(osThread(USBTask), NULL);
+#if COMM_INTERFACE != COMM_INTERFACE_NONE
+  osThreadDef(CommTask, comm_task, osPriorityNormal, 0, 512);
+  CommTaskHandle = osThreadCreate(osThread(CommTask), NULL);
 #endif
   /* USER CODE END RTOS_THREADS */
 
@@ -143,17 +142,13 @@ void StartDefaultTask(void const * argument)
   /* init code for USB_HOST */
   MX_USB_HOST_Init();
   /* USER CODE BEGIN StartDefaultTask */
+  comm_init();
   led_control_start();
   /* Infinite loop */
   for(;;)
   {
     led_control_update();
-#ifdef USB_COMM
-    COMM_led_control(Appli_state == APPLICATION_READY && g_log_host_ack_received,
-                     g_usb_rx_diag.callbacks_with_data);
-#else
-    COMM_led_control(0U, 0U);
-#endif
+    COMM_led_control((uint8_t)comm.status.ready, comm.status.rx_count);
     osDelay(10U);
   }
   /* USER CODE END StartDefaultTask */

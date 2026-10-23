@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
-#include "usb_task.h"
+#include "usb_comm.h"
 #define USBH_OK 0U
 #define USBH_FAIL 2U
 #define USBH_BUSY 1U

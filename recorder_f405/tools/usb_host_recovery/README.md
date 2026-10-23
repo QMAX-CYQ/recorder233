@@ -1,8 +1,8 @@
 # USB Host 受控恢复补丁
 
-恢复主体在自建的 `User/Task/usb_task.c/h`。这里保存必须修改 ST USB Host 核心库的最小补丁，不依赖 HAL 诊断钩子。
+恢复主体在自建的 `User/Comm/usb_comm.c/h`，由通用 `User/Task/comm_task.c` 经通信函数指针调度。这里保存必须修改 ST USB Host 核心库的最小补丁，不依赖 HAL 诊断钩子。
 
-`usb_task` 当前保留超时快照、历史及接收诊断统计；HAL 跟踪环和首次停止快照已移除。接收、时间戳、缓冲区背压、READY/ACK及受控恢复仍保留。
+USB 后端当前保留超时快照、历史及接收诊断统计；HAL 跟踪环和首次停止快照已移除。接收、时间戳、缓冲区背压、READY/ACK及受控恢复仍保留。通信选择和调用顺序见 [通信接口说明](../../User/Comm/README.md)。
 
 补丁包含：
 

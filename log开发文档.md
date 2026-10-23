@@ -1,15 +1,16 @@
 # Log 开发文档
 
-> 更新日期：2026-10-15。代码基线：`main` / 本地 `origin/main`，`5f8950a`（v0.9.1）。
-> 仓库：[QMAX-CYQ/recorder233](https://github.com/QMAX-CYQ/recorder233)。本次根据本地 Git 提交、逐版本代码差异和仓库诊断报告整理；GitHub 网页及远端在线核对未成功，不能确认远端是否另有更新。
+> 更新日期：2026-10-24。代码基线：`main` / `26d4f61a756ac4028c1a5a5be79ceb7f32b7c777`（v2.0）。
+> 仓库：[QMAX-CYQ/recorder233](https://github.com/QMAX-CYQ/recorder233)。本次通过 `git ls-remote origin refs/heads/main` 在线确认 GitHub main 与本地 HEAD 一致；版本内容依据提交记录、现行源码及已有诊断报告核对。GitHub 连接器返回 404，远端核对使用 Git 完成。
 
 ## 1. 范围与证据说明
 
-- `rm_main/`：早期 H7 板上直接记录 SD 卡的工程，主要对应 v0.1～v0.4。
+- `oldest version/`：早期 H7 板上直接记录 SD 卡的工程归档，主要对应 v0.1～v0.4；历史提交中的路径为 `rm_main/`。
 - `recorder_f405/`：v0.5 起的独立记录板工程，当前接收端实现位于此处。
 - `D:/RM/rm_main_gimbal/`：当前配套发送端工程。发送队列、10 通道压力日志和主板握手说明来自该工程源码及诊断归档，不能视为本仓库 `rm_main/` 的现行实现，也不直接归入本仓库某个提交。
 - 下文“提交记录现象”来自提交说明；“报告实测现象”来自已有日志审核；“代码风险”是源码推断。没有详细故障记录的版本不补造复现过程或唯一根因。
-- 版本号来自提交标题，并非已确认存在的 Git tag。软件版本 v0.9.1 与日志文件头 `VERSION=1` 是不同概念。
+- `User_add/`：仓库当前提供的 H723 发送端支持包，含日志、USB CDC、fault/NMI、D-Cache 和业务告警；不是完整主板工程，也不加入 F405 编译。
+- 版本号来自提交标题，并非已确认存在的 Git tag。软件版本 v2.0 与日志文件头 `VERSION=1` 是不同概念。
 
 ## 2. 当前日志链路与参数
 
@@ -167,9 +168,57 @@ flowchart LR
 
 **Watch：** `g_rtc_read_diag`、写卡错误结构与文件状态。索引保存目前没有专用全局失败计数，`g_recorder_diag` 也不统计文件头和索引写入；索引异常仍需检查函数返回路径或 SD 文件实际内容。
 
+### v0.9.2 / v0.9.3：文档与归档整理（2026-10-15）
+
+提交：[716d2a5](https://github.com/QMAX-CYQ/recorder233/commit/716d2a5)、[fc2475e](https://github.com/QMAX-CYQ/recorder233/commit/fc2475e)。新增开发及使用文档，整理仓库目录；旧 H7 工程移动到 `oldest version/`。这两个版本主要完善文档入口及使用前准备，不据此推断新增运行时功能。
+
+### v1.0：超时与重新握手（2026-10-16）
+
+提交：[be8429a](https://github.com/QMAX-CYQ/recorder233/commit/be8429a)。提交说明针对短暂 offline、复位或卡死后的重新握手。当前实现还包含 USB 接收超时快照与 Host 受控恢复，现行行为应结合 `usb_task.c/.h` 判断，不能把“无数据”直接等同于故障。
+
+- `USB_RX_TIMEOUT_MS=1000`：保存首次及最近四次接收等待超时现场；诊断超时不等于已丢数据。
+- `USB_HOST_RECOVERY_TIMEOUT_MS=2000`：接收待完成、没有待处理包且不处于 ring 背压时，结合通道 CHENA/CHDIS 异常或 URB_ERROR/STALL 判断是否恢复。
+- 恢复请求交给原 Host 线程串行服务，重新建立 Host/HCD 状态、清理当前应用会话并重新枚举。失败冷却 5000 ms，已连接情况下重新枚举/握手等待 10000 ms 后可重试。
+- `core_restarted` 仅表示内核重建接口成功；`restored` 还要求 APPLICATION_READY、有效 ACK 及新的接收完成回调。恢复不清 SD 环形缓存，但暂存和 USB 在途数据可能丢失。
+- ST Host 核心增加 `USBH_ResetStateForRecovery` / `USBH_UserRecoveryService` 钩子，CubeMX 生成后需要恢复补丁。现行代码已移除 HAL 跟踪环及首次停止快照，诊断归档里的旧变量不能直接用于当前固件。
+
+**Watch：** `g_usb_rx_timeout_diag`、`g_usb_host_recovery_diag`、`g_usb_rx_diag.raw_bytes`。完整历史方案见 [受控恢复记录](recorder_f405/diagnostics/usb_host_recovery/README.md)，当前补丁流程见 [工具说明](recorder_f405/tools/usb_host_recovery/README.md)。历史报告有实测边界，不能以其旧源码清单替代当前代码。
+
+### v1.1：主板支持包接入（2026-10-18）
+
+提交：[4adac64](https://github.com/QMAX-CYQ/recorder233/commit/4adac64)。提交记录说明 `User_add` 已在目标底盘工程作为支持库运行并更新 README。当前包统一使用 `log_task` / `LogTaskHandle` / `g_log_task_diag`，提供 CDC FIFO、握手、故障补报及业务事件支持。
+
+接入需要替换业务采样对象、创建任务、接入队列和回调，并配置故障保留区及最早启动初始化。提交里的目标工程运行结果不意味着其他 MCU 或所有默认采样对象可以直接使用。具体以 [User_add/README.md](User_add/README.md) 为准。
+
+### v1.1.1：H723 D-Cache 与 USB DMA（2026-10-18）
+
+提交：[41c456f](https://github.com/QMAX-CYQ/recorder233/commit/41c456f)。增加 `usb_dma_memory.h`、`usb_dma_port.h`、链接布局及 DMA 辅助接口。USB DMA 专用 16 KiB 区域涵盖枚举、控制传输与 CDC 数据对象；D-Cache 开启时配置 MPU Region 7 为非缓存区。仅在 CDC TX 上 Clean 不能覆盖枚举与接收。
+
+必须同时匹配 scatter、内存常量和 `usbd_conf.c` USER CODE 钩子；不能在运行中复用 Region 7 或任意切换 D-Cache。该方案适用于 H723 发送端，F405 不编译它。内存地址、验证方式及硬件边界见 [DCACHE_PORTING.md](User_add/DCACHE_PORTING.md) 和 [VALIDATION.md](User_add/VALIDATION.md)。
+
+### v1.1.2：NMI 补报与业务状态告警（2026-10-20）
+
+提交：[3b4d181](https://github.com/QMAX-CYQ/recorder233/commit/3b4d181)。增加独立 NMI 保留记录和 1024 字节应急栈，捕获 RCC 时钟与 CPU 现场；NMI 捕获路径不调用 USB/RTOS/printf，等待已运行的 IWDG 复位后补报。
+
+握手完成后先发四段 `[nmi]`，再发仍有效的三段 `[hardfault]`，最后恢复普通日志。补报入队后还需等待队列与在途发送排空，并确认会话未变化；断链则从第一段重发。记录、应急栈和链接保留区必须整体匹配；没有 IWDG 时不能保证自动重启补报。
+
+当前包同时含 `status_log` 离线/恢复告警，默认启动宽限 5 秒、每模块限频 1 秒，需要显式接入业务状态。它不修改原控制输出或看门狗策略。详见 [NMI_REPORTING.md](User_add/NMI_REPORTING.md)、[STATUS_ALERTS.md](User_add/STATUS_ALERTS.md)。
+
+### v2.0：新硬件板、LED 与电池测量（2026-10-24）
+
+提交：[26d4f61](https://github.com/QMAX-CYQ/recorder233/commit/26d4f61a756ac4028c1a5a5be79ceb7f32b7c777)。CubeMX 增加 SPI1、ADC1、TIM2，调整 USART1 并移除 USART6；外设初始化不等于已实现对应业务协议。
+
+- **SD 灯 PA0/TIM2_CH1：** `sd_state != FR_OK` 熄灭；FR_OK 且文件非 RS_READY 时满亮；RS_READY 时约 2 秒一次呼吸。运行中检测卡不可用也发布灭灯状态。
+- **通信灯 PA1/TIM2_CH2：** LED 启动后未握手就绪时呼吸；APPLICATION_READY 且收到会话 ACK 后常亮；收到日志正文时以 2 Hz 闪烁，停止接收约 1 秒后回到常亮，断链恢复呼吸。引脚用途按当前源码核对，提交正文的顺序描述不作为引脚映射。
+- **实现：** TIM2 时钟 84 MHz，PSC=83、ARR=999，PWM 1 kHz，CCR 范围 0～1000；默认任务每 10 ms 刷新，两灯独立计时，接收回调不负责灯效。`SD_led_control` 只发布模式，`led_control_update` 执行 SD PWM，`COMM_led_control` 使用累计日志数据包数识别新数据。
+- **VBAT：** ADC1 内部 VBAT，12 位、21 MHz、480 Cycles，内部二分压；`Battery_ReadVoltage(vref_v, &voltage)` 测量后关闭 VBATE。`main` 当前仅上电读一次到 `battery_voltage`，参考值暂传 3.3 V。尚未自动校准 VREFINT、实现剩余寿命模型或自动更换阈值。主电源关闭时不能靠 VBAT 运行 ADC。
+- **补丁工具：** 修复普通 PowerShell 找不到 Git 的使用问题，支持 PATH、常见安装目录、Codex 内置 Git，以及显式 `-GitPath`。Apply 前先完整预检，Check 不修改文件。
+
+**验证：** 已有 `MDK-ARM/led_build.log` 记录 AC6.24 编译/链接 0 错误、0 警告。用户反馈上电 VBAT 约 3.241 V，但没有同步万用表参考值，不能视为校准结果或电池寿命结论。该构建记录不证明灯效、实际接线、SPI 业务或 USB 故障恢复已经完成硬件回归。
+
 ## 4. Keil5 Watch 变量表（当前 F405）
 
-以下表达式按 v0.9.1 实际源码核对。`a / b` 表示两个独立变量或字段，添加 Watch 时分别输入；也可直接添加整个诊断结构后展开。
+以下表达式按 v2.0 源码核对，保留 v0.9.1 的基础诊断并补充现行恢复和电池变量。`a / b` 表示两个独立变量或字段，添加 Watch 时分别输入；也可直接添加整个诊断结构后展开。
 
 ### 4.1 建议先添加的表达式
 
@@ -287,9 +336,26 @@ tick 解析仅适配 `INFO: [...] tick=数字 ` 或 `INFO: [...] t=数字 `，�
 - `usb_rx_pending`、`usb_rx_ready`、`usb_rx_len`、`usb_rx_formatted_ready`、`recorder_log_ready`、`g_create_seq` 是静态符号。若 Keil Watch 无法解析裸名，从 Symbols 定位并使用其生成的作用域表达式；编译优化可能使部分符号不可见。
 - `prv_us_time.overflow_cnt` 属于辅助定时器溢出计时，不是日志缓存溢出统计，不应用它判断日志丢失。
 
+### 4.7 当前恢复与电池变量
+
+| 表达式 | 含义 / 使用边界 |
+|---|---|
+| `battery_voltage` | 上电读取的电池电压，单位 V；非持续更新，不直接表示剩余容量 |
+| `g_usb_rx_timeout_diag.timeout_count` / `active` | 超时累计次数 / 当前请求是否处于已记录的超时状态 |
+| `g_usb_rx_timeout_diag.first` / `history` | 首次现场 / 最近四次现场；valid 有效时读取 |
+| `g_usb_rx_timeout_diag.current_pending_ms` | 当前待完成接收等待时间；正常静默也会等待 |
+| `g_usb_host_recovery_diag.state` | IDLE、REQUESTED、RUNNING、WAIT_LINK 或 FAILED |
+| `g_usb_host_recovery_diag.requests` / `attempts` | 已提出请求 / Host 线程执行恢复次数 |
+| `g_usb_host_recovery_diag.core_restarted` / `restored` | 内核接口成功 / 重新就绪、ACK 与新回调满足恢复条件 |
+| `g_usb_host_recovery_diag.failed` / `last_status` | 接口失败次数 / 阶段与返回值编码 |
+| `g_usb_host_recovery_diag.discarded_ready_bytes` | 恢复时丢弃的应用暂存字节，不含全部 USB 在途数据 |
+| `g_usb_rx_diag.callbacks_with_data` | 过滤后含日志正文的回调累计数，也是通信灯活动输入 |
+
+`led_control.c` 的模式与计时变量为静态内部实现，通常观察 CCR1、CCR2 及上述输入即可。历史诊断中的 `g_usb_stop_first_failure` 和 HAL 跟踪环已移除，不应作为现行固件必需 Watch 项。
+
 ## 5. 配套主板 Watch（另一个工程）
 
-以下来自 `D:/RM/rm_main_gimbal/` 当前源码，只在该发送端固件中存在。本仓库早期 `rm_main/` 和 F405 不保证有这些符号。
+下表保留来自 `D:/RM/rm_main_gimbal/` 的发送端诊断；本仓库 `User_add` 使用 `g_log_task_diag`，不能直接套用表中的 `g_debug_task_diag`。支持包还可观察 `g_fault_record`、`g_nmi_record`、`g_nmi_log_diag`、`g_fault_log_diag`、`g_log_event_diag`、`g_status_log_recovery_coalesced` 及 `g_status_log_invalid_module`，接入与字段含义以包内 README 为准。F405 不具有这些主板符号。
 
 | 表达式 | 含义 / 判断 |
 |---|---|
@@ -350,6 +416,12 @@ Watch 中必须写完整字段，例如 `cdc_tx_started_count`，不能直接输
 4. uint32 计数自然回绕，复位后重新累计；不要运行中手工清零。两块板 tick 起点不同，按缺口与失败历史对应事件。
 5. 不能直接比较 USB 包数与日志条数；主板 CDC 含 ACK / 其他业务，F405 raw_bytes 已过滤控制帧，ring 与落盘字节又含 RTC 前缀。文件头与索引不计入正文写入诊断。
 6. 验证当前仍存在的边界：不足 16 KiB 的尾刷、短写数据恢复、SD 移除后恢复、断电时元数据一致性、RTC 跨午夜与实际走时。这些尚不能由“错误计数为 0”排除。
+
+### 7.3 v1.x / v2.0 验证范围
+
+后续主板移植与测试资料见 [User_add/VALIDATION.md](User_add/VALIDATION.md)；USB Host 恢复历史资料见 [受控恢复记录](recorder_f405/diagnostics/usb_host_recovery/README.md)。这些资料保留各自时点的源码和符号，部分已移除的跟踪接口不应重新加入当前 Watch 清单。
+
+本次仅更新文档并检查本地链接、参数及版本基线，未重新执行固件编译、烧录、异常注入或电池测量。已有构建与模拟测试结论应按原报告范围解读；重点仍需验证新板灯效、万用表对照、重连恢复、长时间记录和掉电边界。
 
 ## 8. 后续版本记录模板
 

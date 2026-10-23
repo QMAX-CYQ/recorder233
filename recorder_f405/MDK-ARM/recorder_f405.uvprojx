@@ -736,11 +736,6 @@
               <FilePath>..\User\Recorder\recorder.c</FilePath>
             </File>
             <File>
-              <FileName>recorder_inter.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\User\Recorder\recorder_inter.h</FilePath>
-            </File>
-            <File>
               <FileName>control_def.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\User\Recorder\control_def.h</FilePath>
@@ -771,9 +766,9 @@
               <FilePath>..\User\Task\debug_task.c</FilePath>
             </File>
             <File>
-              <FileName>usb_task.c</FileName>
+              <FileName>comm_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\Task\usb_task.c</FilePath>
+              <FilePath>..\User\Task\comm_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -781,9 +776,19 @@
           <GroupName>User/Comm</GroupName>
           <Files>
             <File>
+              <FileName>comm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Comm\comm.c</FilePath>
+            </File>
+            <File>
               <FileName>usart_comm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Comm\usart_comm.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_comm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Comm\usb_comm.c</FilePath>
             </File>
           </Files>
         </Group>
