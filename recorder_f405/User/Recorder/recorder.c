@@ -6,6 +6,7 @@
 #include "data_log.h"
 #include "recorder_inter.h"
 #include "sdio.h"
+#include "led_control.h"
 
 volatile recorder_diag_t g_recorder_diag;
 static volatile uint8_t recorder_log_ready;
@@ -811,8 +812,15 @@ static void RecorderCreateFileOnBoot(void)
 
 static void RecorderStateUpdate(void)
 {
-    if (isSdCardInit != FR_OK || !IsSdCardExist())
+    if (isSdCardInit != FR_OK) {
+        SD_led_control(isSdCardInit, pcfile_status.state);
         return;
+    }
+    if (!IsSdCardExist()) {
+        SD_led_control(FR_NOT_READY, pcfile_status.state);
+        return;
+    }
+    SD_led_control(FR_OK, pcfile_status.state);
     static uint8_t cnt = 0;
 
     switch (pcfile_status.state)

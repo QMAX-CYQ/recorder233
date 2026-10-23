@@ -250,7 +250,6 @@ void MX_RTC_Init(void)
   {
     Error_Handler();
   }
-
   /* USER CODE BEGIN RTC_Init 2 */
   uint32_t initMarker = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0);
   if (initMarker == RTC_LEGACY_BKUP_INIT_MARKER)
@@ -348,3 +347,4 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
+

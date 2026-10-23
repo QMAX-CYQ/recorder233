@@ -28,6 +28,8 @@
 #include  "recorder.h"
 #include  "debug_task.h"
 #include  "usb_task.h"
+#include  "led_control.h"
+#include  "usb_host.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +49,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+extern ApplicationTypeDef Appli_state;
 osThreadId tskdTaskHandle;
 osThreadId DebugTaskHandle;
 osThreadId USBTaskHandle;
@@ -140,10 +143,18 @@ void StartDefaultTask(void const * argument)
   /* init code for USB_HOST */
   MX_USB_HOST_Init();
   /* USER CODE BEGIN StartDefaultTask */
+  led_control_start();
   /* Infinite loop */
   for(;;)
   {
-    osDelay(osWaitForever);
+    led_control_update();
+#ifdef USB_COMM
+    COMM_led_control(Appli_state == APPLICATION_READY && g_log_host_ack_received,
+                     g_usb_rx_diag.callbacks_with_data);
+#else
+    COMM_led_control(0U, 0U);
+#endif
+    osDelay(10U);
   }
   /* USER CODE END StartDefaultTask */
 }

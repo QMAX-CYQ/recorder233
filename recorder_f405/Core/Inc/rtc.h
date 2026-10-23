@@ -56,3 +56,4 @@ HAL_StatusTypeDef RTC_SetInitialTime(uint16_t year,
 #endif
 
 #endif /* __RTC_H__ */
+

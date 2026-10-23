@@ -19,10 +19,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "adc.h"
 #include "dma.h"
 #include "fatfs.h"
 #include "rtc.h"
 #include "sdio.h"
+#include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
 #include "gpio.h"
@@ -63,7 +66,7 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+float battery_voltage;
 /* USER CODE END 0 */
 
 /**
@@ -99,7 +102,10 @@ int main(void)
   MX_RTC_Init();
   MX_SDIO_SD_Init();
   MX_FATFS_Init();
-  MX_USART6_UART_Init();
+  MX_USART1_UART_Init();
+  MX_SPI1_Init();
+  MX_ADC1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   (void)RTC_SetInitialTime(RTC_INITIAL_YEAR,
                            RTC_INITIAL_MONTH,
@@ -107,6 +113,7 @@ int main(void)
                            RTC_INITIAL_HOUR,
                            RTC_INITIAL_MINUTE,
                            RTC_INITIAL_SECOND);
+  Battery_ReadVoltage(3.3f,&battery_voltage);
   usart_comm_init();
   HAL_Delay(300);
   /* USER CODE END 2 */
