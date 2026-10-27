@@ -4,6 +4,8 @@
 
 #if COMM_INTERFACE == COMM_INTERFACE_USB
 #include "usb_comm.h"
+#elif COMM_INTERFACE == COMM_INTERFACE_SPI
+#include "spi_comm.h"
 #endif
 
 comm_t comm;
@@ -17,6 +19,11 @@ void comm_init(void)
     comm.init = usb_comm_init;
     comm.process = usb_comm_process;
     comm.get_status = usb_comm_get_status;
+#elif COMM_INTERFACE == COMM_INTERFACE_SPI
+    comm.type = COMM_TYPE_SPI;
+    comm.init = spi_comm_init;
+    comm.process = spi_comm_process;
+    comm.get_status = spi_comm_get_status;
 #else
     comm.type = COMM_TYPE_NONE;
     comm.init = NULL;

@@ -1,0 +1,58 @@
+[
+  {
+    "Mode": "USB",
+    "DCache": 0,
+    "UsbDma": 0,
+    "Protected": false,
+    "Build": "0 errors, 0 warnings"
+  },
+  {
+    "Mode": "USB",
+    "DCache": 0,
+    "UsbDma": 1,
+    "Protected": false,
+    "Build": "0 errors, 0 warnings"
+  },
+  {
+    "Mode": "USB",
+    "DCache": 1,
+    "UsbDma": 0,
+    "Protected": false,
+    "Build": "0 errors, 0 warnings"
+  },
+  {
+    "Mode": "USB",
+    "DCache": 1,
+    "UsbDma": 1,
+    "Protected": true,
+    "Build": "0 errors, 0 warnings"
+  },
+  {
+    "Mode": "SPI",
+    "DCache": 0,
+    "UsbDma": 0,
+    "Protected": false,
+    "Build": "0 errors, 0 warnings"
+  },
+  {
+    "Mode": "SPI",
+    "DCache": 0,
+    "UsbDma": 1,
+    "Protected": false,
+    "Build": "0 errors, 0 warnings"
+  },
+  {
+    "Mode": "SPI",
+    "DCache": 1,
+    "UsbDma": 0,
+    "Protected": false,
+    "Build": "0 errors, 0 warnings"
+  },
+  {
+    "Mode": "SPI",
+    "DCache": 1,
+    "UsbDma": 1,
+    "Protected": true,
+    "Build": "0 errors, 0 warnings"
+  }
+]

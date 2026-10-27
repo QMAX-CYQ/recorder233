@@ -55,6 +55,10 @@ FRESULT SdCardInit(void);
 /* 文件头已经写入并同步、文件可以接收日志。 */
 uint8_t RecorderLogIsReady(void);
 
+/* 外部任务调用 */
+void RecorderInit(void);
+void RecorderStateUpdate(void);
+
 
 #endif
 

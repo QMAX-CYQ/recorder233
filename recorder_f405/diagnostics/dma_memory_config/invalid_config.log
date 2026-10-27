@@ -1,0 +1,15 @@
+*** Using Compiler 'V6.24', folder: 'D:\KEIL5\ARM\ARMCLANG\Bin'
+Build target 'rm_main'
+Note: source file 'D:\RM\recorder233\recorder_f405\diagnostics\nmi_log_refresh\package_stm32h7xx_it.c' - object file renamed from 'D:\RM\recorder233\recorder_f405\diagnostics\dma_memory_config\usb_build\stm32h7xx_it.o' to 'D:\RM\recorder233\recorder_f405\diagnostics\dma_memory_config\usb_build\stm32h7xx_it.o'.Before Build - User command #1: powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\RM\recorder233\recorder_f405\diagnostics\dma_memory_config\package\USB\Support\sync_dma_memory.ps1" -IocPath "D:\RM\recorder233\recorder_f405\diagnostics\dma_memory_config\usb_config.ioc"
+不能识别配置 CORTEX_M7.CPU_DCache=INVALID，停止构建以免使用错误布局。
+所在位置 D:\RM\recorder233\recorder_f405\diagnostics\dma_memory_config\package\USB\Support\sync_dma_memory.ps1:22 字符:
+ 19
++         default { throw "不能识别配置 $Key=$Value，停止构建以免使用错误布局。" }
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (不能识别配置 CORTEX_M...D，停止构建以免使用错误布局。:String) [], Runt
+imeException
+    + FullyQualifiedErrorId : 不能识别配置 CORTEX_M7.CPU_DCache=INVALID，停止构建以免使用错误布局。
+
+"D:\RM\recorder233\recorder_f405\diagnostics\dma_memory_config\usb_build\rm_main.axf" - 1 Error(s), 0 Warning(s).
+Target not created.
+Build Time Elapsed:  00:00:01

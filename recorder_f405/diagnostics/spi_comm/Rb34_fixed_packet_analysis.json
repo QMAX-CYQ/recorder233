@@ -1,0 +1,18 @@
+{
+  "packet_bytes": 29,
+  "expected_packet_bits": 232,
+  "complete_packet_count": 0,
+  "SPI_TEST_count": 0,
+  "rtc_prefixes": 1,
+  "prefix_bit_hits": 3687,
+  "prefix_gap_bits": {
+    "284": 2846,
+    "285": 835,
+    "560": 2,
+    "283": 3
+  },
+  "model_bits": 284,
+  "exact_model_packets": 2845,
+  "model_description": "First 32 bits unchanged; replace each subsequent 10 with 100. Data model only, not measured waveform.",
+  "first_raw_hex": "53 50 49 5f 49 08 49 23 24 83 90 80 60 30 8c 43 18 c8 32 46 61 9c 70 38 88 08 12 08 83 21 08 49 0c 0c 82 45 35 04 95 fa 48 42 49 19 24 1c 84 03 01 84 62 18 c6 41 92 33 0c e3 81 c4 40 40 90 44"
+}

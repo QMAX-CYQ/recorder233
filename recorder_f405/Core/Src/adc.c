@@ -69,7 +69,7 @@ void MX_ADC1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN ADC1_Init 2 */
-  CLEAR_BIT(ADC->CCR, ADC_CCR_VBATE);//����ͨ·ƽʱ�رգ��ɶ�ȡ��������
+  CLEAR_BIT(ADC->CCR, ADC_CCR_VBATE);//不开启测量，仅在调用读取函数后进行一次测量
   /* USER CODE END ADC1_Init 2 */
 
 }

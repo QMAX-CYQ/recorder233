@@ -1,0 +1,54 @@
+{
+  "body_bytes": 114688,
+  "rtc_prefixes_removed": 1664,
+  "complete_original_packets": 1582,
+  "timestamped_correct_lines": 1582,
+  "bit_shifts": [
+    {
+      "shift": 0,
+      "complete_packets": 1582,
+      "prefixes": 1584
+    },
+    {
+      "shift": 1,
+      "complete_packets": 20,
+      "prefixes": 22
+    },
+    {
+      "shift": 2,
+      "complete_packets": 63,
+      "prefixes": 65
+    },
+    {
+      "shift": 3,
+      "complete_packets": 206,
+      "prefixes": 208
+    },
+    {
+      "shift": 4,
+      "complete_packets": 251,
+      "prefixes": 253
+    },
+    {
+      "shift": 5,
+      "complete_packets": 78,
+      "prefixes": 80
+    },
+    {
+      "shift": 6,
+      "complete_packets": 286,
+      "prefixes": 288
+    },
+    {
+      "shift": 7,
+      "complete_packets": 649,
+      "prefixes": 651
+    }
+  ],
+  "prefix_bit_gap_counts": {
+    "232": 3134,
+    "233": 16
+  },
+  "first_raw": "b'SPI_TEST: 0123456789 ABCDEF\\r\\nSPI_TEST: 0123456789 ABCDEF\\r\\x05)\\xa8$\\xaf\\xaa\"\\xa9\\xaa\\x1d\\x10\\x18\\x18\\x99\\x19\\x9a\\x1a\\x9b\\x1b\\x9c\\x1c\\x90 \\xa1!\\xa2\"\\xa3\\x06\\x85)\\xa8$\\xaf\\xaa\"\\xa9\\xaa\\x1d\\x10\\x18\\x18\\x99\\x19\\x9a\\x1a\\x9b\\x1b\\x9c\\x1c\\x90 \\xa1!\\xa2\"\\xa3\\x06\\x85)\\xa8$\\xaf\\xaa\"\\xa9\\xaa\\x1d\\x10\\x18\\x18\\x99\\x19\\x9a\\x1a\\x9b\\x1b\\x9c\\x1c\\x90 \\xa1!\\xa2\"\\xa1\\x83B\\x94\\xd4\\x12W\\xd5\\x11T\\xd5\\x0e\\x88\\x0c\\x0cL\\x8c\\xcd\\rM\\x8d\\xce\\x0eH\\x10P\\x90\\xd1\\x11Q\\x83B\\x94\\xd4\\x12W\\xd5\\x11T\\xd5\\x0e\\x88\\x0c\\x0cL\\x8c\\xcd\\rM\\x8d\\xce\\x0eH\\x10P\\x90\\xd1\\x11'",
+  "first_bad_body_offset": 85
+}

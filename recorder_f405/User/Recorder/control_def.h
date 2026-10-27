@@ -11,7 +11,7 @@
 
 #ifndef COMM_INTERFACE
 #ifdef INFO_FROM_DEVICE
-#define COMM_INTERFACE COMM_INTERFACE_USB
+#define COMM_INTERFACE COMM_INTERFACE_SPI
 #else
 #define COMM_INTERFACE COMM_INTERFACE_NONE
 #endif
@@ -19,8 +19,10 @@
 
 #if COMM_INTERFACE == COMM_INTERFACE_USB
 #define USB_COMM
-#elif COMM_INTERFACE == COMM_INTERFACE_SPI || COMM_INTERFACE == COMM_INTERFACE_UART
-#error "SPI/UART communication backends are reserved but not implemented. Select USB or NONE."
+#elif COMM_INTERFACE == COMM_INTERFACE_SPI
+#define SPI_COMM
+#elif COMM_INTERFACE == COMM_INTERFACE_UART
+#error "UART communication backend is reserved but not implemented."
 #elif COMM_INTERFACE != COMM_INTERFACE_NONE
 #error "Invalid COMM_INTERFACE selection."
 #endif

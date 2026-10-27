@@ -1,0 +1,33 @@
+{
+  "body_bytes": 7061504,
+  "full_lines": 15642,
+  "full_info_lines": 13900,
+  "full_warn_lines": 1742,
+  "invalid_full_lines": 0,
+  "invalid_samples": [],
+  "n_bad": 0,
+  "channel_bad": 0,
+  "missing_or_duplicate_timestamp_lines": 0,
+  "non_ascii_bytes": 0,
+  "seq_first": 0,
+  "seq_last_complete": 13899,
+  "seq_nonconsecutive": 0,
+  "tick_first": 3002,
+  "tick_last_complete": 141992,
+  "tick_not_10ms": 0,
+  "channel_counts": {
+    "sys": 1390,
+    "task": 1390,
+    "fdcan1": 1390,
+    "fdcan23": 1390,
+    "uart123": 1390,
+    "uart6910": 1390,
+    "nvic": 1390,
+    "dji": 1390,
+    "dm": 1390,
+    "imu": 1390
+  },
+  "partial_tail_bytes": 361,
+  "partial_tail_seq": 13900,
+  "partial_tail_prefix": "1026-01:44:20 INFO: [sys] tick=142002 seq=13900 ch=0 n=48 w=0F0BF"
+}

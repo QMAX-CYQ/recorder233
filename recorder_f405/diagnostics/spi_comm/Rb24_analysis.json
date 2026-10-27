@@ -1,0 +1,406 @@
+{
+  "file_bytes": 7700832,
+  "body_offset": 352,
+  "body_bytes": 7700480,
+  "zero_bytes": 5932746,
+  "zero_percent": 77.043847,
+  "lf_count": 593,
+  "cr_count": 293,
+  "top_bytes": [
+    {
+      "hex": "00",
+      "count": 5932746
+    },
+    {
+      "hex": "FF",
+      "count": 1632969
+    },
+    {
+      "hex": "20",
+      "count": 5712
+    },
+    {
+      "hex": "80",
+      "count": 5220
+    },
+    {
+      "hex": "01",
+      "count": 4812
+    },
+    {
+      "hex": "08",
+      "count": 4760
+    },
+    {
+      "hex": "10",
+      "count": 4547
+    },
+    {
+      "hex": "04",
+      "count": 4537
+    },
+    {
+      "hex": "02",
+      "count": 4510
+    },
+    {
+      "hex": "40",
+      "count": 4444
+    },
+    {
+      "hex": "32",
+      "count": 2759
+    },
+    {
+      "hex": "7F",
+      "count": 2496
+    },
+    {
+      "hex": "BF",
+      "count": 2430
+    },
+    {
+      "hex": "FE",
+      "count": 2304
+    },
+    {
+      "hex": "FD",
+      "count": 2184
+    },
+    {
+      "hex": "EF",
+      "count": 2025
+    }
+  ],
+  "nonzero_count": 1767734,
+  "first_nonzero": [
+    {
+      "offset": 352,
+      "hex": "31"
+    },
+    {
+      "offset": 353,
+      "hex": "30"
+    },
+    {
+      "offset": 354,
+      "hex": "32"
+    },
+    {
+      "offset": 355,
+      "hex": "35"
+    },
+    {
+      "offset": 356,
+      "hex": "2D"
+    },
+    {
+      "offset": 357,
+      "hex": "32"
+    },
+    {
+      "offset": 358,
+      "hex": "32"
+    },
+    {
+      "offset": 359,
+      "hex": "3A"
+    },
+    {
+      "offset": 360,
+      "hex": "32"
+    },
+    {
+      "offset": 361,
+      "hex": "38"
+    },
+    {
+      "offset": 362,
+      "hex": "3A"
+    },
+    {
+      "offset": 363,
+      "hex": "30"
+    },
+    {
+      "offset": 364,
+      "hex": "36"
+    },
+    {
+      "offset": 365,
+      "hex": "20"
+    },
+    {
+      "offset": 359002,
+      "hex": "40"
+    },
+    {
+      "offset": 359092,
+      "hex": "C0"
+    },
+    {
+      "offset": 359093,
+      "hex": "02"
+    },
+    {
+      "offset": 359099,
+      "hex": "08"
+    },
+    {
+      "offset": 359109,
+      "hex": "01"
+    },
+    {
+      "offset": 359138,
+      "hex": "02"
+    },
+    {
+      "offset": 359184,
+      "hex": "80"
+    },
+    {
+      "offset": 391613,
+      "hex": "08"
+    },
+    {
+      "offset": 392135,
+      "hex": "08"
+    },
+    {
+      "offset": 392216,
+      "hex": "20"
+    },
+    {
+      "offset": 393276,
+      "hex": "80"
+    },
+    {
+      "offset": 393373,
+      "hex": "20"
+    },
+    {
+      "offset": 394531,
+      "hex": "04"
+    },
+    {
+      "offset": 395613,
+      "hex": "02"
+    },
+    {
+      "offset": 395620,
+      "hex": "04"
+    },
+    {
+      "offset": 395633,
+      "hex": "08"
+    },
+    {
+      "offset": 395643,
+      "hex": "04"
+    },
+    {
+      "offset": 395670,
+      "hex": "20"
+    }
+  ],
+  "last_nonzero": [
+    {
+      "offset": 7700800,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700801,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700802,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700803,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700804,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700805,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700806,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700807,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700808,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700809,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700810,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700811,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700812,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700813,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700814,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700815,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700816,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700817,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700818,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700819,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700820,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700821,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700822,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700823,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700824,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700825,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700826,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700827,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700828,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700829,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700830,
+      "hex": "FF"
+    },
+    {
+      "offset": 7700831,
+      "hex": "FF"
+    }
+  ],
+  "ascii_runs_count": 636,
+  "ascii_runs_sample": [
+    {
+      "offset": 352,
+      "text": "1025-22:28:06 "
+    },
+    {
+      "offset": 424987,
+      "text": "1025-22:28:14 "
+    },
+    {
+      "offset": 450156,
+      "text": "1025-22:28:15 "
+    },
+    {
+      "offset": 454138,
+      "text": "1025-22:28:15 "
+    },
+    {
+      "offset": 494494,
+      "text": "1025-22:28:16 "
+    },
+    {
+      "offset": 780704,
+      "text": "1025-22:28:22 "
+    },
+    {
+      "offset": 782677,
+      "text": "1025-22:28:22 "
+    },
+    {
+      "offset": 783590,
+      "text": "1025-22:28:22 "
+    },
+    {
+      "offset": 785292,
+      "text": "1025-22:28:22 "
+    },
+    {
+      "offset": 786256,
+      "text": "1025-22:28:22 "
+    },
+    {
+      "offset": 787314,
+      "text": "1025-22:28:22 "
+    },
+    {
+      "offset": 788385,
+      "text": "1025-22:28:22 5"
+    },
+    {
+      "offset": 790138,
+      "text": "1025-22:28:22 "
+    },
+    {
+      "offset": 790181,
+      "text": "1025-22:28:22 L"
+    },
+    {
+      "offset": 790198,
+      "text": "1025-22:28:22 (H"
+    }
+  ],
+  "log_tags": {
+    "INFO:": 0,
+    "WARN:": 0,
+    "ERROR:": 0,
+    "tick=": 0,
+    "seq=": 0
+  }
+}

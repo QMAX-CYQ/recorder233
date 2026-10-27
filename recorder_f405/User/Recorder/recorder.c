@@ -810,7 +810,7 @@ static void RecorderCreateFileOnBoot(void)
     SaveLastestIndex();
 }
 
-static void RecorderStateUpdate(void)
+void RecorderStateUpdate(void)
 {
     if (isSdCardInit != FR_OK) {
         SD_led_control(isSdCardInit, pcfile_status.state);
@@ -906,15 +906,6 @@ void RecorderInit(void)
     pcfile_status.state = RS_INIT;
 }
 
-void tskd_Task(const void *argu)
-{
-    RecorderInit();
-    for (;;)
-    {
-        RecorderStateUpdate();
-        osDelay(TSKD_FRE);
-    }
-}
 #else
 void RecorderInit(void)
 {
@@ -927,11 +918,4 @@ void RecorderData(const char *buf, size_t len)
     UNUSED(len);
 }
 
-void tskd_Task(const void *argu)
-{
-    for (;;)
-    {
-        osDelay(10000);
-    }
-}
 #endif

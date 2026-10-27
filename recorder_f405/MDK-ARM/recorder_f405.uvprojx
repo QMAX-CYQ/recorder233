@@ -716,6 +716,11 @@
               <FilePath>..\User\Recorder\calendar.c</FilePath>
             </File>
             <File>
+              <FileName>log_rx_timestamp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Comm\log_rx_timestamp.c</FilePath>
+            </File>
+            <File>
               <FileName>log.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Recorder\log.c</FilePath>
@@ -770,6 +775,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\Task\comm_task.c</FilePath>
             </File>
+            <File>
+              <FileName>tskd_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Task\tskd_task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -784,6 +794,11 @@
               <FileName>usart_comm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Comm\usart_comm.c</FilePath>
+            </File>
+            <File>
+              <FileName>spi_comm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Comm\spi_comm.c</FilePath>
             </File>
             <File>
               <FileName>usb_comm.c</FileName>

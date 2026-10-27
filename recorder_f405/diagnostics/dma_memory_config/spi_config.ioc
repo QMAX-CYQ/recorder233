@@ -1,0 +1,3 @@
+CORTEX_M7.CPU_DCache=Enabled
+USB_OTG_HS.VirtualMode-Device_Only_FS=Device_Only_FS
+USB_OTG_HS.dma_enable-Device_Only_FS=ENABLE

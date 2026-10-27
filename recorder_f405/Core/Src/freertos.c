@@ -28,6 +28,7 @@
 #include  "recorder.h"
 #include  "debug_task.h"
 #include  "comm_task.h"
+#include  "tskd_task.h"
 #include  "comm.h"
 #include  "led_control.h"
 /* USER CODE END Includes */
@@ -57,7 +58,7 @@ osThreadId defaultTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-extern void tskd_Task(const void *argu);
+
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);

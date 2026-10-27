@@ -1,0 +1,407 @@
+{
+  "file_bytes": 4735328,
+  "body_offset": 352,
+  "body_bytes": 4734976,
+  "zero_bytes": 1782189,
+  "zero_percent": 37.638818,
+  "ff_percent": 61.69799,
+  "lf_count": 90,
+  "cr_count": 103,
+  "top_bytes": [
+    {
+      "hex": "FF",
+      "count": 2921385
+    },
+    {
+      "hex": "00",
+      "count": 1782189
+    },
+    {
+      "hex": "7F",
+      "count": 1244
+    },
+    {
+      "hex": "01",
+      "count": 1181
+    },
+    {
+      "hex": "80",
+      "count": 999
+    },
+    {
+      "hex": "20",
+      "count": 969
+    },
+    {
+      "hex": "02",
+      "count": 916
+    },
+    {
+      "hex": "40",
+      "count": 893
+    },
+    {
+      "hex": "04",
+      "count": 891
+    },
+    {
+      "hex": "FE",
+      "count": 800
+    },
+    {
+      "hex": "10",
+      "count": 794
+    },
+    {
+      "hex": "08",
+      "count": 768
+    },
+    {
+      "hex": "BF",
+      "count": 591
+    },
+    {
+      "hex": "FD",
+      "count": 569
+    },
+    {
+      "hex": "DF",
+      "count": 559
+    },
+    {
+      "hex": "FB",
+      "count": 510
+    }
+  ],
+  "nonzero_count": 2952787,
+  "first_nonzero": [
+    {
+      "offset": 352,
+      "hex": "31"
+    },
+    {
+      "offset": 353,
+      "hex": "30"
+    },
+    {
+      "offset": 354,
+      "hex": "32"
+    },
+    {
+      "offset": 355,
+      "hex": "35"
+    },
+    {
+      "offset": 356,
+      "hex": "2D"
+    },
+    {
+      "offset": 357,
+      "hex": "32"
+    },
+    {
+      "offset": 358,
+      "hex": "32"
+    },
+    {
+      "offset": 359,
+      "hex": "3A"
+    },
+    {
+      "offset": 360,
+      "hex": "34"
+    },
+    {
+      "offset": 361,
+      "hex": "31"
+    },
+    {
+      "offset": 362,
+      "hex": "3A"
+    },
+    {
+      "offset": 363,
+      "hex": "35"
+    },
+    {
+      "offset": 364,
+      "hex": "34"
+    },
+    {
+      "offset": 365,
+      "hex": "20"
+    },
+    {
+      "offset": 205659,
+      "hex": "01"
+    },
+    {
+      "offset": 205663,
+      "hex": "08"
+    },
+    {
+      "offset": 205664,
+      "hex": "04"
+    },
+    {
+      "offset": 205666,
+      "hex": "02"
+    },
+    {
+      "offset": 205667,
+      "hex": "28"
+    },
+    {
+      "offset": 205669,
+      "hex": "05"
+    },
+    {
+      "offset": 205674,
+      "hex": "40"
+    },
+    {
+      "offset": 205676,
+      "hex": "05"
+    },
+    {
+      "offset": 205677,
+      "hex": "5C"
+    },
+    {
+      "offset": 205678,
+      "hex": "10"
+    },
+    {
+      "offset": 205679,
+      "hex": "6D"
+    },
+    {
+      "offset": 205680,
+      "hex": "80"
+    },
+    {
+      "offset": 205681,
+      "hex": "7F"
+    },
+    {
+      "offset": 205682,
+      "hex": "FF"
+    },
+    {
+      "offset": 205683,
+      "hex": "FF"
+    },
+    {
+      "offset": 205684,
+      "hex": "FF"
+    },
+    {
+      "offset": 205685,
+      "hex": "FF"
+    },
+    {
+      "offset": 205686,
+      "hex": "FF"
+    }
+  ],
+  "last_nonzero": [
+    {
+      "offset": 4730921,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730922,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730923,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730924,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730925,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730926,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730927,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730928,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730929,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730930,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730931,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730932,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730933,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730934,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730935,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730936,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730937,
+      "hex": "FF"
+    },
+    {
+      "offset": 4730938,
+      "hex": "FF"
+    },
+    {
+      "offset": 4732003,
+      "hex": "FF"
+    },
+    {
+      "offset": 4732004,
+      "hex": "FF"
+    },
+    {
+      "offset": 4732005,
+      "hex": "FF"
+    },
+    {
+      "offset": 4732006,
+      "hex": "92"
+    },
+    {
+      "offset": 4732965,
+      "hex": "07"
+    },
+    {
+      "offset": 4732966,
+      "hex": "FF"
+    },
+    {
+      "offset": 4732967,
+      "hex": "FE"
+    },
+    {
+      "offset": 4733925,
+      "hex": "07"
+    },
+    {
+      "offset": 4733926,
+      "hex": "FF"
+    },
+    {
+      "offset": 4733927,
+      "hex": "FB"
+    },
+    {
+      "offset": 4734878,
+      "hex": "7F"
+    },
+    {
+      "offset": 4734879,
+      "hex": "FF"
+    },
+    {
+      "offset": 4734880,
+      "hex": "FF"
+    },
+    {
+      "offset": 4734881,
+      "hex": "FF"
+    }
+  ],
+  "ascii_runs_count": 95,
+  "ascii_runs_sample": [
+    {
+      "offset": 352,
+      "text": "1025-22:41:54 "
+    },
+    {
+      "offset": 290328,
+      "text": "1025-22:42:25 "
+    },
+    {
+      "offset": 295116,
+      "text": "1025-22:42:25 `"
+    },
+    {
+      "offset": 312377,
+      "text": "1025-22:42:25 "
+    },
+    {
+      "offset": 334272,
+      "text": "1025-22:42:26 "
+    },
+    {
+      "offset": 350666,
+      "text": "1025-22:42:26 "
+    },
+    {
+      "offset": 352643,
+      "text": "1025-22:42:26 "
+    },
+    {
+      "offset": 354546,
+      "text": "1025-22:42:26 /"
+    },
+    {
+      "offset": 359349,
+      "text": "1025-22:42:26 "
+    },
+    {
+      "offset": 368892,
+      "text": "1025-22:42:26 "
+    },
+    {
+      "offset": 377453,
+      "text": "1025-22:42:27 "
+    },
+    {
+      "offset": 402182,
+      "text": "1025-22:42:27 "
+    },
+    {
+      "offset": 431316,
+      "text": "1025-22:42:28 "
+    },
+    {
+      "offset": 434297,
+      "text": "1025-22:42:28 P@"
+    },
+    {
+      "offset": 448880,
+      "text": "1025-22:42:28 "
+    }
+  ],
+  "log_tags": {
+    "INFO:": 0,
+    "WARN:": 0,
+    "ERROR:": 0,
+    "tick=": 0,
+    "seq=": 0
+  }
+}

@@ -1,0 +1,10 @@
+自定义 SCT 不存在，未修改工程：D:\RM\recorder233\recorder_f405\diagnostics\spi_comm\scatter_restore_fixture\missing\Use
+r\Log\fault_noinit.sct
+所在位置 D:\RM\wheel_leg_2026\wheel_leg_2025--4\rm_main\User\Support\restore_keil_scatter.ps1:14 字符: 5
++     throw "自定义 SCT 不存在，未修改工程：$taskScatterPath"
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (自定义 SCT 不存在，未修改...ault_noinit.sct:String) [], RuntimeExcepti
+on
+    + FullyQualifiedErrorId : 自定义 SCT 不存在，未修改工程：D:\RM\recorder233\recorder_f405\diagnostics\spi_comm\scatt
+er_restore_f    ixture\missing\User\Log\fault_noinit.sct
+ 

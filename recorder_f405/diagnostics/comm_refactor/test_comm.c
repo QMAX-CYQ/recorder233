@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include "comm.h"
 #include "control_def.h"
+#if COMM_INTERFACE == COMM_INTERFACE_SPI
+#include "spi_comm.h"
+#define usb_comm_init spi_comm_init
+#define usb_comm_process spi_comm_process
+#define usb_comm_get_status spi_comm_get_status
+#endif
 
 static unsigned init_calls;
 static unsigned process_calls;
@@ -28,8 +34,12 @@ int main(void)
     assert(!comm.initialized && process_calls == 0U);
     comm_init();
     assert(comm.initialized);
-#if COMM_INTERFACE == COMM_INTERFACE_USB
+#if COMM_INTERFACE == COMM_INTERFACE_USB || COMM_INTERFACE == COMM_INTERFACE_SPI
+#if COMM_INTERFACE == COMM_INTERFACE_SPI
+    assert(comm.type == COMM_TYPE_SPI && init_calls == 1U);
+#else
     assert(comm.type == COMM_TYPE_USB && init_calls == 1U);
+#endif
     assert(comm.init == usb_comm_init && comm.process == usb_comm_process);
     assert(comm.get_status == usb_comm_get_status);
     comm_init();
@@ -46,7 +56,7 @@ int main(void)
     backend_status.ready = 0U;
     comm_poll();
     assert(comm.status.ready == 0U && process_calls == 4U);
-    puts("PASS: USB selection, init once, polling, link transitions, RX counter wrap");
+    puts("PASS: backend selection, init once, polling, link transitions, RX counter wrap");
 #else
     assert(comm.type == COMM_TYPE_NONE && init_calls == 0U);
     assert(comm.init == NULL && comm.process == NULL && comm.get_status == NULL);

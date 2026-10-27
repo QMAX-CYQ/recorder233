@@ -1,0 +1,5 @@
+Error: L6218E: Undefined symbol Image$$RW_LOG_SPI_DMA$$Base (referred from spi_log.o).
+Error: L6218E: Undefined symbol Image$$RW_USB_DMA$$Base (referred from usbd_conf.o).
+Error: L6218E: Undefined symbol Image$$RW_USB_DMA$$Limit (referred from usbd_conf.o).
+Not enough information to list load addresses in the image map.
+Finished: 1 information, 0 warning and 3 error messages.
