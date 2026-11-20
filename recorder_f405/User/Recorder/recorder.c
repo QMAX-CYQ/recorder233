@@ -24,6 +24,8 @@ uint8_t RecorderLogIsReady(void)
 
 #define WRITECOUNT_LIMIT 16
 #define SD_MOUNT_RETRY_MS 1000U
+#define SD_MOUNT_DIAG_DIR "SD_DIAG"
+#define SD_HAL_NOT_RUN UINT32_MAX
 #define CREATE_SEQ_FILE_NAME "create_seq.txt"
 #define RECORDER_FILE_MAGIC 0x52454344UL
 #define RECORDER_FILE_VERSION 1UL
@@ -43,6 +45,19 @@ BYTE current_filepath[FILE_NAME_MAX_LEN];
 pcfile_status_t pcfile_status;
 FRESULT isSdCardInit = FR_DISK_ERR; // 初始状态为未挂载
 extern Disk_drvTypeDef disk;
+extern volatile uint32_t sd_init_ret, sd_init_error;
+extern volatile uint32_t sd_wide_ret, sd_wide_error;
+
+static struct
+{
+    uint32_t failures, tick;
+    FRESULT result;
+    uint32_t hal_state, hal_error;
+    uint32_t init_ret, init_error, wide_ret, wide_error;
+    uint32_t card_not_ready;
+    uint8_t driver_link_result, disk_initialized;
+    file_state_t file_state;
+} sd_mount_failure;
 
 static uint32_t g_create_seq = 0;
 static uint8_t sd_not_ready_count = 0;
@@ -52,10 +67,31 @@ uint32_t check_write_fail_count = 0;
 
 FRESULT SdCardInit(void)
 {
+    sd_init_ret = SD_HAL_NOT_RUN;
+    sd_init_error = 0U;
+    sd_wide_ret = SD_HAL_NOT_RUN;
+    sd_wide_error = 0U;
     isSdCardInit = f_mount(&SDFatFS, (TCHAR const *)SDPath, 1); // SD卡挂载
     sd_mount_finished_tick = HAL_GetTick();
 
     g_recorder_diag.mount_result = (uint32_t)isSdCardInit;
+    if (isSdCardInit != FR_OK)
+    {
+        // 必须在重试覆盖驱动诊断值前保存本次失败现场。
+        sd_mount_failure.failures++;
+        sd_mount_failure.tick = sd_mount_finished_tick;
+        sd_mount_failure.result = isSdCardInit;
+        sd_mount_failure.hal_state = (uint32_t)hsd.State;
+        sd_mount_failure.hal_error = hsd.ErrorCode;
+        sd_mount_failure.init_ret = sd_init_ret;
+        sd_mount_failure.init_error = sd_init_error;
+        sd_mount_failure.wide_ret = sd_wide_ret;
+        sd_mount_failure.wide_error = sd_wide_error;
+        sd_mount_failure.card_not_ready = g_recorder_diag.card_not_ready;
+        sd_mount_failure.driver_link_result = retSD;
+        sd_mount_failure.disk_initialized = disk.is_initialized[SDFatFS.drv];
+        sd_mount_failure.file_state = pcfile_status.state;
+    }
     return isSdCardInit;
 }
 
@@ -229,7 +265,7 @@ static uint8_t FileNameToIndex(BYTE *file_name, uint32_t *index)
 
 /* 每次重建短文本文件，避免新内容较短时留下旧尾巴。
  * 不写字符串末尾的 NUL，检查短写和关闭同步的返回值。 */
-static FRESULT WriteMetadataText(const char *path, const char *text)
+static FRESULT WriteTextFile(const char *path, const char *text, BYTE create_mode)
 {
     FIL fp;
     UINT written = 0U;
@@ -237,12 +273,52 @@ static FRESULT WriteMetadataText(const char *path, const char *text)
     FRESULT result, close_result;
     if (path == NULL || text == NULL) return FR_INVALID_PARAMETER;
     length = (UINT)strlen(text);
-    result = f_open(&fp, (const TCHAR *)path, FA_CREATE_ALWAYS | FA_WRITE);
+    result = f_open(&fp, (const TCHAR *)path, create_mode | FA_WRITE);
     if (result != FR_OK) return result;
     result = f_write(&fp, text, length, &written);
     if (result == FR_OK && written != length) result = FR_DISK_ERR;
     close_result = f_close(&fp);
     return result == FR_OK ? close_result : result;
+}
+
+static FRESULT WriteMetadataText(const char *path, const char *text)
+{
+    return WriteTextFile(path, text, FA_CREATE_ALWAYS);
+}
+
+static FRESULT SaveSdMountFailure(void)
+{
+    char text[512];
+    char path[sizeof(SD_MOUNT_DIAG_DIR "/MOUNT4294967295.TXT")];
+    FRESULT result;
+    int length = snprintf(text, sizeof(text),
+        "SD mount recovery\r\n"
+        "failure_count=%lu\r\nlast_failure_tick_ms=%lu\r\nrecovery_tick_ms=%lu\r\n"
+        "mount_result=%u\r\nhsd.State=%lu\r\nhsd.ErrorCode=0x%08lX\r\n"
+        "sd_init_ret=0x%08lX\r\nsd_init_error=0x%08lX\r\n"
+        "sd_wide_ret=0x%08lX\r\nsd_wide_error=0x%08lX\r\n"
+        "card_not_ready=%lu\r\nretSD=%u\r\ndisk_initialized=%u\r\npcfile_status.state=%u\r\n"
+        "HAL return 0xFFFFFFFF = not called\r\n"
+        "End of report\r\n",
+        (unsigned long)sd_mount_failure.failures, (unsigned long)sd_mount_failure.tick,
+        (unsigned long)sd_mount_finished_tick, (unsigned int)sd_mount_failure.result,
+        (unsigned long)sd_mount_failure.hal_state, (unsigned long)sd_mount_failure.hal_error,
+        (unsigned long)sd_mount_failure.init_ret, (unsigned long)sd_mount_failure.init_error,
+        (unsigned long)sd_mount_failure.wide_ret, (unsigned long)sd_mount_failure.wide_error,
+        (unsigned long)sd_mount_failure.card_not_ready, (unsigned int)sd_mount_failure.driver_link_result,
+        (unsigned int)sd_mount_failure.disk_initialized, (unsigned int)sd_mount_failure.file_state);
+    if (length < 0 || (size_t)length >= sizeof(text)) return FR_INT_ERR;
+
+    result = f_mkdir(SD_MOUNT_DIAG_DIR);
+    if (result != FR_OK && result != FR_EXIST) return result;
+    // 每次创建新报告，保留以前的报告和可能中断的现场。
+    for (uint32_t index = 1U; index != 0U; index++)
+    {
+        snprintf(path, sizeof(path), SD_MOUNT_DIAG_DIR "/MOUNT%lu.TXT", (unsigned long)index);
+        result = WriteTextFile(path, text, FA_CREATE_NEW);
+        if (result != FR_EXIST) return result;
+    }
+    return FR_DENIED;
 }
 
 /* 为结束符保留一字节，并兼容旧版 NUL 结尾及新版 CRLF 文本。 */
@@ -838,6 +914,19 @@ void RecorderStateUpdate(void)
     {
     case RS_INIT:
     {
+        if (sd_mount_failure.failures != 0U)
+        {
+            FRESULT result = SaveSdMountFailure();
+            if (result != FR_OK)
+            {
+                log_printf("[sd-mount] diagnostic save failed: %u\r\n", (unsigned int)result);
+                // 关闭失败可能残留 FatFs 文件锁，下次重挂载再写报告。
+                isSdCardInit = FR_NOT_READY;
+                sd_mount_finished_tick = HAL_GetTick();
+                break;
+            }
+            sd_mount_failure.failures = 0U;
+        }
         RecorderCreateFileOnBoot();
         pcfile_status.state = recorder_log_ready ? RS_READY : RS_INIT;
         break;
