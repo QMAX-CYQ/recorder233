@@ -40,6 +40,11 @@ extern SD_HandleTypeDef hsd;
 
 /* USER CODE BEGIN BeforeInitSection */
 /* can be used to modify / undefine following code or add code */
+/* 定义为全局 volatile 变量，方便任务打印或调试器查看 */
+volatile uint32_t sd_init_ret;
+volatile uint32_t sd_init_error;
+volatile uint32_t sd_wide_ret = 0xFFFFFFFFU;
+volatile uint32_t sd_wide_error;
 /* USER CODE END BeforeInitSection */
 /**
   * @brief  Initializes the SD card device.
@@ -55,11 +60,16 @@ __weak uint8_t BSP_SD_Init(void)
   }
   /* HAL SD initialization */
   sd_state = HAL_SD_Init(&hsd);
+  sd_init_ret = sd_state;
+sd_init_error = hsd.ErrorCode;
   /* Configure SD Bus width (4 bits mode selected) */
   if (sd_state == MSD_OK)
   {
+	  sd_wide_ret = HAL_SD_ConfigWideBusOperation(
+        &hsd, SDIO_BUS_WIDE_4B);
+    sd_wide_error = hsd.ErrorCode;
     /* Enable wide operation */
-    if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B) != HAL_OK)
+    if (sd_wide_ret != HAL_OK)
     {
       sd_state = MSD_ERROR;
     }

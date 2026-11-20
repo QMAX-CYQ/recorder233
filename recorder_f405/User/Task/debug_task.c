@@ -20,12 +20,17 @@ extern FRESULT isSdCardInit;
 extern pcfile_status_t pcfile_status;
 extern SD_HandleTypeDef hsd;
 
+extern volatile uint32_t sd_init_ret;
+extern volatile uint32_t sd_init_error;
+extern volatile uint32_t sd_wide_ret;
+extern volatile uint32_t sd_wide_error;
+
 static void debug_log_sd_status(void)
 {
 	log_printf("[sd-status] isSdCardInit=%u g_recorder_diag.mount_result=%u g_recorder_diag.card_not_ready=%u\
-	pcfile_status.state=%u hsd.State=%u hsd.ErrorCode=%u",
+	pcfile_status.state=%u hsd.State=%u hsd.ErrorCode=%u sd_init_ret=%u sd_init_error=&u sd_wide_ret=%u sd_wide_error=%u",
 	isSdCardInit,g_recorder_diag.mount_result,g_recorder_diag.card_not_ready,
-	pcfile_status.state,hsd.State,hsd.ErrorCode);
+	pcfile_status.state,hsd.State,hsd.ErrorCode,sd_init_ret,sd_init_error,sd_wide_ret,sd_wide_error);
 }
 
 static void debug_log_text_output(void)

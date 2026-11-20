@@ -23,6 +23,7 @@ uint8_t RecorderLogIsReady(void)
 #define LASTEST_FILE_NAME "lastest.txt" // 记录最新创建文件索引
 
 #define WRITECOUNT_LIMIT 16
+#define SD_MOUNT_RETRY_MS 1000U
 #define CREATE_SEQ_FILE_NAME "create_seq.txt"
 #define RECORDER_FILE_MAGIC 0x52454344UL
 #define RECORDER_FILE_VERSION 1UL
@@ -41,15 +42,18 @@ BYTE current_filepath[FILE_NAME_MAX_LEN];
 
 pcfile_status_t pcfile_status;
 FRESULT isSdCardInit = FR_DISK_ERR; // 初始状态为未挂载
+extern Disk_drvTypeDef disk;
 
 static uint32_t g_create_seq = 0;
 static uint8_t sd_not_ready_count = 0;
+static uint32_t sd_mount_finished_tick;
 uint32_t check_write_ok_count = 0;
 uint32_t check_write_fail_count = 0;
 
 FRESULT SdCardInit(void)
 {
     isSdCardInit = f_mount(&SDFatFS, (TCHAR const *)SDPath, 1); // SD卡挂载
+    sd_mount_finished_tick = HAL_GetTick();
 
     g_recorder_diag.mount_result = (uint32_t)isSdCardInit;
     return isSdCardInit;
@@ -812,6 +816,13 @@ static void RecorderCreateFileOnBoot(void)
 
 void RecorderStateUpdate(void)
 {
+    if (isSdCardInit != FR_OK &&
+        HAL_GetTick() - sd_mount_finished_tick >= SD_MOUNT_RETRY_MS)
+    {
+        // 卷挂载失败时，底层驱动仍可能已缓存初始化成功。
+        disk.is_initialized[SDFatFS.drv] = 0U;
+        SdCardInit();
+    }
     if (isSdCardInit != FR_OK) {
         SD_led_control(isSdCardInit, pcfile_status.state);
         return;
