@@ -41,9 +41,9 @@
 
 #define RTC_INITIAL_YEAR         2026U
 #define RTC_INITIAL_MONTH        11U
-#define RTC_INITIAL_DAY          1U
-#define RTC_INITIAL_HOUR         21U
-#define RTC_INITIAL_MINUTE       28U
+#define RTC_INITIAL_DAY          13U
+#define RTC_INITIAL_HOUR         18U
+#define RTC_INITIAL_MINUTE       33U
 #define RTC_INITIAL_SECOND       0U
 
 #endif //#ifndef __CONTROL_DEF_H

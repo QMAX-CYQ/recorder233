@@ -15,24 +15,17 @@ uint8_t debug_wave = 0;
 uint8_t debug_text_log_enable = 1;
 float test_hex = 1;
 
-static void debug_log_stress_data(void)
-{
-    static uint32_t sequence = 0;
-    uint32_t pattern;
 
-    sequence++;
-    pattern = sequence * 0x9E3779B9UL;
-    DEBUG_INFO("[stress] seq=%lu tick=%lu data=%08lX%08lX%08lX%08lX%08lX%08lX%08lX%08lX\r\n",
-               (unsigned long)sequence,
-               (unsigned long)HAL_GetTick(),
-               (unsigned long)pattern,
-               (unsigned long)~pattern,
-               (unsigned long)(pattern ^ 0xA5A55A5AUL),
-               (unsigned long)(pattern + 0x13579BDFUL),
-               (unsigned long)(pattern ^ 0x3C6EF372UL),
-               (unsigned long)(pattern + 0x2468ACE0UL),
-               (unsigned long)~(pattern ^ 0x5A5AA5A5UL),
-               (unsigned long)(pattern ^ sequence));
+extern FRESULT isSdCardInit;
+extern pcfile_status_t pcfile_status;
+extern SD_HandleTypeDef hsd;
+
+static void debug_log_sd_status(void)
+{
+	log_printf("[sd-status] isSdCardInit=%u g_recorder_diag.mount_result=%u g_recorder_diag.card_not_ready=%u\
+	pcfile_status.state=%u hsd.State=%u hsd.ErrorCode=%u",
+	isSdCardInit,g_recorder_diag.mount_result,g_recorder_diag.card_not_ready,
+	pcfile_status.state,hsd.State,hsd.ErrorCode);
 }
 
 static void debug_log_text_output(void)
@@ -46,16 +39,18 @@ static void debug_log_text_output(void)
 
     switch (log_slot)
     {
-    default:
-        break;
+		
+		case 0:
+		{
+			debug_log_sd_status();
+			break;
+		}
+		default:
+			break;
     }
 
     log_slot = (log_slot + 1) % DEBUG_TEXT_LOG_SLOT_NUM;
 }
-
-uint8_t log_flag;
-
-
 
 void debug_task(void const *argument)
 {
@@ -65,14 +60,7 @@ void debug_task(void const *argument)
     for (;;)
     {
         thread_wake_time = osKernelSysTick();
-        if (log_flag)
-        {
-			debug_log_text_output();
-			if (debug_text_log_enable && (debug_wave == 0))
-			{
-				debug_log_stress_data();
-			}
-        }
-        osDelayUntil(&thread_wake_time, 1);
+        debug_log_text_output();
+        osDelayUntil(&thread_wake_time, 100);
     }
 }

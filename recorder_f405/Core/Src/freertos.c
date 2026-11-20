@@ -117,16 +117,14 @@ void MX_FREERTOS_Init(void) {
   /* add threads, ... */
   osThreadDef(tskdTask, tskd_Task, osPriorityHigh, 0, 2560);
   tskdTaskHandle = osThreadCreate(osThread(tskdTask), NULL);
-  
-#ifdef DEBUG_USE
-  osThreadDef(DebugTask, debug_task, osPriorityNormal, 0, 512);
-  DebugTaskHandle = osThreadCreate(osThread(DebugTask), NULL);
-#endif
 
 #if COMM_INTERFACE != COMM_INTERFACE_NONE
   osThreadDef(CommTask, comm_task, osPriorityNormal, 0, 512);
   CommTaskHandle = osThreadCreate(osThread(CommTask), NULL);
 #endif
+
+  osThreadDef(DebugTask, debug_task, osPriorityLow, 0, 512);
+  DebugTaskHandle = osThreadCreate(osThread(DebugTask), NULL);
   /* USER CODE END RTOS_THREADS */
 
 }

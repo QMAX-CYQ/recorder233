@@ -13,7 +13,7 @@
 #define PCFILE_SIZE (8UL * MB)
 #define FILE_MAX_NUM 3000
 #define FILE_NAME_MAX_LEN 32
-#define FREE_SIZE_LIMIT  (23552UL * 1024) //单位KB
+#define FREE_SIZE_LIMIT  (5UL * 1024 * 1024) //单位KB
 
 #endif
 

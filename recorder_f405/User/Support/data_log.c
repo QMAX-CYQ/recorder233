@@ -58,7 +58,7 @@ void log_printf(const char *format, ...)
     {
         len = sizeof(log_str) - 1;
     }
-  //  HAL_UART_Transmit_DMA(log_huart, (uint8_t*)log_str, (uint16_t)len);
+    HAL_UART_Transmit_DMA(log_huart, (uint8_t*)log_str, (uint16_t)len);
 }
 
 int log_printf_to_buffer(char *buff, int size, char *format, ...)
